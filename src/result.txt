@@ -1,0 +1,5 @@
+With 10 neighbors graph is not fully connected
+With 20 neighbors graph is not fully connected
+With 30 neighbors graph is not fully connected
+With 40 neighbors graph is not fully connected
+With 50 neighbors the execution finished

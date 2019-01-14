@@ -346,4 +346,8 @@ TSWLatexianTemp*
 # generated if using elsarticle.cls
 *.spl
 
+#Datos
 data/
+*.npy
+*.pdd
+*.pkl

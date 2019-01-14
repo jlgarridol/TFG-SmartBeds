@@ -2,6 +2,7 @@
 import pandas as pd
 import glob
 import numpy as np
+import pickle as pk
 
 def load(path=r"./"):
     """Read all CSV in $folder to same DataFrame
@@ -49,5 +50,3 @@ def newSeizure(dataframe,datetime,seconds):
     dataframe.loc[mask,'target']=True
     
     return dataframe
-    
-
