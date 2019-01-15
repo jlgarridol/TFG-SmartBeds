@@ -50,3 +50,22 @@ def newSeizure(dataframe,datetime,seconds):
     dataframe.loc[mask,'target']=True
     
     return dataframe
+
+def normalize(dataframe):
+    """Normalize min-max all float64 columns
+    Param dataframe: dataframe with all data
+    Return dataframe with normalize data
+    """
+    tubes = []
+    for d in dataframe:
+        if dataframe[d].dtype == np.float64:
+            tubes.append(dataframe[d])
+    tubes = np.array(tubes)
+    maxs = np.max(tubes)
+    mins = np.min(tubes)
+    rang = maxs-mins
+    
+    tubesNorm = (tubes - mins) / rang
+    
+    return tubesNorm
+    
