@@ -68,4 +68,17 @@ def normalize(dataframe):
     tubesNorm = (tubes - mins) / rang
     
     return tubesNorm
+
+def normalize(tubes):
+    """Normalize min-max all float64 columns
+    Param dataframe: dataframe with all data
+    Return dataframe with normalize data
+    """    
+    maxs = np.max(tubes)
+    mins = np.min(tubes)
+    rang = maxs-mins
+    
+    tubesNorm = (tubes - mins) / rang
+    
+    return tubesNorm
     
