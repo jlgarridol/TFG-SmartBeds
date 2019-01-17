@@ -46,7 +46,7 @@ def newSeizure(dataframe,datetime,seconds):
     startDate = pd.to_datetime(datetime)
     endDate = startDate + pd.to_timedelta(seconds, unit='s')
 
-    mask = (dataframe['DateTime'] > startDate) & (dataframe['DateTime'] <= endDate)
+    mask = (dataframe['DateTime'] >= startDate) & (dataframe['DateTime'] <= endDate)
     dataframe.loc[mask,'target']=True
     
     return dataframe
