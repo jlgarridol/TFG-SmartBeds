@@ -14,7 +14,7 @@ def load(path=r"./"):
     list_ = []
 
     for file_ in allFiles:
-        df = pd.read_csv(file_,index_col=None, header=0)
+        df = pd.read_csv(file_,index_col=None, header=0,low_memory=False)
         list_.append(df)
 
     return pd.concat(list_, axis = 0, ignore_index = True)       
@@ -23,7 +23,9 @@ def preprocess(dataframe):
     """Only Datetime and preasures, add target
        Param: dataframe with all data
        Return: new datafram"""
-    datos = dataframe.iloc[:,2:16]
+    # Eliminación de datos con señal inferior a 1
+    datos = dataframe[dataframe['STATUS']>0]
+    datos = datos.iloc[:,2:16]
     datos = datos.dropna()
     
     tam = len(datos)
@@ -51,31 +53,14 @@ def newSeizure(dataframe,datetime,seconds):
     
     return dataframe
 
-def normalize(dataframe):
-    """Normalize min-max all float64 columns
-    Param dataframe: dataframe with all data
-    Return dataframe with normalize data
-    """
-    tubes = []
-    for d in dataframe:
-        if dataframe[d].dtype == np.float64:
-            tubes.append(dataframe[d])
-    tubes = np.array(tubes)
-    maxs = np.max(tubes)
-    mins = np.min(tubes)
-    rang = maxs-mins
-    
-    tubesNorm = (tubes - mins) / rang
-    
-    return tubesNorm
 
 def normalize(tubes):
     """Normalize min-max all float64 columns
     Param dataframe: dataframe with all data
     Return dataframe with normalize data
     """    
-    maxs = np.max(tubes)
-    mins = np.min(tubes)
+    maxs = np.max(np.max(tubes))
+    mins = np.min(np.min(tubes))
     rang = maxs-mins
     
     tubesNorm = (tubes - mins) / rang
