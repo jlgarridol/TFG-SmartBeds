@@ -1,5 +1,17 @@
-With 10 neighbors graph is not fully connected
-With 20 neighbors graph is not fully connected
-With 30 neighbors graph is not fully connected
-With 40 neighbors graph is not fully connected
-With 50 neighbors the execution finished
+With 1200 neighbors graph is not fully connected
+With 1300 neighbors graph is not fully connected
+With 1400 neighbors graph is not fully connected
+With 1500 neighbors graph is not fully connected
+With 1600 neighbors graph is not fully connected
+With 1700 neighbors graph is not fully connected
+With 1800 neighbors graph is not fully connected
+With 1900 neighbors graph is not fully connected
+With 2000 neighbors graph is not fully connected
+With 2100 neighbors graph is not fully connected
+With 2200 neighbors graph is not fully connected
+With 2300 neighbors graph is not fully connected
+With 2400 neighbors graph is not fully connected
+With 2500 neighbors graph is not fully connected
+With 2600 neighbors graph is not fully connected
+With 2700 neighbors graph is not fully connected
+With 2800 neighbors graph is not fully connected

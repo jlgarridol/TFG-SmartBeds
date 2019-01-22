@@ -6,7 +6,7 @@ import warnings
 warnings.filterwarnings("error")
 
 
-with open('datos.pdd','rb') as f:
+with open('data/datos.pdd','rb') as f:
     datos = pk.load(f)
 
 datos_seizure = datos.loc[datos['target']==True]
@@ -26,10 +26,13 @@ crit = datos['DateTime'].map(lambda x: x.date() in dayOfSeizures)
 datosPart = datos[crit]
 maxNei = int(len(datosPart)/10)
 
-data = datosPart.iloc[:,1:13]
+data = datosPart.iloc[:,1:len(datosPart.columns)-1]
+data = data.astype(np.float32)
 
-with open('result.txt','w') as r:
-    for i in range(10,maxNei,10):
+seB = SE(n_components=2).fit_transform(data)
+
+"""with open('result.txt','w') as r:
+    for i in range(1200,maxNei,100):
         try:
             seB = SE(n_components=2,n_neighbors=i).fit_transform(data)
             r.write('With '+str(i)+' neighbors the execution finished\n')
@@ -41,3 +44,4 @@ with open('result.txt','w') as r:
             r.write('With'+str(i)+' neighbors get exeption '+str(e)+'\n')
             print('Exception')
 
+"""
