@@ -1,4 +1,5 @@
 from sklearn.base import TransformerMixin
+from sklearn.feature_selection import VarianceThreshold
 from scipy import signal as sg
 from pandas import DataFrame
 import numpy as np
@@ -49,6 +50,37 @@ class SavgolTransform(FilterTransform):
     def _filData(self,X):
         return sg.savgol_filter(X,self.window_length,self.polyorder,deriv=self.deriv,delta=self.delta,axis=self.axis,mode=self.mode,cval=self.cval)
 
+###Compuestos###
+
+class ConcatenateTransform(TransformerMixin):
+
+    def __init__(self,*transformers):
+        self.transformers = transformers
+
+    def fit(self,X,y=None):
+        return self
+
+    def transform(self,X):
+        Y = np.array([])
+        for t in self.transformers:
+            y = t.fit_transform(X)
+            Y = np.concatenate((Y,y),axis=2)
+        return Y
+
+class MultiplicativeTransform(TransformerMixin):
+
+    def __init__(self,*transformers):
+        self.transformers = transformers
+
+    def fit(self,X,y=None):
+        return self
+
+    def transform(self,X):
+        Y = X
+        for t in self.transformers:
+            Y = t.fit_transform(Y)
+        return Y
+
 if __name__ == '__main__':
     import pandas as pd # se importa pandas como pd
     import numpy as np  #numpy como np
@@ -56,5 +88,7 @@ if __name__ == '__main__':
     with open('data/datos_raw.pdd','rb') as f:
         datos_raw = pk.load(f)
     X = datos_raw.iloc[:,1:13]
-    Y = SavgolTransform(5).fit_transform(X)
+    S = SavgolTransform(5)
+    V = VarianceThreshold(threshold=0.5)
+    Y = MultiplicativeTransform(S,V).fit_transform(X)
     print(Y)
