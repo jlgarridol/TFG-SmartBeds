@@ -61,15 +61,10 @@ class VarianceThresholdPD(TransformerMixin):
         return self
     
     def transform(self,X):
-        R = VarianceThreshold(threshold=0.5).fit_transform(X)
-        P = DataFrame()
-        v = 0
-        for c in X.columns:
-            if v >= R.shape[1]:
-                break
-            P[c] = R[:,v]
-            v += 1
-        return P
+        data = X.copy()
+        selector = VarianceThreshold(threshold=self._threshold)
+        selector.fit(data)
+        return data[data.columns[selector.get_support(indices=True)]]
 
 ###Compuestos###
 
@@ -97,10 +92,75 @@ class PipelineTransformer(TransformerMixin):
         return self
 
     def transform(self,X):
-        Y = X
+        Y = X.dropna()
         for t in self.transformers:
-            Y = t.fit_transform(Y)
+            Y = t.fit_transform(Y).dropna()
         return Y
+    
+class Normalizer(TransformerMixin):
+    """
+    Normalize all data between 0 and 1. 
+    """
+    
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, data):
+        maxi = np.max(np.max(data))
+        mini = np.min(np.min(data))
+        rang = maxi-mini   
+        dataNorm = (data - mini) / rang
+        return dataNorm
+
+class NoiseFilter(TransformerMixin): 
+    """
+    Makes 0 all values less than 'minimum'. 
+    """
+    def __init__(self,minimum=0):
+        self._minimum = minimum
+    
+    def fit(self,X,y=None):
+        return self
+    
+    def transform(self, data):
+        dataN = data.copy()
+        for d in dataN: 
+            if dataN[d].dtype == np.float64: 
+                dataN.loc[data[d]< self._minimum, d]=0.0      
+        return dataN
+    
+class StatisticsTransformer(TransformerMixin): 
+    """
+    Calculates rolling statistics of the columns from data. 
+    
+    Parameters: 
+    
+        mode: string, default 'mean'
+            'mean': rolling mean
+            'std': rolling standard deviation
+            'range' : rolling ranges (difference between max and min)
+            
+        window: int, dafault 25. 
+    """
+    def __init__(self,mode='mean',window=25):
+        self._mode = mode
+        self._window = window
+    
+    def fit(self, X, y=None): 
+        return self
+    
+    def transform(self, data): 
+        statistics = pd.DataFrame()
+        for c in data.columns: 
+            if self._mode == 'mean': 
+                statistics[c+' '+self._mode+" "+str(self._window)] = data[c].rolling(self._window).mean()
+            elif self._mode == 'std': 
+                statistics[c+' '+self._mode+" "+str(self._window)] = data[c].rolling(self._window).std()
+            elif self._mode == 'range': 
+                statistics[c+' '+self._mode+" "+str(self._window)] = data[c].rolling(self._window).max() - data[c].rolling(self._window).min()
+            else: 
+                raise Exception("mode: '"+self._mode+"' is not correct. Aviable modes are 'mean', 'std' and 'range'.")
+        return statistics
 
 if __name__ == '__main__':
     import pandas as pd # se importa pandas como pd
@@ -109,7 +169,11 @@ if __name__ == '__main__':
     with open('data/datos_raw.pdd','rb') as f:
         datos_raw = pk.load(f)
     X = datos_raw.iloc[:,1:13]
+    M = StatisticsTransformer('mean',25)
+    STD = StatisticsTransformer('std',18)
+    R = StatisticsTransformer('range',24)
+    CON = ConcatenateTransformer(M,STD,R)
     S = SavgolTransformer(5)
     V = VarianceThresholdPD(threshold=0.5)
-    Y = PipelineTransformer(S,V).fit_transform(X)
+    Y = PipelineTransformer(CON,V).fit_transform(X)
     print(Y)
