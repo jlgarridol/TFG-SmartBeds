@@ -3,17 +3,22 @@ from sklearn.feature_selection import VarianceThreshold
 from scipy import signal as sg
 from pandas import DataFrame
 import numpy as np
+import pandas as pd
 
 class FilterTransformer(TransformerMixin):
 
     def transform(self,X):
-        Y = DataFrame()
+        Y = X.copy()
+        size = len(Y.columns)
         #if isinstance(X,DataFrame):
         #    X = X.to_numpy()
         for f in X.columns:
             y = self._filData(X[f])
             Y[f+" "+self._NAME] = y
-        return Y
+        return Y.iloc[:,size:len(Y.columns)]
+    
+    def _filData(self,X):
+        pass
 
 class ButterTransformer(FilterTransformer):
 
@@ -101,6 +106,8 @@ class Normalizer(TransformerMixin):
     """
     Normalize all data between 0 and 1. 
     """
+    def __init__(self,max_=1):
+        self._max = max_
     
     def fit(self, X, y=None):
         return self
@@ -110,7 +117,7 @@ class Normalizer(TransformerMixin):
         mini = np.min(np.min(data))
         rang = maxi-mini   
         dataNorm = (data - mini) / rang
-        return dataNorm
+        return dataNorm*self._max
 
 class NoiseFilter(TransformerMixin): 
     """
