@@ -22,17 +22,16 @@ class FilterTransformer(TransformerMixin):
 
 class ButterTransformer(FilterTransformer):
 
-    def __init__(self, N, Wn,btype='low', analog=False, output='ba', fs=None):
+    def __init__(self, N, Wn,btype='low', analog=False, output='ba'):
         self._NAME = 'BUTTER'
         self._N = N
         self._Wn = Wn
         self._btype = btype
         self._analog = analog
         self._output = output
-        self._fs = fs
 
     def fit(self, X, y=None):
-        self._b, self._a = sg.butter(self._N,self._Wn,btype=self._btype,analog=self._analog,output=self._output,fs=self._fs)
+        self._b, self._a = sg.butter(self._N,self._Wn,btype=self._btype,analog=self._analog,output=self._output)
         return self
 
     def _filData(self,X):
