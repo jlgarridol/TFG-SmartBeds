@@ -135,6 +135,23 @@ class NoiseFilter(TransformerMixin):
                 dataN.loc[data[d]< self._minimum, d]=0.0      
         return dataN
     
+class MoveTargetsTransformer(TransformerMixin):
+    
+    def __init__(self,window=25):
+        self._window = window
+        
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, data):
+        data = data.copy()
+        trues = data.loc[data['target'] == True]
+        
+        i = trues.first_valid_index()
+        
+        data.loc[i:i+self._window-1, 'target'] = False 
+        return data
+    
 class StatisticsTransformer(TransformerMixin): 
     """
     Calculates rolling statistics of the columns from data. 

@@ -23,8 +23,8 @@ def preprocess(dataframe):
     """Only Datetime and preasures, add target
        Param: dataframe with all data
        Return: new datafram"""
-    # Eliminación de datos con señal inferior a 1
-    datos = dataframe[dataframe['STATUS']>0]
+    # Eliminación de datos con señal inferior a 400
+    datos = dataframe[dataframe['SS']>=400]
     datos = datos.iloc[:,2:16]
     datos = datos.dropna()
     
