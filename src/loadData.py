@@ -36,9 +36,23 @@ def preprocess(dataframe):
     datetime = date+" "+time
     datos['DateTime'] = pd.to_datetime(datetime)
 
-    datos = datos[["DateTime","P1","P2","P3","P4","P5","P6","P7","P8","P9","P10","P11","P12","target"]]
+    datos = datos[["DateTime","P1","P2","P3","P4","P5","P6","target"]]
     return datos
     
+def constantesVitales(dataframe):
+    
+    datos = dataframe[dataframe['STATUS']>0]
+    datos = datos[["Date","Time","HR","RR","SV","HRV","B2B"]]
+    
+    tam = len(datos)
+    datos['target'] = np.zeros(tam,dtype='bool')
+    
+    date = datos['Date']
+    time = datos['Time']
+    datetime = date+" "+time
+    datos['DateTime'] = pd.to_datetime(datetime)
+    
+    return datos[['DateTime',"HR","RR","SV","HRV","B2B",'target']]
 
 def newSeizure(dataframe,datetime,seconds):
     """Put true target in datetime to seconds
