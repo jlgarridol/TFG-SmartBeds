@@ -117,6 +117,22 @@ class Normalizer(TransformerMixin):
         rang = maxi-mini   
         dataNorm = (data - mini) / rang
         return dataNorm*self._max
+    
+class EachNormalizer(TransformerMixin):
+    """
+    Normalize each columns between 0 and 1
+    """
+    def fit(self,X,y=None):
+        return self
+    
+    def transform(self,data):
+        datos = data.copy()
+        for c in data:
+            max_ = data[c].max()
+            min_ = data[c].min()
+            rang = max_ - min_
+            datos[c] = (data[c] - min_) / rang
+        return datos
 
 class NoiseFilter(TransformerMixin): 
     """
