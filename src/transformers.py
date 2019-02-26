@@ -6,8 +6,24 @@ import numpy as np
 import pandas as pd
 
 class FilterTransformer(TransformerMixin):
+    """
+    Abstract filter transformer
+    """
 
     def transform(self,X):
+        """
+        Transform X applying a filter
+        
+        Parameters
+        ----------
+            X: Pandas Dataframe 
+                whose columns are compatible with filter
+            
+        Returns
+        -------
+        Pandas Dataframe
+            X filtered
+        """
         Y = X.copy()
         size = len(Y.columns)
         #if isinstance(X,DataFrame):
@@ -18,19 +34,52 @@ class FilterTransformer(TransformerMixin):
         return Y.iloc[:,size:len(Y.columns)]
     
     def _filData(self,X):
+        """
+        Abstract function to apply filter to a column
+        
+        Parameters
+        ----------
+            X: Pandas serie
+                Serie to apply filter
+                
+        Returns
+        -------
+        Padas Serie
+            X filtered
+                
+        """
         pass
 
 class ButterTransformer(FilterTransformer):
 
-    def __init__(self, N, Wn,btype='low', analog=False, output='ba'):
+    def __init__(self, N, Wn,btype='low', analog=False):
+        """
+        Build a ButterWorth filter transformer
+        
+        Parameters
+        ----------
+        N : int
+            The order of the filter.
+        Wn : array_like
+            A scalar or length-2 sequence giving the critical frequencies. For a Butterworth filter, this is the point at which the gain drops to 1/sqrt(2) that of the passband (the “-3 dB point”).
+            For digital filters, Wn are in the same units as fs. By default, fs is 2 half-cycles/sample, so these are normalized from 0 to 1, where 1 is the Nyquist frequency. (Wn is thus in half-cycles / sample.)
+            For analog filters, Wn is an angular frequency (e.g. rad/s).
+        btype : {‘lowpass’, ‘highpass’, ‘bandpass’, ‘bandstop’}, optional
+            The type of filter. Default is ‘lowpass’.
+        analog : bool, optional
+            When True, return an analog filter, otherwise a digital filter is returned.
+        """
         self._NAME = 'BUTTER'
         self._N = N
         self._Wn = Wn
         self._btype = btype
         self._analog = analog
-        self._output = output
+        self._output = 'ba'
 
     def fit(self, X, y=None):
+        """
+        Create Numerator (b) and denominator (a) polynomials of the IIR filter
+        """
         self._b, self._a = sg.butter(self._N,self._Wn,btype=self._btype,analog=self._analog,output=self._output)
         return self
 
@@ -41,6 +90,22 @@ class ButterTransformer(FilterTransformer):
 class SavgolTransformer(FilterTransformer):
 
     def __init__(self, window_length, polyorder=2, deriv=0, delta=1.0, axis=-1, mode='interp', cval=0.0):
+        """
+        window_length : int
+            The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer. If mode is ‘interp’, window_length must be less than or equal to the size of x.
+        polyorder : int
+            The order of the polynomial used to fit the samples. polyorder must be less than window_length.
+        deriv : int, optional
+            The order of the derivative to compute. This must be a nonnegative integer. The default is 0, which means to filter the data without differentiating.
+        delta : float, optional
+            The spacing of the samples to which the filter will be applied. This is only used if deriv > 0. Default is 1.0.
+        axis : int, optional
+            The axis of the array x along which the filter is to be applied. Default is -1.
+        mode : str, optional
+            Must be ‘mirror’, ‘constant’, ‘nearest’, ‘wrap’ or ‘interp’. This determines the type of extension to use for the padded signal to which the filter is applied. When mode is ‘constant’, the padding value is given by cval. See the Notes for more details on ‘mirror’, ‘constant’, ‘wrap’, and ‘nearest’. When the ‘interp’ mode is selected (the default), no extension is used. Instead, a degree polyorder polynomial is fit to the last window_length values of the edges, and this polynomial is used to evaluate the last window_length // 2 output values.
+        cval : scalar, optional
+            Value to fill past the edges of the input if mode is ‘constant’. Default is 0.0.
+        """
         self._NAME = 'SAVGOL'
         self._window_length = window_length
         self._polyorder = polyorder
@@ -59,6 +124,14 @@ class SavgolTransformer(FilterTransformer):
 class VarianceThresholdPD(TransformerMixin):
     
     def __init__(self,threshold=0.0):
+        """
+        sklearn.feature_selection.VarianceThreshold like transformer Pandas dataframe's index compatible
+        
+        Parameters
+        ----------
+            threshold: float, optional
+                Features with a training-set variance lower than this threshold will be removed. The default is to keep all features with non-zero variance, i.e. remove the features that have the same value in all samples.                
+        """
         self._threshold = threshold
         
     def fit(self, X, y=None):
@@ -75,6 +148,14 @@ class VarianceThresholdPD(TransformerMixin):
 class ConcatenateTransformer(TransformerMixin):
 
     def __init__(self,*transformers):
+        """
+        Concatenate differents transformers output
+        
+        Parameters
+        ----------
+            *transformers: args
+                List of transformers to concatenate
+        """
         self._transformers = transformers
 
     def fit(self,X,y=None):
@@ -90,6 +171,14 @@ class ConcatenateTransformer(TransformerMixin):
 class PipelineTransformer(TransformerMixin):
 
     def __init__(self,*transformers):
+        """
+        Create a pipeline of transformers
+        
+        Parameters
+        ----------
+            *transformers: args
+                List of transformers to connect in a pipeline
+        """
         self.transformers = transformers
 
     def fit(self,X,y=None):
@@ -106,6 +195,14 @@ class Normalizer(TransformerMixin):
     Normalize all data between 0 and 1. 
     """
     def __init__(self,max_=1):
+        """
+        Normalizer all features with same scale
+        
+        Parameters
+        ----------
+            max_: float,optional
+                max value to normalized data
+        """
         self._max = max_
     
     def fit(self, X, y=None):
@@ -120,7 +217,7 @@ class Normalizer(TransformerMixin):
     
 class EachNormalizer(TransformerMixin):
     """
-    Normalize each columns between 0 and 1
+    Normalize each feature with own scale
     """
     def fit(self,X,y=None):
         return self
@@ -135,10 +232,16 @@ class EachNormalizer(TransformerMixin):
         return datos
 
 class NoiseFilter(TransformerMixin): 
-    """
-    Makes 0 all values less than 'minimum'. 
-    """
+
     def __init__(self,minimum=0):
+        """
+        Makes 0 all values less than 'minimum'.
+        
+        Parameters
+        ----------
+            minimum: float, optional
+                limit value
+        """
         self._minimum = minimum
     
     def fit(self,X,y=None):
@@ -153,14 +256,38 @@ class NoiseFilter(TransformerMixin):
     
 class MoveTargetsTransformer(TransformerMixin):
     
-    def __init__(self,window=25):
+    def __init__(self,window=25,mode='only'):
+        """
+        Transforms targets for rolling statics transformations
+        
+        Parameters
+        ----------
+            window: int, optional
+                rolling static window
+            mode: string, optional
+                Mode of targets transformation.
+                only = if all statics that compound it are true the final target will be true
+                half = if at least statics that compound it are true the final target will be true
+                start = if the first element of rolling are true the final target will be true
+                end = if the last element of rolling are true the final target will be true
+        """
+        self._transformers = {'only':self._only_seizure,'half':self._half_seizure,
+                          'start':start._half_seizure,'end':self._end_seizure}
         self._window = window
+        self._transform = self._transformers[mode]
         
     def fit(self, X, y=None):
         return self
     
     def transform(self, data):
         data = data.copy()
+        
+        return self._transform(data)
+    
+    def _only_seizure(self,data):
+        """
+        Target set to true if all data that compose it are true
+        """
         trues = data.loc[data['target'] == True]
         
         i = trues.first_valid_index()
@@ -168,37 +295,72 @@ class MoveTargetsTransformer(TransformerMixin):
         data.loc[i:i+self._window-1, 'target'] = False 
         return data
     
+    def _half_seizure(self,data):
+        """
+        Target set to true if at least the half that compose it are true
+        """
+        trues = data.loc[data['target'] == True]
+        
+        i = trues.first_valid_index()
+        j = trues.last_valid_index()
+        
+        data.loc[i:i+int(self._window/2), 'target'] = False    
+        data.loc[j:j+int(self._window/2), 'target'] = True
+        
+        return data
+        
+    def _start_seizure(self,data):
+        """Target set to true if the first data that compose it are true"""
+        data = self._only_seizure(data)
+        trues = data.loc[data['target'] == True]
+        i = trues.last_valid_index()
+        
+        data.loc[i:i+self._window-1,'target']=True
+        return data
+    
+    def _end_seizure(self,data):
+        """
+        Target set to true if the last data that compose it are true
+        """
+        return data
+    
 class StatisticsTransformer(TransformerMixin): 
-    """
-    Calculates rolling statistics of the columns from data. 
     
-    Parameters: 
-    
-        mode: string, default 'mean'
-            'mean': rolling mean
-            'std': rolling standard deviation
-            'range' : rolling ranges (difference between max and min)
-            
-        window: int, dafault 25. 
-    """
     def __init__(self,mode='mean',window=25):
+        """
+        Calculates rolling statistics of the columns from data. 
+
+        Parameters
+        ----------
+            mode: string, optional
+                'mean': rolling mean
+                'std': rolling standard deviation
+                'max': rolling maximun value
+                'min': rolling minimum value
+                'range' : rolling ranges (difference between max and min)
+            window: int, optional 
+        """
         self._mode = mode
         self._window = window
+        #Functions
+        mean = lambda x: x.rolling(self._window).mean()
+        std = lambda x: x.rolling(self._window).std()
+        _max = lambda x: x.rolling(self._window).max()
+        _min = lambda x: x.rolling(self._window).min()
+        rang = lambda x: _max(x)-_min(x)
+        self._functions = {'mean':mean,'std':std,'max':_max,'min':_min,'range':rang}
     
     def fit(self, X, y=None): 
         return self
     
     def transform(self, data): 
         statistics = pd.DataFrame()
+        try:
+            func = self._functions[self._mode]
+        except:
+            raise NameError('Unknown mode, use mean, std, max, min or range')
         for c in data.columns: 
-            if self._mode == 'mean': 
-                statistics[c+' '+self._mode+" "+str(self._window)] = data[c].rolling(self._window).mean()
-            elif self._mode == 'std': 
-                statistics[c+' '+self._mode+" "+str(self._window)] = data[c].rolling(self._window).std()
-            elif self._mode == 'range': 
-                statistics[c+' '+self._mode+" "+str(self._window)] = data[c].rolling(self._window).max() - data[c].rolling(self._window).min()
-            else: 
-                raise Exception("mode: '"+self._mode+"' is not correct. Aviable modes are 'mean', 'std' and 'range'.")
+            statistics[c+' '+self._mode+" "+str(self._window)] = func(data[c])
         return statistics
 
 if __name__ == '__main__':
