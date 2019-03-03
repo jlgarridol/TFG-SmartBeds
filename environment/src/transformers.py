@@ -26,7 +26,9 @@ class FilterTransformer(TransformerMixin):
             X filtered
         """
         Y = X.copy()
+        mode = 'DataFrame'
         if type(Y) == pd.Series:
+            mode = 'Series'
             Y = Y.to_frame()
             
         size = len(Y.columns)
@@ -35,7 +37,11 @@ class FilterTransformer(TransformerMixin):
         for f in Y.columns:
             y = self._filData(Y[f])
             Y[f+" "+self._NAME] = y
-        return Y.iloc[:,size:len(Y.columns)]
+        
+        if mode == 'DataFrame':
+            return Y.iloc[:,size:len(Y.columns)]
+        elif mode == 'Series':
+            return Y[Y.columns[-1]]
     
     def _filData(self,X):
         """
@@ -248,13 +254,22 @@ class EachNormalizer(TransformerMixin):
         return self
     
     def transform(self,data):
-        datos = data.copy()
-        for c in data:
-            max_ = data[c].max()
-            min_ = data[c].min()
+        if type(data) == pd.Series:
+            data_ = data.to_frame()
+        else:
+            data_ = data   
+
+        datos = data_.copy()
+        for c in data_:
+            max_ = data_[c].max()
+            min_ = data_[c].min()
             rang = max_ - min_
-            datos[c] = (data[c] - min_) / rang
-        return datos
+            datos[c] = (data_[c] - min_) / rang
+
+        if type(data) == pd.Series:
+            return datos[datos.columns[0]]
+        else:
+            return datos
 
 class NoiseFilter(TransformerMixin): 
     __author__ = "Alicia Olivares Gil"
@@ -301,7 +316,7 @@ class MoveTargetsTransformer(TransformerMixin):
                 Name of target columns
         """
         self._transformers = {'only':self._only_seizure,'half':self._half_seizure,
-                          'start':self._half_seizure,'end':self._end_seizure}
+                          'start':self._start_seizure,'end':self._end_seizure}
         self._window = window
         self._transform = self._transformers[mode]
         self._target_col = target_col
@@ -311,6 +326,7 @@ class MoveTargetsTransformer(TransformerMixin):
         return self
     
     def transform(self, data):
+        assert data[self._target_col].dtype == bool, 'Target column must be boolean'
         data = data.copy()
         
         return self._transform(data)
@@ -335,7 +351,7 @@ class MoveTargetsTransformer(TransformerMixin):
         i = trues.first_valid_index()
         j = trues.last_valid_index()
         
-        data.loc[i:i+int(self._window/2), self._target_col] = False    
+        data.loc[i:i+int(self._window/2)-1, self._target_col] = False    
         data.loc[j:j+int(self._window/2), self._target_col] = True
         
         return data
@@ -346,7 +362,7 @@ class MoveTargetsTransformer(TransformerMixin):
         trues = data.loc[data[self._target_col] == True]
         i = trues.last_valid_index()
         
-        data.loc[i:i+self._window-1,self._target_col]=True
+        data.loc[i:i+self._window,self._target_col]=True
         return data
     
     def _end_seizure(self,data):

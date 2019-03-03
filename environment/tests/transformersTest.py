@@ -12,18 +12,22 @@ def launcher():
     suites.append(ut.defaultTestLoader.loadTestsFromTestCase(ButterTransformerTest))
     suites.append(ut.defaultTestLoader.loadTestsFromTestCase(SavGolTransformerTest))
     suites.append(ut.defaultTestLoader.loadTestsFromTestCase(ConcatenateTransformerTest))
-    #suite.addTest(ButterTransformerTest())
+    suites.append(ut.defaultTestLoader.loadTestsFromTestCase(EachNormalizerTransformerTest))
+    suites.append(ut.defaultTestLoader.loadTestsFromTestCase(NormalizerTransformerTest))
+    suites.append(ut.defaultTestLoader.loadTestsFromTestCase(MoveTargetsTest))
     #TODO: Add more
     return suites
 
 class TransformerTest(ut.TestCase):
 
-    def __init__(self,output,*args,**kwargs,):
-        super(TransformerTest, self).__init__(*args,**kwargs)
+    def __init__(self,output,*args,**kwargs):
         if 'input_' in kwargs:
             input_ = kwargs['input_']
+            kwargs.pop('input_',None)            
         else:
             input_ = 'generic_input.csv'
+        super(TransformerTest, self).__init__(*args,**kwargs)              
+        
         self.input = pd.read_csv(DATA_PATH+INPUT+input_,index_col=0)
         self.output = pd.read_csv(DATA_PATH+OUTPUT+output,index_col=0)
         self.transformer = None
@@ -39,7 +43,7 @@ class TransformerTest(ut.TestCase):
         serie = self.input[self.input.columns[0]]    
         output = self.transformer.fit_transform(serie)
 
-        compare = output.round(CSV_PRECISION)==self.output[[self.output.columns[0]]].round(CSV_PRECISION)
+        compare = output.round(CSV_PRECISION)==self.output[self.output.columns[0]].round(CSV_PRECISION)
         self.assertFalse(False in compare.values)
 
     def test_bad_data(self):
@@ -81,3 +85,63 @@ class ConcatenateTransformerTest(TransformerTest):
 
         compare = output.round(CSV_PRECISION)==self.output[[self.output.columns[0],self.output.columns[len(self.input.columns)]]].round(CSV_PRECISION)
         self.assertFalse(False in compare.values)
+
+class EachNormalizerTransformerTest(TransformerTest):
+
+    def __init__(self,*args,**kwargs):
+        super(EachNormalizerTransformerTest, self).__init__('each_normalizer_output.csv',input_ = 'random_input.csv',*args,**kwargs)
+
+        self.transformer = tf.EachNormalizer()
+
+class NormalizerTransformerTest(TransformerTest):
+
+    def __init__(self,*args,**kwargs):
+        super(NormalizerTransformerTest, self).__init__('normalizer_output.csv',input_ = 'random_input.csv',*args,**kwargs)
+
+        self.transformer = tf.Normalizer()
+
+    def test_another_max(self):
+        transformer2 = tf.Normalizer(max_=100)
+        output = transformer2.fit_transform(self.input)
+
+        compare = output.round(CSV_PRECISION) == (self.output*100).round(CSV_PRECISION)
+        self.assertFalse(False in compare.values)
+
+    def test_calculate_series(self):
+        serie = self.input[self.input.columns[0]]    
+        output = self.transformer.fit_transform(serie)
+
+        #La salida sería la correspondiente con el each_normalizer
+        real_output = pd.read_csv(DATA_PATH+OUTPUT+'each_normalizer_output.csv',index_col=0)
+
+        compare = output.round(CSV_PRECISION)==real_output[self.output.columns[0]].round(CSV_PRECISION)
+        self.assertFalse(False in compare.values)
+
+class MoveTargetsTest(ut.TestCase):
+
+    def __init__(self,*args,**kwargs):
+        super(MoveTargetsTest, self).__init__(*args,**kwargs)
+
+        self.input = pd.read_csv(DATA_PATH+INPUT+'move_targets_input.csv')
+        self.output = pd.read_csv(DATA_PATH+OUTPUT+'move_targets_output.csv')
+        self.window = 10
+
+    def _generic_comparator(self,mode):
+        output = tf.MoveTargetsTransformer(window=self.window,mode=mode).fit_transform(self.input)
+
+        compare = output['target'] == self.output[mode]
+        self.assertFalse(False in compare.values)
+
+    def test_only_seizure(self):
+        self._generic_comparator('only')
+
+    def test_half_seizure(self):
+        self._generic_comparator('half')
+
+    def test_start_seizure(self):
+        self._generic_comparator('start')
+
+    def test_end_seizure(self):
+        self._generic_comparator('end')
+    
+
