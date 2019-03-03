@@ -143,5 +143,19 @@ class MoveTargetsTest(ut.TestCase):
 
     def test_end_seizure(self):
         self._generic_comparator('end')
+
+    def test_bad_target(self):
+        try:
+            output = tf.MoveTargetsTransformer(target_col='No Existo').fit_transform(self.input)
+            self.fail()
+        except KeyError:
+            pass
+    def test_target_not_boolean(self):
+        try:
+            output = tf.MoveTargetsTransformer(target_col='Unnamed: 0').fit_transform(self.input)
+            self.fail()
+        except AssertionError:
+            pass
+
     
 
