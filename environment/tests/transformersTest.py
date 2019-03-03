@@ -1,6 +1,7 @@
 from src import transformers as tf
 import unittest as ut
 import pandas as pd
+import numpy as np
 
 DATA_PATH = 'tests/samples/'
 INPUT = 'input/'
@@ -15,6 +16,9 @@ def launcher():
     suites.append(ut.defaultTestLoader.loadTestsFromTestCase(EachNormalizerTransformerTest))
     suites.append(ut.defaultTestLoader.loadTestsFromTestCase(NormalizerTransformerTest))
     suites.append(ut.defaultTestLoader.loadTestsFromTestCase(MoveTargetsTest))
+    suites.append(ut.defaultTestLoader.loadTestsFromTestCase(VarianceThreshold))
+    suites.append(ut.defaultTestLoader.loadTestsFromTestCase(PipelineTransformerTest))
+    
     #TODO: Add more
     return suites
 
@@ -93,6 +97,26 @@ class EachNormalizerTransformerTest(TransformerTest):
 
         self.transformer = tf.EachNormalizer()
 
+class PipelineTransformerTest(TransformerTest):
+    
+    def __init__(self,*args,**kwargs):
+        super(PipelineTransformerTest, self).__init__('pipeline_output.csv',*args,**kwargs)
+
+        N = 3
+        Wn = 0.05
+        bt = tf.ButterTransformer(N,Wn)
+        nt = tf.Normalizer()       
+        self.transformer = tf.PipelineTransformer(bt,nt)
+
+    def test_calculate_series(self):
+        
+        randomData = pd.Series(np.random.rand(1000),name='Random')
+        
+        try:
+            self.transformer.fit_transform(randomData)
+        except Exception as ex:
+            self.fail()
+
 class NormalizerTransformerTest(TransformerTest):
 
     def __init__(self,*args,**kwargs):
@@ -116,6 +140,33 @@ class NormalizerTransformerTest(TransformerTest):
 
         compare = output.round(CSV_PRECISION)==real_output[self.output.columns[0]].round(CSV_PRECISION)
         self.assertFalse(False in compare.values)
+
+class VarianceThreshold(ut.TestCase):
+    def __init__(self,*args,**kwargs):
+        super(VarianceThreshold, self).__init__(*args,**kwargs)
+
+        self.data = pd.read_csv(DATA_PATH+INPUT+'variance_threshold_input.csv',index_col=0)
+    
+    def test_variance0(self):
+        
+        vt = tf.VarianceThresholdPD().fit_transform(self.data)
+        output = self.data[['Random','Thresh 0.5']]
+        compare = vt == output
+        self.assertFalse(False in compare)
+
+    def test_variance05(self):
+        
+        vt = tf.VarianceThresholdPD(threshold=0.5).fit_transform(self.data)
+        output = self.data[['Random']]
+        compare = vt == output
+        self.assertFalse(False in compare)
+
+    def test_variance_no_features(self):
+        try:
+            vt = tf.VarianceThresholdPD(threshold=np.inf).fit_transform(self.data)
+            self.fail()
+        except ValueError:
+            pass
 
 class MoveTargetsTest(ut.TestCase):
 
