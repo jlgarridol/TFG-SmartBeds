@@ -352,3 +352,6 @@ data/
 *.pdd
 *.pkl
 *.csv
+
+#Entornos
+.vscode/
