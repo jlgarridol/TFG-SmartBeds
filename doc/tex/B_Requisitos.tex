@@ -7,51 +7,103 @@
 \section{Catalogo de requisitos}
 \subsection{Requisitos funcionales}\label{requisitos-funcionales}
 \begin{itemize}
-	\tightlist
-	\item
-	\textbf{RF-1 Confidencialidad del sistema:} solamente usuarios permitidos podrán acceder al sistema.
-		\begin{itemize}
-			\tightlist
-			\item
-			\textbf{RF-1.1 Identificación de usuario:} los usuarios se identificarán con un \textit{nickname} y una contraseña 
-			\item
-			\textbf{RF-1.2 Rol de administración:} existirá un usuario especial que podrá administrar el sistema completamente sin restricciones.
-			\item 
-			\textbf{RF-1.3 Visualización de una cama:} los usuarios validados deben poder observar los datos en tiempo real de las camas disponibles. 
-			\item
-			\textbf{RF-1.4 Restricción de acceso:} los usuarios solamente podrán tener acceso a los datos de las camas permitidas. 
-			\item
-			\textbf{RF-1.5 Acceso completo al administrador:} el administrador debe poder acceder a todas las camas existentes. 
-		\end	
-	\item
-	\textbf{RF-2 Gestión de las camas:} el administrador ha de gestionar las camas pudiendo añadir, modificar y borrar.
-		\begin{itemize}
-			\tightlist
-			\item
-			\textbf{RF-2.1 Añadir cama:} el administrador ha de poder añadir una nueva cama al sistema.
-			\item
-			\textbf{RF-2.2 Modificar cama:} el administrador ha de poder modificar los datos una cama existente.
-			\item
-			\textbf{RF-2.3 Borrar cama:} el administrador ha de poder borrar una cama del sistema.
-			\item
-			\textbf{RF-2.4 Asignar camas a usuarios:} el administrador se encarga de decidir que usuario puede acceder a que cama.
-		\end
-	\item
-	\textbf{RF-3 Gestión de los usuarios:} el administrador ha de gestionar los usuarios pudiendo añadir, modificar y borrar.
-		\begin{itemize}
-			\tightlist
-			\item
-			\textbf{RF-3.1 Añadir usuario:} el administrador ha de poder añadir un nuevo usuario al sistema.
-			\item
-			\textbf{RF-3.2 Modificar usuario:} el administrador ha de poder modificar los datos un usuario existente.
-			\item
-			\textbf{RF-3.3 Borrar usuario:} el administrador ha de poder borrar un usuario del sistema.
-			\item
-		\end
-	\end
-	
+\tightlist
+\item
+\textbf{RF-1 Confidencialidad del sistema:} solamente usuarios permitidos podrán acceder al sistema.
+	\begin{itemize}
+		\tightlist
+		\item
+		\textbf{RF-1.1 Identificación de usuario:} los usuarios se identificarán con un \textit{nickname} y una contraseña 
+		\item
+		\textbf{RF-1.2 Rol de administración:} existirá un usuario especial que podrá administrar el sistema completamente sin restricciones.
+		\item 
+		\textbf{RF-1.3 Visualización de una cama:} los usuarios validados deben poder observar los datos en tiempo real de las camas disponibles. 
+		\item
+		\textbf{RF-1.4 Restricción de acceso:} los usuarios solamente podrán tener acceso a los datos de las camas permitidas. 
+		\item
+		\textbf{RF-1.5 Acceso completo al administrador:} el administrador debe poder acceder a todas las camas existentes. 
+	\end{itemize}	
+\item
+\textbf{RF-2 Gestión de las camas:} el administrador ha de gestionar las camas pudiendo añadir, modificar y borrar.
+	\begin{itemize}
+		\tightlist
+		\item
+		\textbf{RF-2.1 Añadir cama:} el administrador ha de poder añadir una nueva cama al sistema.
+		\item
+		\textbf{RF-2.2 Modificar cama:} el administrador ha de poder modificar los datos una cama existente.
+		\item
+		\textbf{RF-2.3 Borrar cama:} el administrador ha de poder borrar una cama del sistema.
+		\item
+		\textbf{RF-2.4 Asignar camas a usuarios:} el administrador se encarga de decidir que usuario puede acceder a que cama.
+	\end{itemize}
+\item
+\textbf{RF-3 Gestión de los usuarios:} el administrador ha de gestionar los usuarios pudiendo añadir, modificar y borrar.
+	\begin{itemize}
+		\tightlist
+		\item
+		\textbf{RF-3.1 Añadir usuario:} el administrador ha de poder añadir un nuevo usuario al sistema.
+		\item
+		\textbf{RF-3.2 Modificar usuario:} el administrador ha de poder modificar los datos un usuario existente.
+		\item
+		\textbf{RF-3.3 Borrar usuario:} el administrador ha de poder borrar un usuario del sistema.
+		\item
+	\end{itemize}
+\end{itemize}	
 	
 
 \section{Especificación de requisitos}
+
+\tablaSmallSinColores{Caso de uso 1: Login }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU1}{
+	\multicolumn{3}{l}{CU-1: Login} \\
+}
+{
+	Descripción                            & \multicolumn{2}{l}{El usuario se identifica en el sistema} \\\hline
+	Precondiciones                         & \multicolumn{2}{l}{No existe una sesión activa válida} \\\hline
+	Requisitos                         	   & \multicolumn{2}{l}{RF-1, RF-1.1} \\\hline
+	Usuario                         	   & \multicolumn{2}{l}{Anónimo} \\\hline
+	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+	& 1    & El cliente envía sus credenciales al servidor \\\cline{2-3}
+	& 2    & El servidor acepta las credenciales devolviendo el token de sesión \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{l}{El usuario tiene una sesión activa válida} \\\hline
+	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	& 2    & Si las credenciales son incorrectas el servidor responde con error \\\hline
+	Frecuencia                             & Alta \\\hline
+	Importancia                            & Crítico \\\hline
+	Comentarios                            & \multicolumn{2}{l}{Es siempre lo primero que aparecerá} \\
+}
+
+\tablaSmallSinColores{Caso de uso 2: Visualización de datos }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU2}{
+	\multicolumn{3}{l}{CU-2: Visualización de datos} \\
+}
+{
+	Descripción                            & \multicolumn{2}{l}{Ver lista de las camas disponibles} \\\hline
+	Precondiciones                         & \multicolumn{2}{l}{Sesión activa válida} \\\hline
+	Requisitos                         	   & \multicolumn{2}{l}{RF-1.3, RF-1.4} \\\hline
+	Usuario                         	   & \multicolumn{2}{l}{Logueado} \\\hline
+	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+	& 1    & El cliente solicita ver las camas disponibles \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{l}{El usuario tiene una sesión activa válida} \\\hline
+	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	Frecuencia                             & Alta \\\hline
+	Importancia                            & Alta \\\hline
+	Comentarios                            & \multicolumn{2}{l}{} \\
+}
+
+\tablaSmallSinColores{Caso de uso 2.1: Elegir cama }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU21}{
+	\multicolumn{3}{l}{CU-2.1: Elegir cama} \\
+}
+{
+	Descripción                            & \multicolumn{2}{l}{Elegir cama} \\\hline
+	Precondiciones                         & \multicolumn{2}{l}{Estar en \ref{tablaCU2}} \\\hline
+	Requisitos                         	   & \multicolumn{2}{l}{RF-1.3, RF-1.4} \\\hline
+	Usuario                         	   & \multicolumn{2}{l}{Logueado} \\\hline
+	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
+	& 1    & El cliente solicita ver las camas disponibles \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{l}{El usuario tiene una sesión activa válida} \\\hline
+	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	Frecuencia                             & Alta \\\hline
+	Importancia                            & Alta \\\hline
+	Comentarios                            & \multicolumn{2}{l}{} \\
+}
 
 
