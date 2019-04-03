@@ -5,6 +5,7 @@
 \section{Objetivos generales}
 
 \section{Catalogo de requisitos}
+En esta sección se presentan los requisitos funcionales, no funcionales y la especificación en los casos de uso.
 \subsection{Requisitos funcionales}\label{requisitos-funcionales}
 \begin{itemize}
 \tightlist
@@ -46,260 +47,259 @@
 		\textbf{RF-3.2 Modificar usuario:} el administrador ha de poder modificar los datos un usuario existente.
 		\item
 		\textbf{RF-3.3 Borrar usuario:} el administrador ha de poder borrar un usuario del sistema.
-		\item
 	\end{itemize}
 \item 
 \textbf{RF-4 Visualización de los datos:} los usuarios han de poder ver de las camas disponibles el estado actual del paciente, sus constantes vitales y las presiones.
 \end{itemize}	
-	
+\subsection{Requisitos no funcionales}\label{requisitos-no-funcionales}
+\begin{itemize}
+\tightlist
+\item
+\textbf{RNF-1 Usabilidad:} la aplicación debe cumplir estándares de usabilidad teniendo una curva de aprendizaje baja y un uso de metáforas adecuado.
+\item 
+\textbf{RNF-2 Disponibilidad:} las camas existentes han de ser siempre accesibles por sus usuarios asociados y dar una información correcta de su estado
+\item 
+\textbf{RNF-3 Confidencialidad:} los datos de las camas, al ser en parte constantes vitales de pacientes, solamente han de ser accesibles por los usuarios permitidos.
+\item
+\textbf{RNF-4 Escalabilidad:} el sistema debe ser escalable para adaptarse mejor a un incremento de carga del sistema.
+\item 
+\textbf{RNF-5 Seguridad:} los usuarios deben poder identificarse sólidamente con el sistema sin que sus datos o sus credenciales (\textit{tokens}) sean accesibles por terceros, incluso el administrador.
+\item
+\textbf{RNF-6 Exstensibilidad:} la API del sistema debe ser fácilmente extensible a nuevas funcionalidades incorporando de manera eficaz soporte a nuevas peticiones.
+\item
+\textbf{RNF-7 Persistencia:} los servicios de procesamiento de las camas activas deben mantenerse funcionando aunque no existan clientes activos para evitar retrasos muy altos ante nuevas conexiones.
+\end{itemize}
 
 \section{Especificación de requisitos}
 
+
 \tablaSmallSinColores{Caso de uso 1: Login }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU1}{
-	\multicolumn{3}{l}{CU-1: Login} \\
+	\multicolumn{3}{p{10.25cm}}{CU-1: Login} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{El usuario se identifica en el sistema} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{No existe una sesión activa válida} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-1, RF-1.1} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Anónimo} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{El usuario se identifica en el sistema} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{No existe una sesión activa válida} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1, RF-1.1} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Anónimo} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente envía sus credenciales al servidor \\\cline{2-3}
 	& 2    & El servidor acepta las credenciales devolviendo el token de sesión \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{El usuario tiene una sesión activa válida} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene una sesión activa válida} \\\hline
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Si las credenciales son incorrectas el servidor responde con error \\\hline
 	Frecuencia                             & Alta \\\hline
 	Importancia                            & Crítico \\\hline
-	Comentarios                            & \multicolumn{2}{l}{Es siempre lo primero que aparecerá} \\
+	Comentarios                            & \multicolumn{2}{p{10.25cm}}{Es siempre lo primero que aparecerá} \\
 }
 
 \tablaSmallSinColores{Caso de uso 2: Visualización de datos }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU2}{
-	\multicolumn{3}{l}{CU-2: Visualización de datos} \\
+	\multicolumn{3}{p{10.25cm}}{CU-2: Visualización de datos} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Ver lista de las camas disponibles} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Sesión activa válida} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-1.3, RF-1.4} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Logueado} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Ver lista de las camas disponibles} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Sesión activa válida} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente solicita ver las camas disponibles \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{El cliente está en la pantalla de camas disponibles} \\\hline
-	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El cliente está en la pantalla de camas disponibles} \\\hline
 	Frecuencia                             & Alta \\\hline
-	Importancia                            & Alta \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Alta \\
 }
 
 \tablaSmallSinColores{Caso de uso 2.1: Elegir cama }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU21}{
-	\multicolumn{3}{l}{CU-2.1: Elegir cama} \\
+	\multicolumn{3}{p{10.25cm}}{CU-2.1: Elegir cama} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Elegir cama} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar en CU-2} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-1.3, RF-1.4, RF-4} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Logueado} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elegir cama} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar en CU de Tabla \ref{tabla:tablaCU2}} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4, RF-4} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente solicita ver las camas disponibles \\\cline{2-3}
 	& 2    & El servidor abre conexiones paralelas para actualizar en tiempo real el estado de las camas \\\cline{2-3}
 	& 3    & El cliente decide que cama ver \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{El cliente entra en la ventana de los datos en tiempo real} \\\hline
-	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El cliente entra en la ventana de los datos en tiempo real} \\\hline
 	Frecuencia                             & Alta \\\hline
-	Importancia                            & Alta \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Alta \\
 }
 
 \tablaSmallSinColores{Caso de uso 2.2: Ver datos en tiempo real }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU22}{
-	\multicolumn{3}{l}{CU-2.2: Ver datos en tiempo real} \\
+	\multicolumn{3}{p{10.25cm}}{CU-2.2: Ver datos en tiempo real} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Ver datos en tiempo real} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar en CU-3} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-1.3, RF-1.4, RF-4} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Logueado} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Ver datos en tiempo real} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar en CU de Tabla \ref{tabla:tablaCU21}} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4, RF-4} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente solicita una nueva conexión \\\cline{2-3}
 	& 2    & El servidor provee una conexión en tiempo real con los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{El usuario tiene una conexión paralela abierta con los datos en tiempo real} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene una conexión paralela abierta con los datos en tiempo real} \\\hline
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Si un paquete faltase o la señal fuera débil se alertaría al usuario \\\cline{2-3}
 	Frecuencia                             & Alta \\\hline
-	Importancia                            & Máxima \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
-}
+	Importancia                            & Máxima \\}
 
 \tablaSmallSinColores{Caso de uso 3: Administración de usuarios }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU3}{
-	\multicolumn{3}{l}{CU-3: Administración de usuarios} \\
+	\multicolumn{3}{p{10.25cm}}{CU-3: Administración de usuarios} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Administración de usuario: alta, baja y modificación} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar logueado} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-3} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Administración de usuario: alta, baja y modificación} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El administrador entra en el menú de administración de usuarios \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{El administrador está en el menú de administración de usuarios} \\\hline
-	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El administrador está en el menú de administración de usuarios} \\\hline
 	Frecuencia                             & Baja \\\hline
-	Importancia                            & Alta \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Alta \\
 }
 
 \tablaSmallSinColores{Caso de uso 3.1: Añadir usuarios }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU31}{
-	\multicolumn{3}{l}{CU-3.1: Añadir usuarios} \\
+	\multicolumn{3}{p{10.25cm}}{CU-3.1: Añadir usuarios} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Añadir usuarios} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-3.1} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Añadir usuarios} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.1} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El administrador elige añadir un nuevo usuario \\\cline{2-3}
 	& 2    & Se introduce un nombre de usuario para identificarlo \\\cline{2-3}
 	& 3    & Se introduce una contraseña dos veces \\\cline{2-3}
 	& 4    & Se almacenan los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{Existe un nuevo usuario en el sistema} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Existe un nuevo usuario en el sistema} \\\hline
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Si el nickname existiese \\\cline{2-3}
 	& 3    & La contraseña añadida no coincide en las dos ocasiones \\\cline{2-3}
 	Frecuencia                             & Baja \\\hline
-	Importancia                            & Alta \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Alta \\
 }
 
 \tablaSmallSinColores{Caso de uso 3.2: Modificar contraseña }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU32}{
-	\multicolumn{3}{l}{CU-3.2: Cambiar contraseña} \\
+	\multicolumn{3}{p{10.25cm}}{CU-3.2: Cambiar contraseña} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Cambiar la contraseña de un usuario} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar logueado} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-3.2} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Logueado} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Cambiar la contraseña de un usuario} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.2} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Si es usuario normal ir a 3 \\\cline{2-3}
 	& 2    & Si es administrador elegir a que usuario cambiar la contraseña \\\cline{2-3}
 	& 3    & Se introduce una contraseña nueva dos veces \\\cline{2-3}
 	& 4    & Se actualizan los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{La contraseña ha cambiado} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{La contraseña ha cambiado} \\\hline
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 3    & La contraseña añadida no coincide en las dos ocasiones \\\cline{2-3}
 	Frecuencia                             & Baja \\\hline
-	Importancia                            & Alta \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Alta \\
 }
 
 \tablaSmallSinColores{Caso de uso 3.3: Borrar usuario }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU33}{
-	\multicolumn{3}{l}{CU-3.3: Borrar usuario} \\
+	\multicolumn{3}{p{10.25cm}}{CU-3.3: Borrar usuario} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Elimina un usuario de la base de datos} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-3.3} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elimina un usuario de la base de datos} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.3} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Elegir a que usuario (no administrador) eliminar \\\cline{2-3}
 	& 2    & Eliminar usuario y todos los datos vinculados \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{El usuario ha sido eliminado} \\\hline
-	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario ha sido eliminado} \\\hline
 	Frecuencia                             & Baja \\\hline
-	Importancia                            & Media \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Media \\
 }
 
 \tablaSmallSinColores{Caso de uso 4: Administración de camas }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU4}{
-	\multicolumn{3}{l}{CU-4: Administración de camas} \\
+	\multicolumn{3}{p{10.25cm}}{CU-4: Administración de camas} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Administración de camas: alta, baja, modificación y asignación a usuarios} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-2} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Administración de camas: alta, baja, modificación y asignación a usuarios} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El administrador entra en el menú de administración de camas \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{El administrador está en el menú de administración de camas} \\\hline
-	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El administrador está en el menú de administración de camas} \\\hline
 	Frecuencia                             & Baja \\\hline
-	Importancia                            & Media \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Media \\
 }
 
 \tablaSmallSinColores{Caso de uso 4.1: Añadir cama }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU41}{
-	\multicolumn{3}{l}{CU-4.1: Añadir cama} \\
+	\multicolumn{3}{p{10.25cm}}{CU-4.1: Añadir cama} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Añadir cama} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-2.1} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Añadir cama} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.1} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El administrador elige añadir una nueva cama \\\cline{2-3}
 	& 2    & Se introduce el grupo multicast de la cama (IP y Puerto) \\\cline{2-3}
 	& 3    & Se introduce el nombre identificador\\\cline{2-3}
 	& 4    & Se almacenan los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{Existe una nueva cama en el sistema} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Existe una nueva cama en el sistema} \\\hline
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & El grupo multicast pertenece a otra cama \\\cline{2-3}
 	& 3    & El nombre identificativo existe para otra cama \\\cline{2-3}
 	Frecuencia                             & Media \\\hline
 	Importancia                            & Crítica \\\hline
-	Comentarios                            & \multicolumn{2}{l}{El grupo multicast se configura en la cama y el administrador solamente de conocerlo, no configurar la cama física} \\
+	Comentarios                            & \multicolumn{2}{p{10.25cm}}{El grupo multicast se configura en la cama y el administrador solamente de conocerlo, no configurar la cama física} \\
 }
 
 \tablaSmallSinColores{Caso de uso 4.2: Modificar cama }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU42}{
-	\multicolumn{3}{l}{CU-2.2: Modificar cama} \\
+	\multicolumn{3}{p{10.25cm}}{CU-2.2: Modificar cama} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Modificar los datos de la cama} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Ser administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-2.2} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Modificar los datos de la cama} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Ser administrador} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.2} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Se elige que cama modificar \\\cline{2-3}
 	& 2    & Se actualizan los datos a conveniencia del administrador según CU-4.1\\\cline{2-3}
 	& 4    & Se actualizan los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{Los datos de la cama se modifican} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Los datos de la cama se modifican} \\\hline
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Mismas excepciones que en 4.1 \\\cline{2-3}
 	Frecuencia                             & Baja \\\hline
-	Importancia                            & Alta \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Alta \\
 }
 
 \tablaSmallSinColores{Caso de uso 4.3: Borrar cama }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU43}{
-	\multicolumn{3}{l}{CU-4.3: Borrar cama} \\
+	\multicolumn{3}{p{10.25cm}}{CU-4.3: Borrar cama} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Elimina una cama de la base de datos} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-2.3} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elimina una cama de la base de datos} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.3} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Elegir a que cama eliminar \\\cline{2-3}
 	& 2    & Eliminar cama y todos los datos vinculados \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{La cama ya no está en la base de datos} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{La cama ya no está en la base de datos} \\\hline
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	Frecuencia                             & Baja \\\hline
-	Importancia                            & Media \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Media \\
 }
 
 \tablaSmallSinColores{Caso de uso 4.4: Asignar cama a usuario }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU43}{
-	\multicolumn{3}{l}{CU-4.4: Asignar cama a usuario} \\
+	\multicolumn{3}{p{10.25cm}}{CU-4.4: Asignar cama a usuario} \\
 }
 {
-	Descripción                            & \multicolumn{2}{l}{Permite a un usuario ver los datos de una cama o quitar ese permiso} \\\hline
-	Precondiciones                         & \multicolumn{2}{l}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{l}{RF-2.4} \\\hline
-	Usuario                         	   & \multicolumn{2}{l}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite a un usuario ver los datos de una cama o quitar ese permiso} \\\hline
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.4} \\\hline
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Elegir cama \\\cline{2-3}
 	& 2    & Elegir usuario \\\cline{2-3}
 	& 3    & Si la relación existe se puede eliminar el permiso \\\cline{2-3}
 	& 3    & Si la relación no existe se puede crear el permiso \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{l}{} \\\hline
-	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{} \\\hline
 	Frecuencia                             & Media \\\hline
-	Importancia                            & Crítica \\\hline
-	Comentarios                            & \multicolumn{2}{l}{} \\
+	Importancia                            & Crítica \\
 }
