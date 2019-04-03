@@ -15,5 +15,6 @@ if __name__ == "__main__":
 
     while True:
         print(s.recv(1024).decode("utf-8"))
+        sys.stdout.flush()
 
 

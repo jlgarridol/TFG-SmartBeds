@@ -33,6 +33,7 @@ if __name__ == "__main__":
                     else: #En caso contrario enviamos el paquete
                         s.sendto(bytes(row, "utf-8"),(IP,PORT))
                         print(row)
+                        sys.stdout.flush()
                         sleep(INTERVAL) #Esperamos a mandar un nuevo paquete
         except (KeyboardInterrupt, SystemExit) :
             raise
