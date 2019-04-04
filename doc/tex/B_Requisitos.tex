@@ -70,25 +70,25 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 \textbf{RNF-7 Persistencia:} los servicios de procesamiento de las camas activas deben mantenerse funcionando aunque no existan clientes activos para evitar retrasos muy altos ante nuevas conexiones.
 \end{itemize}
 
-\section{Especificación de requisitos}
+\section{Especificación de requisitos}\label{casos-uso}
 
 
 \tablaSmallSinColores{Caso de uso 1: Login }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU1}{
 	\multicolumn{3}{p{10.25cm}}{CU-1: Login} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{El usuario se identifica en el sistema} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{No existe una sesión activa válida} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1, RF-1.1} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Anónimo} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{El usuario se identifica en el sistema} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{No existe una sesión activa válida} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1, RF-1.1} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Anónimo} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente envía sus credenciales al servidor \\\cline{2-3}
 	& 2    & El servidor acepta las credenciales devolviendo el token de sesión \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene una sesión activa válida} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene una sesión activa válida} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
-	& 2    & Si las credenciales son incorrectas el servidor responde con error \\\hline
-	Frecuencia                             & Alta \\\hline
-	Importancia                            & Crítico \\\hline
+	& 2    & Si las credenciales son incorrectas el servidor responde con error \\\hubu
+	Frecuencia                             & Alta \\\hubu
+	Importancia                            & Crítico \\\hubu
 	Comentarios                            & \multicolumn{2}{p{10.25cm}}{Es siempre lo primero que aparecerá} \\
 }
 
@@ -96,14 +96,14 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-2: Visualización de datos} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Ver lista de las camas disponibles} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Sesión activa válida} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Ver lista de las camas disponibles} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Sesión activa válida} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente solicita ver las camas disponibles \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El cliente está en la pantalla de camas disponibles} \\\hline
-	Frecuencia                             & Alta \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El cliente está en la pantalla de camas disponibles} \\\hubu
+	Frecuencia                             & Alta \\\hubu
 	Importancia                            & Alta \\
 }
 
@@ -111,16 +111,16 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-2.1: Elegir cama} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elegir cama} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar en CU de Tabla \ref{tabla:tablaCU2}} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4, RF-4} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elegir cama} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar en CU de Tabla \ref{tabla:tablaCU2}} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4, RF-4} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente solicita ver las camas disponibles \\\cline{2-3}
 	& 2    & El servidor abre conexiones paralelas para actualizar en tiempo real el estado de las camas \\\cline{2-3}
 	& 3    & El cliente decide que cama ver \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El cliente entra en la ventana de los datos en tiempo real} \\\hline
-	Frecuencia                             & Alta \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El cliente entra en la ventana de los datos en tiempo real} \\\hubu
+	Frecuencia                             & Alta \\\hubu
 	Importancia                            & Alta \\
 }
 
@@ -128,31 +128,31 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-2.2: Ver datos en tiempo real} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Ver datos en tiempo real} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar en CU de Tabla \ref{tabla:tablaCU21}} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4, RF-4} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Ver datos en tiempo real} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar en CU de Tabla \ref{tabla:tablaCU21}} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4, RF-4} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente solicita una nueva conexión \\\cline{2-3}
 	& 2    & El servidor provee una conexión en tiempo real con los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene una conexión paralela abierta con los datos en tiempo real} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene una conexión paralela abierta con los datos en tiempo real} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Si un paquete faltase o la señal fuera débil se alertaría al usuario \\\cline{2-3}
-	Frecuencia                             & Alta \\\hline
+	Frecuencia                             & Alta \\\hubu
 	Importancia                            & Máxima \\}
 
 \tablaSmallSinColores{Caso de uso 3: Administración de usuarios }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU3}{
 	\multicolumn{3}{p{10.25cm}}{CU-3: Administración de usuarios} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Administración de usuario: alta, baja y modificación} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Administración de usuario: alta, baja y modificación} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El administrador entra en el menú de administración de usuarios \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El administrador está en el menú de administración de usuarios} \\\hline
-	Frecuencia                             & Baja \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El administrador está en el menú de administración de usuarios} \\\hubu
+	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Alta \\
 }
 
@@ -160,20 +160,20 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-3.1: Añadir usuarios} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Añadir usuarios} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.1} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Añadir usuarios} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.1} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El administrador elige añadir un nuevo usuario \\\cline{2-3}
 	& 2    & Se introduce un nombre de usuario para identificarlo \\\cline{2-3}
 	& 3    & Se introduce una contraseña dos veces \\\cline{2-3}
 	& 4    & Se almacenan los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Existe un nuevo usuario en el sistema} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Existe un nuevo usuario en el sistema} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Si el nickname existiese \\\cline{2-3}
 	& 3    & La contraseña añadida no coincide en las dos ocasiones \\\cline{2-3}
-	Frecuencia                             & Baja \\\hline
+	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Alta \\
 }
 
@@ -181,19 +181,19 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-3.2: Cambiar contraseña} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Cambiar la contraseña de un usuario} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.2} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Cambiar la contraseña de un usuario} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.2} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Logueado} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Si es usuario normal ir a 3 \\\cline{2-3}
 	& 2    & Si es administrador elegir a que usuario cambiar la contraseña \\\cline{2-3}
 	& 3    & Se introduce una contraseña nueva dos veces \\\cline{2-3}
 	& 4    & Se actualizan los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{La contraseña ha cambiado} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{La contraseña ha cambiado} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 3    & La contraseña añadida no coincide en las dos ocasiones \\\cline{2-3}
-	Frecuencia                             & Baja \\\hline
+	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Alta \\
 }
 
@@ -201,15 +201,15 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-3.3: Borrar usuario} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elimina un usuario de la base de datos} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.3} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elimina un usuario de la base de datos} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3.3} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Elegir a que usuario (no administrador) eliminar \\\cline{2-3}
 	& 2    & Eliminar usuario y todos los datos vinculados \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario ha sido eliminado} \\\hline
-	Frecuencia                             & Baja \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario ha sido eliminado} \\\hubu
+	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Media \\
 }
 
@@ -217,14 +217,14 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-4: Administración de camas} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Administración de camas: alta, baja, modificación y asignación a usuarios} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Administración de camas: alta, baja, modificación y asignación a usuarios} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El administrador entra en el menú de administración de camas \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El administrador está en el menú de administración de camas} \\\hline
-	Frecuencia                             & Baja \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El administrador está en el menú de administración de camas} \\\hubu
+	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Media \\
 }
 
@@ -232,21 +232,21 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-4.1: Añadir cama} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Añadir cama} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.1} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Añadir cama} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.1} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El administrador elige añadir una nueva cama \\\cline{2-3}
 	& 2    & Se introduce el grupo multicast de la cama (IP y Puerto) \\\cline{2-3}
 	& 3    & Se introduce el nombre identificador\\\cline{2-3}
 	& 4    & Se almacenan los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Existe una nueva cama en el sistema} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Existe una nueva cama en el sistema} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & El grupo multicast pertenece a otra cama \\\cline{2-3}
 	& 3    & El nombre identificativo existe para otra cama \\\cline{2-3}
-	Frecuencia                             & Media \\\hline
-	Importancia                            & Crítica \\\hline
+	Frecuencia                             & Media \\\hubu
+	Importancia                            & Crítica \\\hubu
 	Comentarios                            & \multicolumn{2}{p{10.25cm}}{El grupo multicast se configura en la cama y el administrador solamente de conocerlo, no configurar la cama física} \\
 }
 
@@ -254,18 +254,18 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-2.2: Modificar cama} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Modificar los datos de la cama} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Ser administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.2} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Modificar los datos de la cama} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Ser administrador} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.2} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Se elige que cama modificar \\\cline{2-3}
 	& 2    & Se actualizan los datos a conveniencia del administrador según CU-4.1\\\cline{2-3}
 	& 4    & Se actualizan los datos \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Los datos de la cama se modifican} \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Los datos de la cama se modifican} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Mismas excepciones que en 4.1 \\\cline{2-3}
-	Frecuencia                             & Baja \\\hline
+	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Alta \\
 }
 
@@ -273,16 +273,15 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-4.3: Borrar cama} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elimina una cama de la base de datos} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.3} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Elimina una cama de la base de datos} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.3} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Elegir a que cama eliminar \\\cline{2-3}
 	& 2    & Eliminar cama y todos los datos vinculados \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{La cama ya no está en la base de datos} \\\hline
-	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
-	Frecuencia                             & Baja \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{La cama ya no está en la base de datos} \\\hubu
+	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Media \\
 }
 
@@ -290,16 +289,16 @@ En esta sección se presentan los requisitos funcionales, no funcionales y la es
 	\multicolumn{3}{p{10.25cm}}{CU-4.4: Asignar cama a usuario} \\
 }
 {
-	Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite a un usuario ver los datos de una cama o quitar ese permiso} \\\hline
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hline
-	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.4} \\\hline
-	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hline
+	Descripción                            & \multicolumn{2}{p{10.25cm}}{Permite a un usuario ver los datos de una cama o quitar ese permiso} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Estar logueado como administrador} \\\hubu
+	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.4} \\\hubu
+	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Elegir cama \\\cline{2-3}
 	& 2    & Elegir usuario \\\cline{2-3}
 	& 3    & Si la relación existe se puede eliminar el permiso \\\cline{2-3}
 	& 3    & Si la relación no existe se puede crear el permiso \\\cline{2-3}
-	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{} \\\hline
-	Frecuencia                             & Media \\\hline
+	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene acceso a la cama, o pierde el mismo} \\\hubu
+	Frecuencia                             & Media \\\hubu
 	Importancia                            & Crítica \\
 }

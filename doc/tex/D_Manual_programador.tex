@@ -6,6 +6,198 @@
 
 \section{Manual del programador}
 
+\subsection{API}
+Para proveer los servicios de esta aplicación a nuevos entornos se incorpora una API para utilizar los diferentes servicios del sistema especificados en los Casos de Uso \ref{casos-uso}.
+
+El funcionamiento general de la API serán peticiones \texttt{POST} ante rutas específicas con los datos requeridos para cada petición. Y según sea el caso el servidor contestará con un fichero \texttt{JSON} con la respuesta adecuada.
+
+Todas las respuestas del servidor contendrán los siguientes campos
+\begin{lstlisting}[language=JSON]
+{
+  "status": 200|400|401|403|404|500,
+  "message": "OK"|"Error description"
+}
+\end{lstlisting}
+
+El valor de \texttt{status} tendrá un valor según los códigos HTTP definidos en el RFC 7231 y el mensaje será una explicación detallada del error producido.
+
+Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}
+%\begin{table}[H]
+%	\begin{center}
+%		\begin{tabular}{p{0.095\textwidth} p{0.2\textwidth} p{0.37\textwidth} p{0.33\textwidth}}
+%			\toprule
+%			
+%			\otoprule
+%			
+%			\bottomrule
+%		\end{tabular}
+%		\caption{Especificaciones del API}
+%		\label{tabla:api-specs}
+%	\end{center}
+%\end{table}
+
+\begin{center}\small
+	\tablefirsthead{
+		\toprule
+		\textbf{CU}	&	\textbf{URI}	&	\textbf{Petición}	&	\textbf{Respuesta} \\
+		\otoprule
+	}
+	\tablehead{
+		\multicolumn{4}{l}{\small\sl continúa desde la página anterior}\\
+		\toprule
+		\textbf{CU}	&	\textbf{URI}	&	\textbf{Petición}	&	\textbf{Respuesta} \\
+		\otoprule
+	}
+	\tabletail{
+		\hline
+		\multicolumn{4}{r}{\small\sl continúa en la página siguiente}\\
+	}
+	\tablelasttail{
+		\hline
+	}
+	\bottomcaption{Especificaciones del API}
+	\begin{xtabular}{p{0.095\textwidth} p{0.2\textwidth} p{0.37\textwidth} p{0.33\textwidth}}
+		CU-1		&	\texttt{/api/auth}	& \begin{lstlisting}[language=JSONT]
+{
+  "user": text,
+  "pass": text
+}\end{lstlisting}&\begin{lstlisting}[language=JSONT]
+{
+  ...,
+  "token": text
+}\end{lstlisting}
+\\\hubu
+CU-2.1  CU-4		&	\texttt{/api/beds}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...,
+  "beds": [text,...,text]
+}\end{lstlisting}
+\\\hubu
+CU-2.2		&	\texttt{/api/bed}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text,
+  "bedname": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...,
+  "namespace": text
+}\end{lstlisting}
+\\\hubu
+CU-3		&	\texttt{/api/users}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...,
+  "users":[text,...,text]
+}\end{lstlisting}
+\\\hubu
+CU-3.1		&	\texttt{/api/user/add}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text,
+  "username": text,
+  "password": text,
+  "password-re": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...
+}\end{lstlisting}
+\\\hubu
+CU-3.2		&	\texttt{/api/user/mod}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text,
+  "username": text,
+  "password": text,
+  "password-re": text,
+  ["pasword-old": text]
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...
+}\end{lstlisting}
+\\
+CU-4.1		&	\texttt{/api/bed/add}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text,
+  "bed_name": text,
+  "bed_ip": text,
+  "bed_port": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...
+}\end{lstlisting}
+\\\hubu
+CU-4.2		&	\texttt{/api/bed/mod}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text,
+  "bed_name": text,
+  "bed_ip": text,
+  "bed_port": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...
+}\end{lstlisting}
+\\\hubu
+CU-4.3		&	\texttt{/api/bed/del}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text,
+  "bed_name": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...
+}\end{lstlisting}
+\\\hubu
+CU-4.4		&	\texttt{/api/bed/perm}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text,
+  "mode": "info"|   "change",
+  ["bed_name": text,
+  "username": text]
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  ...,
+  "permission":[
+   {
+    "username":text,
+    "bed_name":text
+   },
+   ...
+  ]
+}\end{lstlisting}
+\\\bottomrule
+	\end{xtabular}
+	\label{tabla:api-specs2}
+\end{center}
+
 \section{Compilación, instalación y ejecución del proyecto}
 
 \section{Pruebas del sistema}

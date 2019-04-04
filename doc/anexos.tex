@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,twoside]{memoir}
+\documentclass[a4paper,12pt,twoside,oldfontcommands]{memoir}
 
 % Castellano
 \usepackage[spanish,es-tabla]{babel}
@@ -13,7 +13,70 @@
 \RequirePackage[table]{xcolor}
 \RequirePackage{xtab}
 \RequirePackage{multirow}
-\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{longtable}
+
+% Códigos
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+	basicstyle=\normalfont\ttfamily,
+	numbers=left,
+	numberstyle=\scriptsize,
+	stepnumber=1,
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines = true,
+	frame=lines,
+	backgroundcolor=\color{background},
+	literate=
+	*{0}{{{\color{numb}0}}}{1}
+	{1}{{{\color{numb}1}}}{1}
+	{2}{{{\color{numb}2}}}{1}
+	{3}{{{\color{numb}3}}}{1}
+	{4}{{{\color{numb}4}}}{1}
+	{5}{{{\color{numb}5}}}{1}
+	{6}{{{\color{numb}6}}}{1}
+	{7}{{{\color{numb}7}}}{1}
+	{8}{{{\color{numb}8}}}{1}
+	{9}{{{\color{numb}9}}}{1}
+	{:}{{{\color{punct}{:}}}}{1}
+	{,}{{{\color{punct}{,}}}}{1}
+	{\{}{{{\color{delim}{\{}}}}{1}
+	{\}}{{{\color{delim}{\}}}}}{1}
+	{[}{{{\color{delim}{[}}}}{1}
+	{]}{{{\color{delim}{]}}}}{1},
+}
+
+\lstdefinelanguage{jsont}{
+	basicstyle=\normalfont\ttfamily,
+	numberstyle=\scriptsize,
+	breaklines = true,
+	resetmargins = true,
+	numbersep=0pt,
+	aboveskip=-1.25em,
+	belowskip=-1em,
+	literate=
+	*{0}{{{\color{numb}0}}}{1}
+	{1}{{{\color{numb}1}}}{1}
+	{2}{{{\color{numb}2}}}{1}
+	{3}{{{\color{numb}3}}}{1}
+	{4}{{{\color{numb}4}}}{1}
+	{5}{{{\color{numb}5}}}{1}
+	{6}{{{\color{numb}6}}}{1}
+	{7}{{{\color{numb}7}}}{1}
+	{8}{{{\color{numb}8}}}{1}
+	{9}{{{\color{numb}9}}}{1}
+	{:}{{{\color{punct}{:}}}}{1}
+	{,}{{{\color{punct}{,}}}}{1}
+	{\{}{{{\color{delim}{\{}}}}{1}
+	{\}}{{{\color{delim}{\}}}}}{1}
+	{[}{{{\color{delim}{[}}}}{1}
+	{]}{{{\color{delim}{]}}}}{1},
+}
 
 % Links
 \usepackage[colorlinks]{hyperref}
@@ -302,6 +365,8 @@
 
 \renewcommand*\cftappendixname{\appendixname\ }
 
+\newcommand{\hubu}{\hline \rule{0pt}{2.7ex}}
+
 % Formato de portada
 \makeatletter
 \usepackage{xcolor}
@@ -335,7 +400,7 @@
   {%
     \noindent\LARGE
     Presentado por \@author{}\\ 
-    en Universidad de Burgos --- \@date{}\\
+    en Universidad de Burgos -- \@date{}\\
     Tutores: \@tutor{}\\
   }%
   \end{center}%
@@ -346,9 +411,9 @@
 
 
 % Datos de portada
-\title{Aplicación de técnicas de minería de datos para la detección de crisis epilépticas \\Documentación Técnica}
+\title{{\Huge SmartBeds}\\[0.5cm]Aplicación de técnicas de minería de datos para la detección de crisis epilépticas}
 \author{José Luis Garrido Labrador}
-\tutor{Álvar Arnáiz González y José Francisco Díez Pastor}
+\tutor{Dr. Álvar Arnáiz González\\y Dr. José Francisco Díez Pastor}
 \date{\today}
 
 \begin{document}
