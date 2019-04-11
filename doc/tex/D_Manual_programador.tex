@@ -92,6 +92,21 @@ CU-2.2		&	\texttt{/api/bed}	&
   "namespace": text
 }\end{lstlisting}
 \\\hubu
+CU-2.2		&	\texttt{/} \textit{(WebSocket)}	& 
+\begin{lstlisting}[language=JSONT]
+{
+  "token": text,
+  "namespace": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+  "state": number,
+  "instance": datetime
+  "vital": [HR,RR,..,B2B],
+  "pressure": [P1,P2,..,P6] 
+}\end{lstlisting}
+\\\hubu
 CU-3		&	\texttt{/api/users}	& 
 \begin{lstlisting}[language=JSONT]
 {
@@ -117,7 +132,7 @@ CU-3.1		&	\texttt{/api/user/add}	&
 {
   ...
 }\end{lstlisting}
-\\\hubu
+\\
 CU-3.2		&	\texttt{/api/user/mod}	& 
 \begin{lstlisting}[language=JSONT]
 {
@@ -132,14 +147,28 @@ CU-3.2		&	\texttt{/api/user/mod}	&
 {
   ...
 }\end{lstlisting}
-\\
+\\\hubu
+CU-3.3		&	\texttt{/api/user/del}	& 
+\begin{lstlisting}[language=JSONT]
+{
+"token": text,
+"username": text
+}\end{lstlisting}
+&
+\begin{lstlisting}[language=JSONT]
+{
+    ...
+}\end{lstlisting}
+\\\hubu
 CU-4.1		&	\texttt{/api/bed/add}	& 
 \begin{lstlisting}[language=JSONT]
 {
   "token": text,
   "bed_name": text,
   "bed_ip": text,
-  "bed_port": text
+  "bed_port": text,
+  "bed_mac": text,
+  "bed_uuid": text
 }\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
@@ -153,7 +182,9 @@ CU-4.2		&	\texttt{/api/bed/mod}	&
   "token": text,
   "bed_name": text,
   "bed_ip": text,
-  "bed_port": text
+  "bed_port": text,
+  "bed_mac": text,
+  "bed_uuid": text
 }\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
