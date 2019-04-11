@@ -355,3 +355,4 @@ data/
 
 #Entornos
 .vscode/
+.idea/

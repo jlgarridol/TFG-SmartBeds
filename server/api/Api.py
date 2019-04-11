@@ -1,14 +1,27 @@
-import mysql.connector as connector
+from mysql.connector.connection import MySQLConnection
+from mysql.connector.errors import  IntegrityError
+import random, string
+from hashlib import sha512
+from base64 import b64encode
+
+from sql import *
+from sql.aggregate import *
+from sql.conditionals import *
 
 class API:
     """
     Clase con las funciones de la API de SmartBeds
     """
 
-    def __init__(self,db : connector):
-        self._db = db
+    SIZE = 32
 
-    def auth(self, nick: str,password: str) -> str:
+    def __init__(self, db: MySQLConnection):
+        self._db = db
+        self._users = Table('Users')
+        self._beds = Table('Beds')
+        self._user_bed = Table('Users_Beds')
+
+    def auth(self, nick: str, password: str) -> str:
         """
         Comprueba que el usuario y la contraseña
         son correctas.
@@ -30,7 +43,64 @@ class API:
         BadCredentialsError
             si la relación nick-password no existe
         """
-        pass
+
+        self.__checkPassword(nick, password)
+
+        token = self.__updateToken(nick)
+
+        self._db.commit()
+        return token
+
+    def __checkPassword(self, nick, password):
+        """
+        Comprueba si la contraseña es correcta
+
+        :param nick: nombre de usuario
+        :param password: contraseña
+        :raise BadCredentialsError: si la combinación no es correcta
+        """
+        hashed = sha512(password.encode('utf-8')).digest()
+        based = b64encode(hashed).decode('utf-8')
+
+        query = self._users.select(Count(Literal("*")))
+        query.where = (self._users.nickname == nick) & (self._users.password == based)
+
+        cursor = self._db.cursor()
+        cursor.execute(*tuple(query))
+
+        if cursor.fetchone() is None:
+            self._db.rollback()
+            raise BadCredentialsError("La combinación de nombre de usuario y contraseña no coinciden")
+        cursor.close()
+
+
+    def __updateToken(self, nick):
+        """
+        Genera un nuevo token para la sesión
+
+        :param nick: nombre del usuario
+        :return: nuevo token
+        """
+        again = True
+        while again:
+            try:
+                token = self.__generateToken(API.SIZE)
+
+                hashed = sha512(token.encode('utf-8')).digest()
+                based = b64encode(hashed).decode('utf-8')
+
+                query = self._users.update(columns=[self._users.token], values=[based], where=self._users.nick == nick)
+
+                cursor = self._db.cursor()
+                cursor.execute(*tuple(query))
+                again = False
+                cursor.close()
+            except IntegrityError:
+                pass
+
+        return token
+
+
 
     def beds(self, token: str) -> list:
         """
@@ -54,7 +124,7 @@ class API:
         """
         pass
 
-    def bed(self, token : str, bedname: str) -> str:
+    def bed(self, token: str, bedname: str) -> str:
         """
         Solicita el namespace
         donde los datos de la cama se
@@ -83,7 +153,7 @@ class API:
         """
         pass
 
-    def users(self, token : str) -> list:
+    def users(self, token: str) -> list:
         """
         Solicita la lista de usuarios
 
@@ -106,7 +176,7 @@ class API:
         """
         pass
         
-    def useradd(self, token : str, nick : str, password : str):
+    def useradd(self, token: str, nick: str, password: str):
         """
         Crea un nuevo usuario
 
@@ -178,7 +248,7 @@ class API:
         """
         pass
 
-    def bedadd(self, token : str, bedparams : dict):
+    def bedadd(self, token: str, bedparams: dict):
         """
         Crea una nueva cama
 
@@ -201,7 +271,22 @@ class API:
             existe ya como son el nombre, el identificador o el par
             ip-puerto
         """
-        pass
+        user = self.__getUserByToken(token)
+        if user['rol'] != 'admin':
+            raise PermissionsError('Orden válida solo para administrador')
+
+        try:
+            columns, values = self.__getParamsFromDict("self._beds", bedparams)
+            query = self._beds.insert(columns=columns, values=values)
+
+            cursor = self._db.cursor()
+            cursor.execute(*tuple(query))
+            cursor.close()
+            self._db.commit()
+        except IntegrityError as err:
+            self._db.rollback()
+            raise BedExistsError(str(err))
+
 
     def bedmod(self, token : str, bedparams : dict):
         """
@@ -303,6 +388,60 @@ class API:
             si la cama o el usuario no existe
         """
         pass
+
+    def __generateToken(self, size: int) -> str:
+        """
+        Genera un token del tamaño size
+
+        Parameters
+        ----------
+        size : int
+            tamaño del token a generar
+
+        Returns
+        -------
+        string
+            token alfanumérico
+        """
+        token = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))
+        return token
+
+    def __getUserByToken(self, token) -> dict:
+        """
+        Obtiene los datos del usuario
+
+        :param token: identificador del usuario
+        :return: datos del usuario
+        :raise BadCredentialsError: si el token no está ligado a ningún usuario
+        """
+        hashed = sha512(token.encode('utf-8')).digest()
+        based = b64encode(hashed).decode('utf-8')
+
+        query = self._users.select()
+        query.where = self._users.token == based
+
+        cursor = self._db.cursor(dictionary=True)
+        cursor.execute(*tuple(query))
+        user = cursor.fetchone()
+        if user is None:
+            raise BadCredentialsError('Token no válido para ningún usuario')
+        cursor.close()
+        return user
+
+    def __getParamsFromDict(self, table, params):
+        """
+        Obtiene los parámetros válidos para sql-python
+
+        :param params: diccionario con los parámetros
+        :return: tupla columnas, valores
+        """
+        columns = []
+        values = []
+        for c,v in params.items():
+            columns.append(eval(table+"."+c))
+            values.append(v)
+
+        return columns, values
 
 class SmartBedError(Exception):
     pass
