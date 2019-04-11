@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block js %}
+<script>
+    var ctx = document.getElementById('vitales').getContext('2d');
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['22:03:44','22:03:45','22:03:46','22:03:47','22:03:48','22:03:49','22:03:50','22:03:51','22:03:52','22:03:53'],
+            datasets: [{
+                label: 'HR',
+                borderColor: 'red',
+				backgroundColor: 'red',
+				fill: false,
+                data: [81,82,81,80,82,81,83,84,85,87],
+                borderWidth: 1,
+                yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'RR',
+                    borderColor: 'blue',
+                    backgroundColor: 'blue',
+                    fill: false,
+                    data: [16,16,16,17,17,16,16,16,16,15],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'SV',
+                    borderColor: 'orange',
+                    backgroundColor: 'orange',
+                    fill: false,
+                    data: [31,32,34,33,32,31,30,29,30,33],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'HRV',
+                    borderColor: 'green',
+                    backgroundColor: 'green',
+                    fill: false,
+                    data: [90,91,92,93,100,96,93,90,89,90],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'B2B (ms)',
+                    borderColor: 'purple',
+                    backgroundColor: 'purple',
+                    fill: false,
+                    data: [50,50,53,53,65,50,51,50,50,49],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            hoverMode: 'index',
+            stacked: false,
+            title: {
+                display: true,
+                //text: 'Constantes vitales'
+            },
+            scales: {
+                yAxes: [{
+                    type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                    display: true,
+                    position: 'left',
+                    id: 'y-axis-hr',
+                }],
+            }
+        }
+    });
+</script>
+<script>
+    var ctx = document.getElementById('presiones').getContext('2d');
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['22:03:44','22:03:45','22:03:46','22:03:47','22:03:48','22:03:49','22:03:50','22:03:51','22:03:52','22:03:53'],
+            datasets: [{
+                    label: 'P1',
+                    borderColor: 'red',
+                    backgroundColor: 'red',
+                    fill: false,
+                    data: [10,11,12,11,11,12,10,13,15,13],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'P2',
+                    borderColor: 'blue',
+                    backgroundColor: 'blue',
+                    fill: false,
+                    data: [30,29,28,29,28,27,27,28,30,31],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'P3',
+                    borderColor: 'orange',
+                    backgroundColor: 'orange',
+                    fill: false,
+                    data: [16,15,16,17,17,18,17,17,17,16],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'P4',
+                    borderColor: 'green',
+                    backgroundColor: 'green',
+                    fill: false,
+                    data: [25,24,23,24,23,22,24,24,25,23],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'P5',
+                    borderColor: 'purple',
+                    backgroundColor: 'purple',
+                    fill: false,
+                    data: [21,22,23,22,21,20,19,22,23,23],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                },
+                {
+                    label: 'P6',
+                    borderColor: 'black',
+                    backgroundColor: 'black',
+                    fill: false,
+                    data: [13,12,12,13,11,10,10,11,13,11],
+                    borderWidth: 1,
+                    yAxisID: 'y-axis-hr',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            hoverMode: 'index',
+            stacked: false,
+            title: {
+                display: true,
+                //text: 'Constantes vitales'
+            },
+            scales: {
+                yAxes: [{
+                    type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                    display: true,
+                    position: 'left',
+                    id: 'y-axis-hr',
+                }],
+            }
+        }
+    });
+</script>
+<script>
+
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">
+            Cama 1<br>
+            <h3 class="text-center">Estado: <span class="font-weight-bold" id="state">Durmiendo</span></h3>
+        </h1>
+    </div>
+</div>
+<div class="row d-flex">
+    <div class="col-md-6">
+        <h3 class="text-center mb-0">
+            Constantes vitales
+        </h3>
+        <canvas id="vitales" width="100%" height="65%"></canvas>
+    </div>
+    <div class="col-md-6">
+        <h3 class="text-center mb-0">
+            Presiones
+        </h3>
+        <canvas id="presiones" width="100%" height="65%"></canvas>
+    </div>
+</div>
+{% endblock %}

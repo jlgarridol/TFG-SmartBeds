@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block js %}
+{% if info.login %}
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('package', function(data) {
+        //TODO
+        console.log(data);
+    });
+</script>
+{% endif %}
+{% endblock %}
