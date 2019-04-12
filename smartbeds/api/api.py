@@ -1,12 +1,11 @@
 from mysql.connector.connection import MySQLConnection
-from mysql.connector.errors import  IntegrityError
-import random, string
+from mysql.connector.errors import IntegrityError
+import random
+import string
 from hashlib import sha512
 from base64 import b64encode
-
 from sql import *
-from sql.aggregate import *
-from sql.conditionals import *
+
 
 class API:
     """
@@ -14,14 +13,25 @@ class API:
     """
 
     SIZE = 32
+    _instance = None
 
     def __init__(self, db: MySQLConnection):
+        if API._instance is not None:
+            raise Exception("Ya existe una instancia de la API")
         self._db = db
         self._db.autocommit = False
 
         self._users = Table('Users')
         self._beds = Table('Beds')
         self._user_bed = Table('Users_Beds')
+
+        API._instance = self
+
+    @classmethod
+    def get_instance(cls):
+        if API._instance is None:
+            raise Exception("No existe una instancia de la API")
+        return cls._instance
 
     def auth(self, nick: str, password: str) -> str:
         """
@@ -67,7 +77,8 @@ class API:
         query.where = (self._users.nickname == nick) & (self._users.password == password)
 
         cursor = self._db.cursor()
-        cursor.execute(*tuple(query))
+        command = API.prepare_query(query)
+        cursor.execute(*command)
 
         if cursor.fetchone() is None:
             self._db.rollback()
@@ -88,10 +99,13 @@ class API:
 
                 token_crypt = API.encrypt(token)
 
-                query = self._users.update(columns=[self._users.token], values=[token_crypt], where=self._users.nick == nick)
+                query = self._users.update(columns=[self._users.token],
+                                           values=[token_crypt],
+                                           where=self._users.nickname == nick)
 
                 cursor = self._db.cursor()
-                cursor.execute(*tuple(query))
+                command = API.prepare_query(query)
+                cursor.execute(*command)
                 again = False
                 cursor.close()
             except IntegrityError:
@@ -130,9 +144,10 @@ class API:
             query.where = join.right.IDU == user['IDU']
 
         cursor = self._db.cursor()
-        cursor.execute(*tuple(query))
+        command = API.prepare_query(query)
+        cursor.execute(*command)
 
-        names = [n for (n) in cursor]
+        names = [n for [n] in cursor]
         cursor.close()
         return names
 
@@ -173,7 +188,8 @@ class API:
             query.where = (self._user_bed.IDB == bed['IDB']) & (self._user_bed.IDU == user['IDU'])
 
             cursor = self._db.cursor()
-            cursor.execute(*tuple(query))
+            command = API.prepare_query(query)
+            cursor.execute(*command)
             row = cursor.fetchone()
             if row is None:
                 raise PermissionsError("La cama no es accesible por el usuario")
@@ -209,9 +225,10 @@ class API:
 
         query = self._users.select(self._users.nickname)
         cursor = self._db.cursor()
-        cursor.execute(*tuple(query))
+        command = API.prepare_query(query)
+        cursor.execute(*command)
 
-        names = [n for (n) in cursor]
+        names = [n for [n] in cursor]
         cursor.close()
         return names
         
@@ -245,11 +262,14 @@ class API:
         password = API.encrypt(password)
         query = self._users.insert(
             columns=[self._users.nickname, self._users.password, self._users.token],
-            values=[nick, password, first_token])
+            values=[[nick, password, first_token]])
 
         try:
             cursor = self._db.cursor()
-            cursor.execute(*tuple(query))
+            command = API.prepare_query(query)
+            print(command)
+            cursor.execute(*command)
+
             cursor.close()
             self._db.commit()
         except IntegrityError as err:
@@ -286,14 +306,18 @@ class API:
                 raise PermissionsError('Orden válida solo para administrador')
             elif user['password'] != API.encrypt(oldpass):
                 raise PermissionsError('Contraseña anterior no válida')
+        if self.__get_user_by_name(nick)['password'] == API.encrypt(password):
+            #La contraseña es la misma
+            return
 
         try:
             update = self._users.update(columns=[self._users.password],
                                         values=[API.encrypt(password)],
-                                        where=self._users.nick == nick)
+                                        where=self._users.nickname == nick)
 
             cursor = self._db.cursor()
-            cursor.execute(*tuple(update))
+            command = API.prepare_query(update)
+            cursor.execute(*command)
 
             if cursor.rowcount == 0:
                 raise ElementNotExistsError("El usuario no existe")
@@ -323,10 +347,15 @@ class API:
             si el usuario no tiene rol de administrador
         ElementNotExistsError
             si el usuario no existe
+        IllegalOperationError
+            si se intenta borrar al usuario administrador
         """
         user = self.__get_user_by_token(token)
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
+        to_del = self.__get_user_by_name(nick)
+        if to_del['rol'] == 'admin':
+            raise IllegalOperationError("No se puede borrar al usuario administrador")
 
         try:
             self.__delete(self._users, self._users.nickname == nick, "El usuario no existe")
@@ -365,10 +394,11 @@ class API:
 
         try:
             columns, values = API.get_params_from_dict("self._beds", bedparams)
-            query = self._beds.insert(columns=columns, values=values)
+            query = self._beds.insert(columns=columns, values=[values])
 
             cursor = self._db.cursor()
-            cursor.execute(*tuple(query))
+            command = API.prepare_query(query)
+            cursor.execute(*command)
             cursor.close()
             self._db.commit()
         except IntegrityError as err:
@@ -411,7 +441,8 @@ class API:
                                       where=self._beds.bed_name == bedparams['bed_name'])
 
             cursor = self._db.cursor()
-            cursor.execute(*tuple(query))
+            command = API.prepare_query(query)
+            cursor.execute(*command)
             cursor.close()
             self._db.commit()
         except IntegrityError as err:
@@ -485,9 +516,10 @@ class API:
         query = join.select(self._beds.bed_name, self._users.nickname)
 
         cursor = self._db.cursor()
-        cursor.execute(*tuple(query))
+        command = API.prepare_query(query)
+        cursor.execute(*command)
 
-        for (bedname, username) in cursor:
+        for [bedname, username] in cursor:
             perms.append({"username": username, "bed_name": bedname})
 
         cursor.close()
@@ -534,7 +566,8 @@ class API:
         query.where = (self._user_bed.IDB == idb) & (self._user_bed.IDU == idu)
 
         cursor = self._db.cursor()
-        cursor.execute(*tuple(query))
+        command = API.prepare_query(query)
+        cursor.execute(*command)
 
         if cursor.fetchone() is None:
             self._add_perm(idb, idu)
@@ -554,7 +587,8 @@ class API:
 
         delete = self._user_bed.delete(where=(self._user_bed.IDB == idb) & (self._user_bed.IDU == idu))
         cursor = self._db.cursor()
-        cursor.execute(*tuple(delete))
+        command = API.prepare_query(delete)
+        cursor.execute(*command)
         cursor.close()
 
     def _add_perm(self, idb, idu):
@@ -566,9 +600,10 @@ class API:
         """
 
         add = self._user_bed.insert(columns=[self._user_bed.IDB, self._user_bed.IDB],
-                                    values=[idb, idu])
+                                    values=[[idb, idu]])
         cursor = self._db.cursor()
-        cursor.execute(*tuple(add))
+        command = API.prepare_query(add)
+        cursor.execute(*command)
         cursor.close()
 
     @classmethod
@@ -613,7 +648,8 @@ class API:
         delete = table.delete(where=where)
 
         cursor = self._db.cursor()
-        cursor.execute(*tuple(delete))
+        command = API.prepare_query(delete)
+        cursor.execute(*command)
 
         if cursor.rowcount == 0:
             raise ElementNotExistsError(error)
@@ -634,7 +670,8 @@ class API:
         query.where = self._users.token == token
 
         cursor = self._db.cursor(dictionary=True)
-        cursor.execute(*tuple(query))
+        command = API.prepare_query(query)
+        cursor.execute(*command)
         user = cursor.fetchone()
         if user is None:
             raise BadCredentialsError('Token no válido para ningún usuario')
@@ -653,7 +690,8 @@ class API:
         query.where = self._users.nickname == name
 
         cursor = self._db.cursor(dictionary=True)
-        cursor.execute(*tuple(query))
+        command = API.prepare_query(query)
+        cursor.execute(*command)
         user = cursor.fetchone()
         if user is None:
             raise ElementNotExistsError('El usuario no existe')
@@ -671,12 +709,19 @@ class API:
         query.where = self._beds.bed_name == bedname
 
         cursor = self._db.cursor(dictionary=True)
-        cursor.execute(*tuple(query))
+        command = API.prepare_query(query)
+        cursor.execute(*command)
         bed = cursor.fetchone()
         if bed is None:
             raise ElementNotExistsError('La cama solicitada no existe')
         cursor.close()
         return bed
+
+    @classmethod
+    def prepare_query(cls, query):
+        command = list(query)
+        command[0] = command[0].replace("\"", "")
+        return command
 
     @classmethod
     def get_params_from_dict(cls, table, params):
@@ -716,4 +761,7 @@ class BedExistsError(SmartBedError):
 
 
 class UsernameExistsError(SmartBedError):
+    pass
+
+class IllegalOperationError(SmartBedError):
     pass

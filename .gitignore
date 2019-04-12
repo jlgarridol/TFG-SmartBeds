@@ -356,3 +356,6 @@ data/
 #Entornos
 .vscode/
 .idea/
+
+#Configuración
+project.json
