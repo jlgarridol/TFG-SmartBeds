@@ -63,7 +63,7 @@ class API:
         """
         password = API.encrypt(password)
 
-        query = self._users.select(Count(Literal("*")))
+        query = self._users.select()
         query.where = (self._users.nickname == nick) & (self._users.password == password)
 
         cursor = self._db.cursor()
@@ -329,15 +329,8 @@ class API:
             raise PermissionsError('Orden válida solo para administrador')
 
         try:
-            delete = self._users.delete(where=self._users.nickname == nick)
+            self.__delete(self._users, self._users.nickname == nick, "El usuario no existe")
 
-            cursor = self._db.cursor()
-            cursor.execute(*tuple(delete))
-
-            if cursor.rowcount == 0:
-                raise ElementNotExistsError("El usuario no existe")
-
-            cursor.close()
             self._db.commit()
         except Exception:
             self._db.rollback()
@@ -407,9 +400,25 @@ class API:
         ElementNotExistsError
             si la cama no existe
         """
-        pass
+        user = self.__get_user_by_token(token)
+        if user['rol'] != 'admin':
+            raise PermissionsError('Orden válida solo para administrador')
 
-    def beddel(self, token : str, bedname : str):
+        try:
+            columns, values = API.get_params_from_dict("self._beds", bedparams)
+            query = self._beds.update(columns=columns,
+                                      values=values,
+                                      where=self._beds.bed_name == bedparams['bed_name'])
+
+            cursor = self._db.cursor()
+            cursor.execute(*tuple(query))
+            cursor.close()
+            self._db.commit()
+        except IntegrityError as err:
+            self._db.rollback()
+            raise BedExistsError(str(err))
+
+    def beddel(self, token : str, bedname: str):
         """
         Borra una cama
 
@@ -429,9 +438,19 @@ class API:
         ElementNotExistsError
             si la cama no existe
         """
-        pass
+        user = self.__get_user_by_token(token)
+        if user['rol'] != 'admin':
+            raise PermissionsError('Orden válida solo para administrador')
 
-    def bedgetperm(self, token : str) -> list:
+        try:
+            self.__delete(self._beds, self._beds.bedname == bedname, "La cama no existe")
+
+            self._db.commit()
+        except Exception:
+            self._db.rollback()
+            raise
+
+    def bedgetperm(self, token: str) -> list:
         """
         Obtiene la lista de permisos
 
@@ -452,11 +471,31 @@ class API:
         PermissionsError
             si el usuario no tiene rol de administrador
         """
-        pass
+        user = self.__get_user_by_token(token)
+        if user['rol'] != 'admin':
+            raise PermissionsError('Orden válida solo para administrador')
+
+        perms = []
+
+        join = self._beds.join(self._user_bed)
+        join.condition = join.right.IDB == self._beds.IDB
+        join = join.join(self._users)
+        join.condition = join.right.IDU == self._user_bed.IDU
+
+        query = join.select(self._beds.bed_name, self._users.nickname)
+
+        cursor = self._db.cursor()
+        cursor.execute(*tuple(query))
+
+        for (bedname, username) in cursor:
+            perms.append({"username": username, "bed_name": bedname})
+
+        cursor.close()
+        return perms
     
-    def bedmodperm(self, token : str, bedname : str, username : str) -> bool:
+    def bedmodperm(self, token: str, bedname: str, username: str) -> bool:
         """
-        Obtiene la lista de permisos
+        Modifica los permisos
 
         Parameters
         ----------
@@ -481,7 +520,56 @@ class API:
         ElementNotExistsError
             si la cama o el usuario no existe
         """
-        pass
+        user = self.__get_user_by_token(token)
+        if user['rol'] != 'admin':
+            raise PermissionsError('Orden válida solo para administrador')
+
+        bed = self.__get_bed(bedname)
+        user = self.__get_user_by_name(username)
+
+        idu = user['IDU']
+        idb = bed['IDB']
+
+        query = self._user_bed.select()
+        query.where = (self._user_bed.IDB == idb) & (self._user_bed.IDU == idu)
+
+        cursor = self._db.cursor()
+        cursor.execute(*tuple(query))
+
+        if cursor.fetchone() is None:
+            self._add_perm(idb, idu)
+        else:
+            self._remove_perm(idb, idu)
+
+        cursor.close()
+        self._db.commit()
+
+    def _remove_perm(self, idb, idu):
+        """
+        Elimina una asignación usuario - cama
+
+        :param idb: identificador de la cama
+        :param idu: identificador del usuario
+        """
+
+        delete = self._user_bed.delete(where=(self._user_bed.IDB == idb) & (self._user_bed.IDU == idu))
+        cursor = self._db.cursor()
+        cursor.execute(*tuple(delete))
+        cursor.close()
+
+    def _add_perm(self, idb, idu):
+        """
+        Crea una asignación usuario - cama
+
+        :param idb: identificador de la cama
+        :param idu: identificador del usuario
+        """
+
+        add = self._user_bed.insert(columns=[self._user_bed.IDB, self._user_bed.IDB],
+                                    values=[idb, idu])
+        cursor = self._db.cursor()
+        cursor.execute(*tuple(add))
+        cursor.close()
 
     @classmethod
     def generate_token(cls, size: int) -> str:
@@ -513,6 +601,25 @@ class API:
         based = b64encode(hashed).decode('utf-8')
         return based
 
+    def __delete(self, table, where, error="El elemento no existe"):
+        """
+        Elimina un elemento
+
+        :param table: tabla sobre la que borrar
+        :param where: condición de borrado
+        :param error: mensaje en caso de error (opcional)
+        :raise ElementNotExistsError: si no se borra nada
+        """
+        delete = table.delete(where=where)
+
+        cursor = self._db.cursor()
+        cursor.execute(*tuple(delete))
+
+        if cursor.rowcount == 0:
+            raise ElementNotExistsError(error)
+
+        cursor.close()
+
     def __get_user_by_token(self, token) -> dict:
         """
         Obtiene los datos del usuario
@@ -531,6 +638,25 @@ class API:
         user = cursor.fetchone()
         if user is None:
             raise BadCredentialsError('Token no válido para ningún usuario')
+        cursor.close()
+        return user
+
+    def __get_user_by_name(self, name) -> dict:
+        """
+        Obtiene los datos del usuario
+
+        :param name: nombre del usuario
+        :return: datos del usuario
+        :raise ElementNotExistsError: si el usuario no existe
+        """
+        query = self._users.select()
+        query.where = self._users.nickname == name
+
+        cursor = self._db.cursor(dictionary=True)
+        cursor.execute(*tuple(query))
+        user = cursor.fetchone()
+        if user is None:
+            raise ElementNotExistsError('El usuario no existe')
         cursor.close()
         return user
 
