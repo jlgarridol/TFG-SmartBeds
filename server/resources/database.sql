@@ -3,7 +3,7 @@
 CREATE TABLE `Users` (
 	`password` char(88) NOT NULL, --88 es el tamaño de un hash SHA512 con base 64
 	`token` char(88) NOT NULL,
-	`rol` char(5) NOT NULL,
+	`rol` char(5) DEFAULT 'user',
 	`nickname` varchar(50) NOT NULL,
 	`IDU` int(11) UNSIGNED AUTO_INCREMENT,
 	PRIMARY KEY (`IDU`),

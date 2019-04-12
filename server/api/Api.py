@@ -61,11 +61,10 @@ class API:
         :param password: contraseña
         :raise BadCredentialsError: si la combinación no es correcta
         """
-        hashed = sha512(password.encode('utf-8')).digest()
-        based = b64encode(hashed).decode('utf-8')
+        password = API.encrypt(password)
 
         query = self._users.select(Count(Literal("*")))
-        query.where = (self._users.nickname == nick) & (self._users.password == based)
+        query.where = (self._users.nickname == nick) & (self._users.password == password)
 
         cursor = self._db.cursor()
         cursor.execute(*tuple(query))
@@ -87,10 +86,9 @@ class API:
             try:
                 token = API.generate_token(API.SIZE)
 
-                hashed = sha512(token.encode('utf-8')).digest()
-                based = b64encode(hashed).decode('utf-8')
+                token_crypt = API.encrypt(token)
 
-                query = self._users.update(columns=[self._users.token], values=[based], where=self._users.nick == nick)
+                query = self._users.update(columns=[self._users.token], values=[token_crypt], where=self._users.nick == nick)
 
                 cursor = self._db.cursor()
                 cursor.execute(*tuple(query))
@@ -184,7 +182,6 @@ class API:
         namespace = bed['UUID']+"_"+bed['MAC']
         return namespace
 
-
     def users(self, token: str) -> list:
         """
         Solicita la lista de usuarios
@@ -206,7 +203,17 @@ class API:
         PermissionsError
             si el usuario no tiene rol de administrador
         """
-        pass
+        user = self.__get_user_by_token(token)
+        if user['rol'] != 'admin':
+            raise PermissionsError('Orden válida solo para administrador')
+
+        query = self._users.select(self._users.nickname)
+        cursor = self._db.cursor()
+        cursor.execute(*tuple(query))
+
+        names = [n for (n) in cursor]
+        cursor.close()
+        return names
         
     def useradd(self, token: str, nick: str, password: str):
         """
@@ -230,9 +237,26 @@ class API:
         UsernameExistsError
             si el nombre de usuario existía con anterioridad.
         """
-        pass
+        user = self.__get_user_by_token(token)
+        if user['rol'] != 'admin':
+            raise PermissionsError('Orden válida solo para administrador')
 
-    def usermod(self, token : str, nick : str, password : str, oldpass = None):
+        first_token = API.encrypt(API.generate_token(API.SIZE))
+        password = API.encrypt(password)
+        query = self._users.insert(
+            columns=[self._users.nickname, self._users.password, self._users.token],
+            values=[nick, password, first_token])
+
+        try:
+            cursor = self._db.cursor()
+            cursor.execute(*tuple(query))
+            cursor.close()
+            self._db.commit()
+        except IntegrityError as err:
+            self._db.rollback()
+            raise UsernameExistsError(str(err))
+
+    def usermod(self, token: str, nick: str, password: str, oldpass=None):
         """
         Cambia la contraseña del usuario
 
@@ -256,9 +280,31 @@ class API:
         ElementNotExistsError
             si el usuario no existe
         """
-        pass
+        user = self.__get_user_by_token(token)
+        if user['rol'] != 'admin':
+            if user['nickname'] != nick:
+                raise PermissionsError('Orden válida solo para administrador')
+            elif user['password'] != API.encrypt(oldpass):
+                raise PermissionsError('Contraseña anterior no válida')
 
-    def userdel(self, token : str, nick : str):
+        try:
+            update = self._users.update(columns=[self._users.password],
+                                        values=[API.encrypt(password)],
+                                        where=self._users.nick == nick)
+
+            cursor = self._db.cursor()
+            cursor.execute(*tuple(update))
+
+            if cursor.rowcount == 0:
+                raise ElementNotExistsError("El usuario no existe")
+
+            cursor.close()
+            self._db.commit()
+        except Exception:
+            self._db.rollback()
+            raise
+
+    def userdel(self, token: str, nick: str):
         """
         Borra un usuario
 
@@ -278,7 +324,24 @@ class API:
         ElementNotExistsError
             si el usuario no existe
         """
-        pass
+        user = self.__get_user_by_token(token)
+        if user['rol'] != 'admin':
+            raise PermissionsError('Orden válida solo para administrador')
+
+        try:
+            delete = self._users.delete(where=self._users.nickname == nick)
+
+            cursor = self._db.cursor()
+            cursor.execute(*tuple(delete))
+
+            if cursor.rowcount == 0:
+                raise ElementNotExistsError("El usuario no existe")
+
+            cursor.close()
+            self._db.commit()
+        except Exception:
+            self._db.rollback()
+            raise
 
     def bedadd(self, token: str, bedparams: dict):
         """
@@ -438,6 +501,18 @@ class API:
         token = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))
         return token
 
+    @classmethod
+    def encrypt(cls, text):
+        """
+        Encripta un texto
+
+        :param text: texto a encriptar
+        :return: texto encriptado
+        """
+        hashed = sha512(text.encode('utf-8')).digest()
+        based = b64encode(hashed).decode('utf-8')
+        return based
+
     def __get_user_by_token(self, token) -> dict:
         """
         Obtiene los datos del usuario
@@ -446,11 +521,10 @@ class API:
         :return: datos del usuario
         :raise BadCredentialsError: si el token no está ligado a ningún usuario
         """
-        hashed = sha512(token.encode('utf-8')).digest()
-        based = b64encode(hashed).decode('utf-8')
+        token = API.encrypt(token)
 
         query = self._users.select()
-        query.where = self._users.token == based
+        query.where = self._users.token == token
 
         cursor = self._db.cursor(dictionary=True)
         cursor.execute(*tuple(query))
