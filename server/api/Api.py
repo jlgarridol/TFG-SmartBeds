@@ -85,7 +85,7 @@ class API:
         again = True
         while again:
             try:
-                token = self.__generateToken(API.SIZE)
+                token = API.generate_token(API.SIZE)
 
                 hashed = sha512(token.encode('utf-8')).digest()
                 based = b64encode(hashed).decode('utf-8')
@@ -121,7 +121,7 @@ class API:
         BadCredentialsError
             si el token no está asociado a ningún usuario
         """
-        user = self.__getUserByToken(token)
+        user = self.__get_user_by_token(token)
 
         if user['rol'] == "admin":
             query = self._beds.select(self._beds.bed_name)
@@ -155,6 +155,7 @@ class API:
         -------
         string 
             espacio de nombres donde se difuenden los datos de la cama
+            que es el UUID y la MAC
 
         Raises
         ------
@@ -165,7 +166,24 @@ class API:
         PermissionsError
             si la cama no es accesible para el usuario
         """
-        pass
+        user = self.__get_user_by_token(token)
+        bed = self.__get_bed(bedname)
+
+        #Comprobación de que es accesible
+        if user['rol'] != 'admin':
+            query = self._user_bed.select()
+            query.where = (self._user_bed.IDB == bed['IDB']) & (self._user_bed.IDU == user['IDU'])
+
+            cursor = self._db.cursor()
+            cursor.execute(*tuple(query))
+            row = cursor.fetchone()
+            if row is None:
+                raise PermissionsError("La cama no es accesible por el usuario")
+            cursor.close()
+
+        namespace = bed['UUID']+"_"+bed['MAC']
+        return namespace
+
 
     def users(self, token: str) -> list:
         """
@@ -285,12 +303,12 @@ class API:
             existe ya como son el nombre, el identificador o el par
             ip-puerto
         """
-        user = self.__getUserByToken(token)
+        user = self.__get_user_by_token(token)
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
 
         try:
-            columns, values = self.__getParamsFromDict("self._beds", bedparams)
+            columns, values = API.get_params_from_dict("self._beds", bedparams)
             query = self._beds.insert(columns=columns, values=values)
 
             cursor = self._db.cursor()
@@ -402,7 +420,8 @@ class API:
         """
         pass
 
-    def __generateToken(self, size: int) -> str:
+    @classmethod
+    def generate_token(cls, size: int) -> str:
         """
         Genera un token del tamaño size
 
@@ -419,7 +438,7 @@ class API:
         token = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))
         return token
 
-    def __getUserByToken(self, token) -> dict:
+    def __get_user_by_token(self, token) -> dict:
         """
         Obtiene los datos del usuario
 
@@ -441,7 +460,26 @@ class API:
         cursor.close()
         return user
 
-    def __getParamsFromDict(self, table, params):
+    def __get_bed(self, bedname) -> dict:
+        """
+        Obtiene los datos de una cama
+
+        :param bedname: identificador de la cama
+        :return: datos de la cama
+        """
+        query = self._beds.select()
+        query.where = self._beds.bed_name == bedname
+
+        cursor = self._db.cursor(dictionary=True)
+        cursor.execute(*tuple(query))
+        bed = cursor.fetchone()
+        if bed is None:
+            raise ElementNotExistsError('La cama solicitada no existe')
+        cursor.close()
+        return bed
+
+    @classmethod
+    def get_params_from_dict(cls, table, params):
         """
         Obtiene los parámetros válidos para sql-python
 
@@ -450,7 +488,7 @@ class API:
         """
         columns = []
         values = []
-        for c,v in params.items():
+        for c, v in params.items():
             columns.append(eval(table+"."+c))
             values.append(v)
 
