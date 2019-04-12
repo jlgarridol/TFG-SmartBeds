@@ -17,6 +17,8 @@ class API:
 
     def __init__(self, db: MySQLConnection):
         self._db = db
+        self._db.autocommit = False
+
         self._users = Table('Users')
         self._beds = Table('Beds')
         self._user_bed = Table('Users_Beds')
@@ -44,14 +46,14 @@ class API:
             si la relación nick-password no existe
         """
 
-        self.__checkPassword(nick, password)
+        self.__check_password(nick, password)
 
-        token = self.__updateToken(nick)
+        token = self.__update_token(nick)
 
         self._db.commit()
         return token
 
-    def __checkPassword(self, nick, password):
+    def __check_password(self, nick, password):
         """
         Comprueba si la contraseña es correcta
 
@@ -73,8 +75,7 @@ class API:
             raise BadCredentialsError("La combinación de nombre de usuario y contraseña no coinciden")
         cursor.close()
 
-
-    def __updateToken(self, nick):
+    def __update_token(self, nick):
         """
         Genera un nuevo token para la sesión
 
@@ -100,8 +101,6 @@ class API:
 
         return token
 
-
-
     def beds(self, token: str) -> list:
         """
         Lista de camas disponibles para
@@ -122,7 +121,22 @@ class API:
         BadCredentialsError
             si el token no está asociado a ningún usuario
         """
-        pass
+        user = self.__getUserByToken(token)
+
+        if user['rol'] == "admin":
+            query = self._beds.select(self._beds.bed_name)
+        else:
+            join = self._beds.join(self._user_bed)
+            join.condition = join.right.IDB == self._beds.IDB
+            query = join.select(self._beds.bed_name)
+            query.where = join.right.IDU == user['IDU']
+
+        cursor = self._db.cursor()
+        cursor.execute(*tuple(query))
+
+        names = [n for (n) in cursor]
+        cursor.close()
+        return names
 
     def bed(self, token: str, bedname: str) -> str:
         """
@@ -287,8 +301,7 @@ class API:
             self._db.rollback()
             raise BedExistsError(str(err))
 
-
-    def bedmod(self, token : str, bedparams : dict):
+    def bedmod(self, token: str, bedparams: dict):
         """
         Modifica una cama
 
@@ -443,20 +456,26 @@ class API:
 
         return columns, values
 
+
 class SmartBedError(Exception):
     pass
+
 
 class BadCredentialsError(SmartBedError):
     pass
 
+
 class ElementNotExistsError(SmartBedError):
     pass
+
 
 class PermissionsError(SmartBedError):
     pass
 
+
 class BedExistsError(SmartBedError):
     pass
+
 
 class UsernameExistsError(SmartBedError):
     pass
