@@ -109,7 +109,7 @@ class API:
                 again = False
                 cursor.close()
             except IntegrityError:
-                pass
+                pass #Se ha repetido el token, se vuelve a intentar
 
         return token
 
@@ -393,7 +393,7 @@ class API:
             raise PermissionsError('Orden válida solo para administrador')
 
         try:
-            columns, values = API.get_params_from_dict("self._beds", bedparams)
+            columns, values = self._get_params_from_dict(table="self._beds", params=bedparams)
             query = self._beds.insert(columns=columns, values=[values])
 
             cursor = self._db.cursor()
@@ -431,11 +431,12 @@ class API:
             si la cama no existe
         """
         user = self.__get_user_by_token(token)
+        self.__get_bed(bedparams['bed_name']) #Comprueba que la cama existe
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
 
         try:
-            columns, values = API.get_params_from_dict("self._beds", bedparams)
+            columns, values = self._get_params_from_dict("self._beds", bedparams)
             query = self._beds.update(columns=columns,
                                       values=values,
                                       where=self._beds.bed_name == bedparams['bed_name'])
@@ -449,7 +450,7 @@ class API:
             self._db.rollback()
             raise BedExistsError(str(err))
 
-    def beddel(self, token : str, bedname: str):
+    def beddel(self, token: str, bedname: str):
         """
         Borra una cama
 
@@ -723,11 +724,11 @@ class API:
         command[0] = command[0].replace("\"", "")
         return command
 
-    @classmethod
-    def get_params_from_dict(cls, table, params):
+    def _get_params_from_dict(self, table, params):
         """
         Obtiene los parámetros válidos para sql-python
 
+        :param table: tabla sobre la que aplicar
         :param params: diccionario con los parámetros
         :return: tupla columnas, valores
         """
