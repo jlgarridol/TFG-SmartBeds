@@ -7,7 +7,7 @@ import traceback
 _api: api.API = api.API.get_instance()
 
 
-@app.route("/api/auth", methods=['POST'])
+@app.route("/api/auth", methods=['GET', 'POST'])
 def auth():
 
     def func(response):
@@ -19,7 +19,7 @@ def auth():
     return make_response(func)
 
 
-@app.route("/api/beds", methods=["POST"])
+@app.route("/api/beds", methods=['GET', 'POST'])
 def beds():
 
     def func(response):
@@ -29,7 +29,7 @@ def beds():
     return make_response(func)
 
 
-@app.route("/api/bed", methods=["POST"])
+@app.route("/api/bed", methods=['GET', 'POST'])
 def bed():
 
     def func(response):
@@ -40,7 +40,7 @@ def bed():
     return make_response(func)
 
 
-@app.route("/api/users", methods=["POST"])
+@app.route("/api/users", methods=['GET', 'POST'])
 def users():
     
     def func(response):
@@ -50,7 +50,7 @@ def users():
     return make_response(func)
 
 
-@app.route("/api/user/add", methods=["POST"])
+@app.route("/api/user/add", methods=['GET', 'POST'])
 def useradd():
     
     def func(response):
@@ -65,7 +65,7 @@ def useradd():
     return make_response(func)
 
 
-@app.route("/api/user/mod", methods=["POST"])
+@app.route("/api/user/mod", methods=['GET', 'POST'])
 def usermod():
     
     def func(response):
@@ -83,7 +83,7 @@ def usermod():
     return make_response(func)
 
 
-@app.route("/api/user/del", methods=["POST"])
+@app.route("/api/user/del", methods=['GET', 'POST'])
 def userdel():
     
     def func(response):
@@ -95,7 +95,7 @@ def userdel():
     return make_response(func)
     
 
-@app.route("/api/bed/add", methods=["POST"])
+@app.route("/api/bed/add", methods=['GET', 'POST'])
 def bedadd():
     
     def func(response):
@@ -108,7 +108,7 @@ def bedadd():
     return make_response(func)
 
 
-@app.route("/api/bed/mod", methods=["POST"])
+@app.route("/api/bed/mod", methods=['GET', 'POST'])
 def bedmod():
 
     def func(response):
@@ -121,7 +121,7 @@ def bedmod():
     return make_response(func)
 
 
-@app.route("/api/bed/del", methods=["POST"])
+@app.route("/api/bed/del", methods=['GET', 'POST'])
 def beddel():
 
     def func(response):
@@ -133,7 +133,7 @@ def beddel():
     return make_response(func)
 
 
-@app.route("/api/bed/perm", methods=["POST"])
+@app.route("/api/bed/perm", methods=['GET', 'POST'])
 def bedperm():
     def func(response):
         token = request.form['token']

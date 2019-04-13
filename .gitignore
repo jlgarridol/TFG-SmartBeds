@@ -359,3 +359,5 @@ data/
 
 #Configuración
 project.json
+app.nginx.conf
+app.uwsgi.ini

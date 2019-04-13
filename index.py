@@ -1,4 +1,4 @@
-from smartbeds import app
+from smartbeds import app as application
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    application.run()
