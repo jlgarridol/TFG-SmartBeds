@@ -1,0 +1,179 @@
+{
+  "tests": [
+    {
+      "name": "test-auth",
+      "description": "test para comprobar si el usuario inicia correctamente la sesión",
+      "func": "auth",
+      "input": ["alicia", "alioli"],
+      "output": [null, "alicia", "user"],
+      "excepts": null
+    },
+    {
+      "name": "test-bad-auth",
+      "description": "test para comprobar si el usuario inicia correctamente la sesión",
+      "func": "auth",
+      "input": ["alicia", "mayonesa"],
+      "output": [null, "alicia", "user"],
+      "excepts": "BadCredentialsError"
+    },
+    {
+      "name": "test-user-list",
+      "description": "Test para comprobar la lista a los usuarios",
+      "func": "users",
+      "input": ["92KLRMLJ8B1PTMQ2"],
+      "output": ["admin", "alicia", "joselu"],
+      "excepts": null
+    },
+    {
+      "name": "test-user-list-bad-token",
+      "description": "Test para comprobar que un token incorrecto",
+      "func": "users",
+      "input": ["BADTOKEN"],
+      "output": ["admin", "alicia", "joselu"],
+      "excepts": "BadCredentialsError"
+    },
+    {
+      "name": "test-user-list-no-permition",
+      "description": "Test para comprobar que un usuario no puede acceder a la lista de usuarios",
+      "func": "users",
+      "input": ["8M8M8LPO2UM2XQQX"],
+      "output": ["admin", "alicia", "joselu"],
+      "excepts": "PermissionsError"
+    },
+
+
+
+    {
+      "name": "test-user-add",
+      "description": "Test para comprobar que un usuario se crea correctamente",
+      "func": "useradd",
+      "input": ["92KLRMLJ8B1PTMQ2", "user1", "patata"],
+      "output": null,
+      "excepts": null
+    },
+    {
+      "name": "test-user-add-already-exists",
+      "description": "Test para comprobar que un usuario no puede ser añadido si ya existe",
+      "func": "useradd",
+      "input": ["92KLRMLJ8B1PTMQ2", "user1", "patata"],
+      "output": null,
+      "excepts": "UsernameExistsError"
+    },
+    {
+      "name": "test-user-add-no-admin",
+      "description": "Test para comprobar que un usuario no administrador no puede añadir a un usuario",
+      "func": "useradd",
+      "input": ["8M8M8LPO2UM2XQQX", "user2", "patata"],
+      "output": null,
+      "excepts": "PermissionsError"
+    },
+    {
+      "name": "test-user-add-bad-token",
+      "description": "Test para comprobar que un usuario no identificado no puede realizar la tarea",
+      "func": "useradd",
+      "input": ["BADTOKEN", "user1", "patata"],
+      "output": null,
+      "excepts": "BadCredentialsError"
+    },
+
+
+
+    {
+      "name": "test-user-mod",
+      "description": "Test para comprobar que un usuario se modifica correctamente",
+      "func": "usermod",
+      "input": ["92KLRMLJ8B1PTMQ2", "user1", "boniato"],
+      "output": null,
+      "excepts": null
+    },
+    {
+      "name": "test-user-mod-user-not-exist",
+      "description": "Test para comprobar que un usuario no puede ser modificado si no existe",
+      "func": "usermod",
+      "input": ["92KLRMLJ8B1PTMQ2", "no_existo", "password"],
+      "output": null,
+      "excepts": "ElementNotExistsError"
+    },
+    {
+      "name": "test-user-mod-no-admin",
+      "description": "Test para comprobar que un usuario no administrador no puede modificar a un usuario ajeno",
+      "func": "usermod",
+      "input": ["8M8M8LPO2UM2XQQX", "user1", "patata"],
+      "output": null,
+      "excepts": "PermissionsError"
+    },
+    {
+      "name": "test-user-mod-bad-token",
+      "description": "Test para comprobar que un usuario no identificado no puede realizar la tarea",
+      "func": "usermod",
+      "input": ["BADTOKEN", "user1", "otra"],
+      "output": null,
+      "excepts": "BadCredentialsError"
+    },
+    {
+      "name": "test-user-mod-own-password-error",
+      "description": "Test para comprobar que un usuario no puede modificar su propia contraseña si la anterior no es correcta",
+      "func": "usermod",
+      "input": ["8M8M8LPO2UM2XQQX", "joselu", "mayonesa", "no_contraseña"],
+      "output": null,
+      "excepts": "BadCredentialsError"
+    },
+    {
+      "name": "test-user-mod-own-password",
+      "description": "Test para comprobar que un usuario puede modificar su propia contraseña",
+      "func": "usermod",
+      "input": ["8M8M8LPO2UM2XQQX", "joselu", "mayonesa", "patata"],
+      "output": null,
+      "excepts": null
+    },
+
+
+
+    {
+      "name": "test-user-del",
+      "description": "Test para que un usuario se borra correctamente",
+      "func": "userdel",
+      "input": ["92KLRMLJ8B1PTMQ2", "user1"],
+      "output": null,
+      "excepts": null
+    },
+    {
+      "name": "test-user-del-no-admin",
+      "description": "Test para comprobar que un usuario no administrador no puede borrar a un usuario",
+      "func": "userdel",
+      "input": ["8M8M8LPO2UM2XQQX", "alicia"],
+      "output": null,
+      "excepts": "PermissionsError"
+    },
+    {
+      "name": "test-user-del-bad-token",
+      "description": "Test para comprobar que un usuario no identificado no puede realizar la tarea",
+      "func": "userdel",
+      "input": ["BADTOKEN", "alicia"],
+      "output": null,
+      "excepts": "BadCredentialsError"
+    },
+    {
+      "name": "test-user-del-admin-error",
+      "description": "Test para comprobar que no se puede borrar al usuario administrador",
+      "func": "userdel",
+      "input": ["92KLRMLJ8B1PTMQ2", "admin"],
+      "output": null,
+      "excepts": "IllegalOperationError"
+    },
+    {
+      "name": "test-user-mod-own-password",
+      "description": "Test para comprobar que no se puede borrar un usuario que no existe",
+      "func": "userdel",
+      "input": ["92KLRMLJ8B1PTMQ2", "user2"],
+      "output": null,
+      "excepts": "ElementNotExistsError"
+    }
+
+  ],
+  "tokens":{
+      "admin": "92KLRMLJ8B1PTMQ2",
+      "joselu": "8M8M8LPO2UM2XQQX",
+      "alicia": "123456ASDFG890HJ"
+  }
+}
