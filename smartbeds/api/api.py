@@ -33,7 +33,7 @@ class API:
             raise Exception("No existe una instancia de la API")
         return cls._instance
 
-    def auth(self, nick: str, password: str) -> str:
+    def auth(self, nick: str, password: str) -> tuple:
         """
         Comprueba que el usuario y la contraseña
         son correctas.
@@ -59,9 +59,9 @@ class API:
         self.__check_password(nick, password)
 
         token = self.__update_token(nick)
-
+        user = self.__get_user_by_token(token)
         self._db.commit()
-        return token
+        return token, nick, user['rol']
 
     def __check_password(self, nick, password):
         """
@@ -267,7 +267,6 @@ class API:
         try:
             cursor = self._db.cursor()
             command = API.prepare_query(query)
-            print(command)
             cursor.execute(*command)
 
             cursor.close()
@@ -302,10 +301,11 @@ class API:
         """
         user = self.__get_user_by_token(token)
         if user['rol'] != 'admin':
+
             if user['nickname'] != nick:
                 raise PermissionsError('Orden válida solo para administrador')
             elif user['password'] != API.encrypt(oldpass):
-                raise PermissionsError('Contraseña anterior no válida')
+                raise BadCredentialsError('Contraseña anterior no válida')
         if self.__get_user_by_name(nick)['password'] == API.encrypt(password):
             #La contraseña es la misma
             return
