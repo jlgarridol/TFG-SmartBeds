@@ -113,6 +113,17 @@ class API:
 
         return token
 
+    def get_all_beds_info(self):
+        query = self._beds.select()
+
+        cursor = self._db.cursor(dictionary=True)
+        command = API.prepare_query(query)
+        cursor.execute(*command)
+        lista = list(cursor)
+        cursor.close()
+        return lista
+
+
     def beds(self, token: str) -> list:
         """
         Lista de camas disponibles para

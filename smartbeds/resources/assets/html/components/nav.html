@@ -11,19 +11,39 @@
                 <a class="nav-link" href="{{ url_for('home') }}">Inicio</a>
 
             </li>
+            {% if info.login and info.role == 'admin' %}
+                <li class="nav-item">
+                    <a class="nav-link {% if page.page == 'admin_bed' %}active{% endif %}"
+                       href="{{ url_for('camas') }}">
+                        Administrar camas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if page.page == 'admin_users' %}active{% endif %}"
+                       href="{{ url_for('home') }}">
+                        Administrar usuarios
+                    </a>
+                </li>
+            {% endif %}
             <li class="nav-item {% if page.page == 'about' %}active{% endif %}">
                 <a class="nav-link" href="#">Acerca de</a>
             </li>
         </ul>
         <ul class="navbar-nav mr-right">
             {% if info.login %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('logout') }}">Cerrar sesión</a>
-            </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if page.page == 'own_user' %}active{% endif %}" href="{{ url_for('home') }}">
+                        {{ info.user }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Cerrar sesión</a>
+                </li>
             {% else %}
-            <li class="nav-item {% if page.page == 'login' %}active{% endif %}">
-                <a class="nav-link" href="{{ url_for('login') }}">Iniciar sesión</a>
-            </li>
+                <li class="nav-item {% if page.page == 'login' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('login') }}">Iniciar sesión</a>
+                </li>
             {% endif %}
         </ul>
     </div>

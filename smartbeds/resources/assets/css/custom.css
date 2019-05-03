@@ -8,6 +8,7 @@ section {
 
 .countdown {
     display: block;
+    width: 100%;
 }
 
 .countdown-row {
@@ -58,4 +59,15 @@ section {
     float: none !important;
     margin-left: auto !important;
     margin-right: auto !important;
+}
+
+.countdown-section {
+    display: inline-block;
+    font-size: 11px;
+    line-height: 1;
+    text-align: center;
+    width: 25%;
+    border-left: 1px dotted #BBB;
+    color: #282828;
+    text-transform: capitalize;
 }

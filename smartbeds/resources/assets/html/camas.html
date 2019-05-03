@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 col-lg-12 offset-lg-0">
+                <h2>Administrar camas</h2>
+                <table class="table table-hover text-center">
+                    <thead>
+                    <tr>
+                        <th colspan="2">
+                            <a href="{{ url_for }}" class="btn btn-primary btn-lg btn-block">Añadir cama</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for cama in beds %}
+                        <tr>
+                            <td>{{ cama }}</td>
+                            <td>
+                                <a href="{{ url_for('modifica_cama', bedname=cama) }}"
+                                   class="btn btn-success">Modificar</a>
+                                <a href="{{ url_for('borrar_cama', bedname=cama) }}" class="btn btn-danger">Borrar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
