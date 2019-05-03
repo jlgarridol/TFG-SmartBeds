@@ -64,7 +64,9 @@ Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}
 }\end{lstlisting}&\begin{lstlisting}[language=JSONT]
 {
   ...,
-  "token": text
+  "token": text,
+  "role": text,
+  "username": text
 }\end{lstlisting}
 \\\hubu
 CU-2.1  CU-4		&	\texttt{/api/beds}	& 
@@ -106,7 +108,7 @@ CU-2.2		&	\texttt{/} \textit{(WebSocket)}	&
   "vital": [HR,RR,..,B2B],
   "pressure": [P1,P2,..,P6] 
 }\end{lstlisting}
-\\\hubu
+\\
 CU-3		&	\texttt{/api/users}	& 
 \begin{lstlisting}[language=JSONT]
 {
@@ -132,7 +134,7 @@ CU-3.1		&	\texttt{/api/user/add}	&
 {
   ...
 }\end{lstlisting}
-\\
+\\\hubu
 CU-3.2		&	\texttt{/api/user/mod}	& 
 \begin{lstlisting}[language=JSONT]
 {

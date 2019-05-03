@@ -1,19 +1,34 @@
 {% extends "base.html" %}
-{% block title %}
-Login
-{% endblock %}
-{% block header %}
-Login
-{% endblock %}
 
 {% block content %}
-<form method='post'>
-  <fieldset>
-    <div class="form-group">
-      <label for="token">Token</label>
-      <input type="text" class="form-control" id="pass" placeholder="Token" name="token">
+    <div class="container">
+        <h2 class="offset-md-2">Login</h2>
+        <div class="row">
+            {% if page.bad %}
+                <div class="col-md-8 offset-md-2">
+                    <p id="BAD_CREDENTIAL" class="text-danger">Credenciales incorrectas</p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <form class="offset-md-2 col-md-8" method="POST">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="user">Nickname</label>
+                        <input type="text" class="form-control" id="user" placeholder="Nickname" name="user"
+                               value="{{ page.nick }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="pass">Password</label>
+                        <input type="password" class="form-control" id="pass" placeholder="Password" name="pass">
+                    </div>
+                    <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                </fieldset>
+            </form>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </fieldset>
-</form>
+{% endblock %}
+
+{% block js %}
+
 {% endblock %}

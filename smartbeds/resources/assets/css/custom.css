@@ -1,0 +1,73 @@
+section {
+    background-color: white;
+}
+
+.loginMessage {
+    display: none;
+}
+
+.countdown {
+    display: block;
+    width: 100%;
+}
+
+.countdown-row {
+    display: block;
+    position: relative;
+    text-align: center;
+}
+
+.countdown-section {
+    display: inline-block;
+    font-size: 11px;
+    line-height: 1;
+    text-align: center;
+    width: 25%;
+    border-left: 1px dotted #BBB;
+    color: #282828;
+    text-transform: capitalize;
+}
+
+.countdown-section:first-child {
+    border-left: 0;
+}
+
+.countdown-amount {
+    display: block;
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.countdown-descr {
+    display: block;
+    width: 100%;
+}
+
+.countdown-large .countdown-section {
+    font-size: 18px;
+}
+
+.countdown-large .countdown-amount {
+    font-size: 44px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.divcenter {
+    position: relative !important;
+    float: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.countdown-section {
+    display: inline-block;
+    font-size: 11px;
+    line-height: 1;
+    text-align: center;
+    width: 25%;
+    border-left: 1px dotted #BBB;
+    color: #282828;
+    text-transform: capitalize;
+}

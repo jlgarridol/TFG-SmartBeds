@@ -13,8 +13,10 @@ def auth():
     def func(response):
         user = request.form["user"]
         password = request.form['pass']
-        token = _api.auth(user, password)
+        token, nick, role = _api.auth(user, password)
         response['token'] = token
+        response['role'] = role
+        response['username'] = nick
 
     return make_response(func)
 

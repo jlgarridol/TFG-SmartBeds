@@ -1,12 +1,59 @@
 {% extends "base.html" %}
 {% block js %}
-{% if info.login %}
-<script type="text/javascript" charset="utf-8">
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
-    socket.on('package', function(data) {
-        //TODO
-        console.log(data);
-    });
-</script>
-{% endif %}
+    <script>
+        // Set the date we're counting down to
+        var countDownDate = new Date("Jun 1, 2019 00:00:00").getTime();
+        var x = setInterval(function () {
+
+            // Get todays date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="demo"
+            $("#dias").text(days);
+            $("#horas").text(hours);
+            $("#minutos").text(minutes);
+            $("#segundos").text(seconds);
+
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdow").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <h2 class="col-md-12 text-center font-weight-bold">
+                En construcción
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="countdown countdown-large divcenter bottommargin is-countdown" id="countdown-4"
+                     style="max-width:700px; color:black"><span class="countdown-row countdown-show4"><span
+                        class="countdown-section"><span class="countdown-amount" id="dias"></span><span
+                        class="countdown-period">Días</span></span><span
+                        class="countdown-section"><span class="countdown-amount" id="horas"></span><span
+                        class="countdown-period">Horas</span></span><span
+                        class="countdown-section"><span class="countdown-amount" id="minutos"></span><span
+                        class="countdown-period">Minutos</span></span><span
+                        class="countdown-section"><span class="countdown-amount" id="segundos"></span><span
+                        class="countdown-period">Segundos</span></span></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}
