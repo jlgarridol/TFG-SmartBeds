@@ -58,10 +58,9 @@ Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}
 	\bottomcaption{Especificaciones del API}
 	\begin{xtabular}{p{0.095\textwidth} p{0.2\textwidth} p{0.37\textwidth} p{0.33\textwidth}}
 		CU-1		&	\texttt{/api/auth}	& \begin{lstlisting}[language=JSONT]
-{
-  "user": text,
-  "pass": text
-}\end{lstlisting}&\begin{lstlisting}[language=JSONT]
+"user": text,
+"pass": text
+\end{lstlisting}&\begin{lstlisting}[language=JSONT]
 {
   ...,
   "token": text,
@@ -71,22 +70,26 @@ Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}
 \\\hubu
 CU-2.1  CU-4		&	\texttt{/api/beds}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text
-}\end{lstlisting}
+"token": text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
-{
-  ...,
-  "beds": [text,...,text]
-}\end{lstlisting}
-\\\hubu
+...,
+"beds": [{
+  	"bed_name": text,
+	"ip_group": text,
+	"port": text,
+	"MAC": text,
+	"UUID": text
+    }
+    ...]
+\end{lstlisting}
+\\
 CU-2.2		&	\texttt{/api/bed}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text,
-  "bedname": text
-}\end{lstlisting}
+token=text&
+bedname=text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
@@ -96,10 +99,9 @@ CU-2.2		&	\texttt{/api/bed}	&
 \\\hubu
 CU-2.2		&	\texttt{/} \textit{(WebSocket)}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text,
-  "namespace": text
-}\end{lstlisting}
+token=text&
+namespace=text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
@@ -108,12 +110,11 @@ CU-2.2		&	\texttt{/} \textit{(WebSocket)}	&
   "vital": [HR,RR,..,B2B],
   "pressure": [P1,P2,..,P6] 
 }\end{lstlisting}
-\\
+\\\hubu
 CU-3		&	\texttt{/api/users}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text
-}\end{lstlisting}
+token=text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
@@ -123,12 +124,11 @@ CU-3		&	\texttt{/api/users}	&
 \\\hubu
 CU-3.1		&	\texttt{/api/user/add}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text,
-  "username": text,
-  "password": text,
-  "password-re": text
-}\end{lstlisting}
+token=text&
+username=text&
+password=text&
+password-re=text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
@@ -137,13 +137,12 @@ CU-3.1		&	\texttt{/api/user/add}	&
 \\\hubu
 CU-3.2		&	\texttt{/api/user/mod}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text,
-  "username": text,
-  "password": text,
-  "password-re": text,
-  ["pasword-old": text]
-}\end{lstlisting}
+token=text&
+username=text&
+password=text&
+password-re=text
+[&pasword-old=text]
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
@@ -152,10 +151,9 @@ CU-3.2		&	\texttt{/api/user/mod}	&
 \\\hubu
 CU-3.3		&	\texttt{/api/user/del}	& 
 \begin{lstlisting}[language=JSONT]
-{
-"token": text,
-"username": text
-}\end{lstlisting}
+token=text&
+username=text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
@@ -164,30 +162,28 @@ CU-3.3		&	\texttt{/api/user/del}	&
 \\\hubu
 CU-4.1		&	\texttt{/api/bed/add}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text,
-  "bed_name": text,
-  "ip_group": text,
-  "port": text,
-  "MAC": text,
-  "UUID": text
-}\end{lstlisting}
+token=text&
+bed_name=text&
+ip_group=text&
+port=text&
+MAC=text&
+UUID=text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
   ...
 }\end{lstlisting}
-\\\hubu
+\\
 CU-4.2		&	\texttt{/api/bed/mod}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text,
-  "bed_name": text,
-  "ip_group": text,
-  "port": text,
-  "MAC": text,
-  "UUID": text
-}\end{lstlisting}
+token=text&
+bed_name=text&
+ip_group=text&
+port=text&
+MAC=text&
+UUID=text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
@@ -196,10 +192,9 @@ CU-4.2		&	\texttt{/api/bed/mod}	&
 \\\hubu
 CU-4.3		&	\texttt{/api/bed/del}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text,
-  "bed_name": text
-}\end{lstlisting}
+token=text&
+bed_name=text
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {
@@ -208,12 +203,11 @@ CU-4.3		&	\texttt{/api/bed/del}	&
 \\\hubu
 CU-4.4		&	\texttt{/api/bed/perm}	& 
 \begin{lstlisting}[language=JSONT]
-{
-  "token": text,
-  "mode": "info"|   "change",
-  ["bed_name": text,
-  "username": text]
-}\end{lstlisting}
+token=text&
+mode=[info|change]
+[&bed_name=text&
+username=text]
+\end{lstlisting}
 &
 \begin{lstlisting}[language=JSONT]
 {

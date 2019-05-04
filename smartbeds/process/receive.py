@@ -5,16 +5,16 @@ import struct
 from queue import Queue
 from threading import Thread
 from smartbeds.api.api import API
+from smartbeds.process.proc import BedProcess
 
 _bed_listeners = {}
 
 
-class BedListener(Thread):
+class BedListener:
 
     def __init__(self, ip: str, port: int):
         self._ip = ip
         self._port = port
-        Thread.__init__(self, daemon=True)
         self.stopped = False
         self._queue = Queue()
 
@@ -39,6 +39,9 @@ class BedListener(Thread):
         else:
             return self._queue.get()
 
+    def start(self):
+        Thread(target=self.run, daemon=True).start()
+
 
 def load_beds_listeners():
     beds = API.get_instance().get_all_beds_info()
@@ -50,7 +53,8 @@ def new_bed_listeners(ip: str, port: int, name: str):
     global _bed_listeners
 
     bed = BedListener(ip, port)
-    bed.run()
+    bed.start()
+    BedProcess(bed).start()
     _bed_listeners[name] = bed
 
 
