@@ -1,6 +1,7 @@
 from threading import Thread
 import pandas as pd
 import numpy as np
+import smartbeds.process.transformers as tfr
 from io import StringIO
 import sys
 
@@ -48,12 +49,13 @@ class BedProcess:
                 sys.stdout.flush()
                 self._start_data()
 
-        if df.SS > 400: #Suficientes datos
+        print(df)
+
+        if df.SS > 400:  # Suficientes datos
             self._last = self._last.append(df)
-            added=True
+            added = True
 
-
-        if len(self._last) > self._window: #Tenemos uno de más
+        if len(self._last) > self._window:  # Tenemos uno de más
             sys.stdout.flush()
             self._last.drop(self._last.index.tolist()[0], inplace=True)
 
@@ -75,16 +77,28 @@ class BedProcess:
         return self._predict(self, _input)
 
     def _preprocess(self):
-        return None
+        to_proc = self._last[["P"+str(i) for i in range(1, 7)]]
+        # De momento, para poder ir funcionando se hace una media y desviación
+        nf = tfr.NoiseFilter(minimum=5.0)
+        norm = tfr.Normalizer(max_=100)
+        clean_data = tfr.PipelineTransformer(nf, norm).fit_transform(to_proc)
 
-    def _predict(self, _input):
+        mean = tfr.PipelineTransformer(tfr.StatisticsTransformer(mode='mean', window=self._window), norm)
+        std = tfr.PipelineTransformer(tfr.StatisticsTransformer(mode='std', window=self._window), norm)
+        ran = tfr.PipelineTransformer(tfr.StatisticsTransformer(mode='range', window=self._window), norm)
+        cnt = tfr.ConcatenateTransformer(mean, std, ran)
+        return cnt.fit_transform(clean_data)
+
+    @staticmethod
+    def _predict(_input):
+        print(_input)  # Debug
         return 1
 
     def run(self):
         while not self._bed.stopped:
-            newRow = self._bed.next_package()
-            if newRow is not None:
-                df, added = self._new_row(newRow)
+            newrow = self._bed.next_package()
+            if newrow is not None:
+                df, added = self._new_row(newrow)
                 self._create_basic_package(df, added)
 
     def start(self):

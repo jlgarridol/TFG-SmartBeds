@@ -24,7 +24,7 @@ class BedListener:
     def run(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.bind((self._ip, self._port))
+        s.bind(("", self._port))
         group = socket.inet_aton(self._ip)
         mreq = struct.pack('4sL', group, socket.INADDR_ANY)
         s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
