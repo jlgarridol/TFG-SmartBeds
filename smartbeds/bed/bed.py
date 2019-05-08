@@ -9,7 +9,7 @@ __author__="José Luis Garrido Labrador"
 IP = "224.3.29.71"
 PORT = 5007
 MULTICAST_TTL = 2
-INTERVAL = 0.4
+INTERVAL = 1
 
 if __name__ == "__main__":
     # Creamos un socket (según https://stackoverflow.com/questions/603852/how-do-you-udp-multicast-in-python)

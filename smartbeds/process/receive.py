@@ -8,7 +8,7 @@ from smartbeds.api.api import API
 from smartbeds.process.proc import BedProcess
 
 _bed_listeners = {}
-
+_processors = {}
 
 class BedListener:
 
@@ -24,7 +24,7 @@ class BedListener:
     def run(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.bind(("", self._port))
+        s.bind((self._ip, self._port))
         group = socket.inet_aton(self._ip)
         mreq = struct.pack('4sL', group, socket.INADDR_ANY)
         s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
@@ -54,8 +54,10 @@ def new_bed_listeners(ip: str, port: int, name: str):
 
     bed = BedListener(ip, port)
     bed.start()
-    BedProcess(bed).start()
+    bedp = BedProcess(bed)
+    bedp.start()
     _bed_listeners[name] = bed
+    _processors[name] = bedp
 
 
 def remove_bed_listener(name: str):
@@ -64,3 +66,7 @@ def remove_bed_listener(name: str):
     bed = _bed_listeners.pop(name)
     if bed is not None:
         bed.stop()
+
+
+def get_processor(name):
+    return _processors[name]

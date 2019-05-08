@@ -1,5 +1,6 @@
 from mysql.connector.connection import MySQLConnection
 from mysql.connector.errors import IntegrityError
+from smartbeds.utils import get_secret_key
 import random
 import string
 from hashlib import sha512
@@ -24,6 +25,7 @@ class API:
         self._users = Table('Users')
         self._beds = Table('Beds')
         self._user_bed = Table('Users_Beds')
+        self._master_key = get_secret_key()
 
         API._instance = self
 
@@ -114,6 +116,13 @@ class API:
         return token
 
     def get_all_beds_info(self):
+        """
+        Obtiene toda la lista de camas
+        con todos sus datos. Recomendado
+        para su uso interno de la aplicación
+
+        :return: Lista de camas
+        """
         query = self._beds.select()
 
         cursor = self._db.cursor(dictionary=True)
@@ -122,7 +131,6 @@ class API:
         lista = list(cursor)
         cursor.close()
         return lista
-
 
     def beds(self, token: str) -> list:
         """
@@ -144,7 +152,10 @@ class API:
         BadCredentialsError
             si el token no está asociado a ningún usuario
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
 
         if user['rol'] == "admin":
             query = self._beds.select(self._beds.bed_name)
@@ -158,7 +169,7 @@ class API:
         command = API.prepare_query(query)
         cursor.execute(*command)
 
-        names = [n for [n] in cursor]
+        names = [self.__get_bed(n) for [n] in cursor]
         cursor.close()
         return names
 
@@ -190,7 +201,10 @@ class API:
         PermissionsError
             si la cama no es accesible para el usuario
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         bed = self.__get_bed(bedname)
 
         #Comprobación de que es accesible
@@ -230,7 +244,10 @@ class API:
         PermissionsError
             si el usuario no tiene rol de administrador
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
 
@@ -361,7 +378,10 @@ class API:
         IllegalOperationError
             si se intenta borrar al usuario administrador
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
         to_del = self.__get_user_by_name(nick)
@@ -399,7 +419,10 @@ class API:
             existe ya como son el nombre, el identificador o el par
             ip-puerto
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
 
@@ -441,7 +464,10 @@ class API:
         ElementNotExistsError
             si la cama no existe
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         self.__get_bed(bedparams['bed_name']) #Comprueba que la cama existe
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
@@ -481,7 +507,10 @@ class API:
         ElementNotExistsError
             si la cama no existe
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
 
@@ -514,7 +543,10 @@ class API:
         PermissionsError
             si el usuario no tiene rol de administrador
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
 
@@ -564,7 +596,10 @@ class API:
         ElementNotExistsError
             si la cama o el usuario no existe
         """
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
 
@@ -774,6 +809,7 @@ class BedExistsError(SmartBedError):
 
 class UsernameExistsError(SmartBedError):
     pass
+
 
 class IllegalOperationError(SmartBedError):
     pass

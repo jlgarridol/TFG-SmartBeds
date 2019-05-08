@@ -21,5 +21,6 @@ load_beds_listeners()
 
 import smartbeds.routes.web
 import smartbeds.routes.webapi
+import smartbeds.routes.websocket
 
 

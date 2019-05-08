@@ -19,11 +19,11 @@
                     <tbody>
                     {% for cama in beds %}
                         <tr>
-                            <td>{{ cama }}</td>
+                            <td>{{ cama.bed_name }}</td>
                             <td>
-                                <a href="{{ url_for('modifica_cama', bedname=cama) }}"
+                                <a href="{{ url_for('modifica_cama', bedname=cama.bed_name) }}"
                                    class="btn btn-success">Modificar</a>
-                                <a href="{{ url_for('borrar_cama', bedname=cama) }}" class="btn btn-danger">Borrar</a>
+                                <a href="{{ url_for('borrar_cama', bedname=cama.bed_name) }}" class="btn btn-danger">Borrar</a>
                             </td>
                         </tr>
                     {% endfor %}
