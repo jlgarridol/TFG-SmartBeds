@@ -8,7 +8,6 @@ import numpy as np
 from socketio import Client
 from smartbeds.utils import get_sio_connect
 import eventlet
-
 from threading import Thread
 
 socketio = SocketIO(app)
