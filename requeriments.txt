@@ -10,3 +10,5 @@ python-sql==1.0.0
 socketio==4.0.1
 tsfresh==0.11.2
 seaborn==0.9.0
+gevent==1.4
+gipc-1.0.1

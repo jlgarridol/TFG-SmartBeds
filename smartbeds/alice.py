@@ -30,7 +30,7 @@ def rolling_extract_features(dataFrame, window, fc_parameters):
     for i in range(len(X) - window + 1):
         X_rolling = X.iloc[i:i + window]
         features_rolling = tf.extract_features(X_rolling, default_fc_parameters=fc_parameters, column_id='id',
-                                               column_sort='DateTime', disable_progressbar=True)
+                                               column_sort='DateTime', disable_progressbar=True, n_jobs=0)
         features = pd.concat([features, features_rolling], axis=0)
 
     # volver a añadir DateTime

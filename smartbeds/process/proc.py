@@ -1,8 +1,11 @@
 from threading import Thread
+from multiprocessing import Process
 import pandas as pd
 from queue import Queue
 from io import StringIO
 import sys
+from time import time
+import gevent
 from smartbeds import alice
 from smartbeds.utils import get_model
 import warnings
@@ -16,7 +19,7 @@ class BedProcess:
     def __init__(self, bed):
         self._bed = bed
         self._cuento = 0
-        self._window = 10
+        self._window = 90
         self._index = 0
         self._datetime = ["DateTime"]
         self.stopped = False
@@ -73,9 +76,10 @@ class BedProcess:
         # 3: Insuficientes datos para hacer el cálculo
         package = {"result": [0, 0, df.SS.iloc[0], df.STATUS.iloc[0]],
                    "instance": str(df.DateTime.iloc[0]),
-                   "vital": [df.HR.iloc[0], df.RR.iloc[0], df.SV.iloc[0], df.HRV.iloc[0], df.B2B.iloc[0]],
+                   "vital": [df.HR.iloc[0], df.RR.iloc[0], df.SV.iloc[0], df.HRV.iloc[0], df.B2B.iloc[0]/1000],
                    "pressure": [df.P1.iloc[0], df.P2.iloc[0], df.P3.iloc[0],
                                 df.P4.iloc[0], df.P5.iloc[0], df.P6.iloc[0]]}
+
 
         if added and len(self._last) == self._window:
             result, proba = self._get_result()

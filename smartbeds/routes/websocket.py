@@ -7,6 +7,7 @@ from smartbeds.api.api import API
 import numpy as np
 from socketio import Client
 from smartbeds.utils import get_sio_connect
+import eventlet
 
 from threading import Thread
 
@@ -28,6 +29,7 @@ class Broadcaster:
                 if package is not None:
                     Broadcaster.clean_package(package)
                     emit("package", package, namespace=self._namespace, json=True, broadcast=True)
+                    eventlet.sleep(0)
 
     @staticmethod
     def clean_package(package):
@@ -63,7 +65,7 @@ def generate_request():
     beds = API.get_instance().get_all_beds_info()
     for bed in beds:
         namespace = bed['UUID']+"_"+bed['MAC']
-        print(namespace)
+        print("Comenzamos a escuchar")
         sio = Client()
         sio.connect(get_sio_connect())
         sio.emit("give_me_data", {"namespace": namespace, "bedname": "Cama 1"})

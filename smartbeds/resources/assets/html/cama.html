@@ -43,7 +43,7 @@
                         yAxisID: 'y-axis-hr',
                     },
                     {
-                        label: 'B2B (ms)',
+                        label: 'B2B',
                         borderColor: 'purple',
                         backgroundColor: 'purple',
                         fill: false,
@@ -155,6 +155,9 @@
     </script>
     <script>
         state = $("#state");
+        vital_state = $("#vitales-state");
+        pressure_state = $("#pressure-state");
+
         function remove_last() {
             vital.data.labels.shift();
             vital.data.datasets.forEach(function (element) {
@@ -174,21 +177,32 @@
         var namespace = io('/00AEFAADD6C3_886B0F59968A');
         namespace.on("package", function (data) {
             console.log("Orden");
-            /**var max_instances = 300;
+            var max_instances = 300;
 
             var result = data.result;
 
             switch (result[0]) {
                 case 0:
-                    state.text("Durmiendo - Probabilidad de crisis: "+result[1]);
+                    state.text("Durmiendo - Probabilidad de crisis: "+result[1].toFixed(2));
                     break;
                 case 1:
-                    state.text("Crisis - Probabilidad de crisis: "+result[1]);
+                    state.text("Crisis - Probabilidad de crisis: "+result[1].toFixed(2));
                     break;
                 case 2:
                     state.text("Despierto");
 
             }
+            if (result[3] == 0){
+                vital_state.text("Baja calidad de datos");
+            }else{
+                vital_state.text("");
+            }
+            if (result[2] < 400){
+                pressure_state.text("Baja calidad de datos");
+            }else{
+                pressure_state.text("");
+            }
+
             var instance = data.instance;
             var vitales = data.vital;
             var pressure = data.pressure;
@@ -201,9 +215,9 @@
             }
 
             pressures.data.labels.push(instance);
-            for (var i = 0; i < vital.data.datasets.length; i++) {
+            for (var i = 0; i < pressures.data.datasets.length; i++) {
                 pressures.data.datasets[i].data.push(pressure[i]);
-            }*/
+            }
 
         });
 
@@ -231,13 +245,13 @@
         <div class="row d-flex">
             <div class="col-md-6">
                 <h3 class="text-center mb-0">
-                    Constantes vitales
+                    Constantes vitales <span style="font-size: 0.65em" class="text-danger font-italic font-weight-light" id="vitales-state"></span>
                 </h3>
                 <canvas id="vitales" width="100%" height="65%"></canvas>
             </div>
             <div class="col-md-6">
                 <h3 class="text-center mb-0">
-                    Presiones
+                    Presiones <span style="font-size: 0.65em" class="text-danger font-italic font-weight-light" id="pressure-state"></span>
                 </h3>
                 <canvas id="presiones" width="100%" height="65%"></canvas>
             </div>
