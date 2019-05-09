@@ -51,7 +51,7 @@ def load_beds_listeners():
 
 def new_bed_listeners(ip: str, port: int, name: str):
     global _bed_listeners
-
+    print(name)
     bed = BedListener(ip, port)
     bed.start()
     bedp = BedProcess(bed)

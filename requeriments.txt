@@ -1,9 +1,9 @@
 tsfresh==0.11.2
-flask>1.0.2
-flask-socketio>3.3.2
-mysql-connector-python>8.0.15
-python-sql>1.0.0
-socketio>4.0.1
-seaborn>0.9.0
-gevent>1.4
-eventlet>0.24
+flask>=1.0.2
+flask-socketio>=3.3.2
+mysql-connector-python>=8.0.15
+python-sql>=1.0.0
+socketio>=0.1.7
+seaborn>=0.9.0
+gevent>=1.4
+eventlet>=0.24
