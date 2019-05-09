@@ -89,4 +89,4 @@ def get_info():
 def mod_request():
     data = dict(request.form)
     data['token'] = session['token']
-    request.form = data
+    request.form = data  # Técnicamente esta operación no es legal, pero funciona
