@@ -16,11 +16,11 @@ class API:
     SIZE = 32
     _instance = None
 
-    def __init__(self, db: MySQLConnection):
+    def __init__(self, params: dict):
         if API._instance is not None:
             raise Exception("Ya existe una instancia de la API")
-        self._db = db
-        self._db.autocommit = False
+
+        self._params = params
 
         self._users = Table('Users')
         self._beds = Table('Beds')
@@ -28,6 +28,10 @@ class API:
         self._master_key = get_secret_key()
 
         API._instance = self
+
+    def _db_context(self):
+        self._db = MySQLConnection(**self._params)
+        self._db.autocommit = False
 
     @classmethod
     def get_instance(cls):
@@ -57,12 +61,14 @@ class API:
         BadCredentialsError
             si la relación nick-password no existe
         """
-
+        print("Autenticando al usuario:", nick)
+        self._db_context()
         self.__check_password(nick, password)
 
         token = self.__update_token(nick)
         user = self.__get_user_by_token(token)
         self._db.commit()
+        self._db.close()
         return token, nick, user['rol']
 
     def __check_password(self, nick, password):
@@ -123,6 +129,7 @@ class API:
 
         :return: Lista de camas
         """
+        self._db_context()
         query = self._beds.select()
 
         cursor = self._db.cursor(dictionary=True)
@@ -130,6 +137,7 @@ class API:
         cursor.execute(*command)
         lista = list(cursor)
         cursor.close()
+        self._db.close()
         return lista
 
     def beds(self, token: str) -> list:
@@ -152,6 +160,7 @@ class API:
         BadCredentialsError
             si el token no está asociado a ningún usuario
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -171,6 +180,7 @@ class API:
 
         names = [self.__get_bed(n) for [n] in cursor]
         cursor.close()
+        self._db.close()
         return names
 
     def bed(self, token: str, bedname: str) -> str:
@@ -201,6 +211,7 @@ class API:
         PermissionsError
             si la cama no es accesible para el usuario
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -221,6 +232,7 @@ class API:
             cursor.close()
 
         namespace = bed['UUID']+"_"+bed['MAC']
+        self._db.close()
         return namespace
 
     def users(self, token: str) -> list:
@@ -244,6 +256,7 @@ class API:
         PermissionsError
             si el usuario no tiene rol de administrador
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -258,6 +271,7 @@ class API:
 
         names = [n for [n] in cursor]
         cursor.close()
+        self._db.close()
         return names
         
     def useradd(self, token: str, nick: str, password: str):
@@ -282,6 +296,7 @@ class API:
         UsernameExistsError
             si el nombre de usuario existía con anterioridad.
         """
+        self._db_context()
         user = self.__get_user_by_token(token)
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
@@ -299,8 +314,10 @@ class API:
 
             cursor.close()
             self._db.commit()
+            self._db.close()
         except IntegrityError as err:
             self._db.rollback()
+            self._db.close()
             raise UsernameExistsError(str(err))
 
     def usermod(self, token: str, nick: str, password: str, oldpass=None):
@@ -327,6 +344,7 @@ class API:
         ElementNotExistsError
             si el usuario no existe
         """
+        self._db_context()
         user = self.__get_user_by_token(token)
         if user['rol'] != 'admin':
 
@@ -352,8 +370,10 @@ class API:
 
             cursor.close()
             self._db.commit()
+            self._db.close()
         except Exception:
             self._db.rollback()
+            self._db.close()
             raise
 
     def userdel(self, token: str, nick: str):
@@ -378,6 +398,7 @@ class API:
         IllegalOperationError
             si se intenta borrar al usuario administrador
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -392,8 +413,10 @@ class API:
             self.__delete(self._users, self._users.nickname == nick, "El usuario no existe")
 
             self._db.commit()
+            self._db.close()
         except Exception:
             self._db.rollback()
+            self._db.close()
             raise
 
     def bedadd(self, token: str, bedparams: dict):
@@ -419,6 +442,7 @@ class API:
             existe ya como son el nombre, el identificador o el par
             ip-puerto
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -435,8 +459,10 @@ class API:
             cursor.execute(*command)
             cursor.close()
             self._db.commit()
+            self._db.close()
         except IntegrityError as err:
             self._db.rollback()
+            self._db.close()
             raise BedExistsError(str(err))
 
     def bedmod(self, token: str, bedparams: dict):
@@ -464,6 +490,7 @@ class API:
         ElementNotExistsError
             si la cama no existe
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -483,8 +510,10 @@ class API:
             cursor.execute(*command)
             cursor.close()
             self._db.commit()
+            self._db.close()
         except IntegrityError as err:
             self._db.rollback()
+            self._db.close()
             raise BedExistsError(str(err))
 
     def beddel(self, token: str, bedname: str):
@@ -507,6 +536,7 @@ class API:
         ElementNotExistsError
             si la cama no existe
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -518,8 +548,10 @@ class API:
             self.__delete(self._beds, self._beds.bedname == bedname, "La cama no existe")
 
             self._db.commit()
+            self._db.close()
         except Exception:
             self._db.rollback()
+            self._db.close()
             raise
 
     def bedgetperm(self, token: str) -> list:
@@ -543,6 +575,7 @@ class API:
         PermissionsError
             si el usuario no tiene rol de administrador
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -567,6 +600,7 @@ class API:
             perms.append({"username": username, "bed_name": bedname})
 
         cursor.close()
+        self._db.close()
         return perms
     
     def bedmodperm(self, token: str, bedname: str, username: str) -> bool:
@@ -596,6 +630,7 @@ class API:
         ElementNotExistsError
             si la cama o el usuario no existe
         """
+        self._db_context()
         if token != self._master_key:
             user = self.__get_user_by_token(token)
         else:
@@ -623,6 +658,7 @@ class API:
 
         cursor.close()
         self._db.commit()
+        self._db.close()
 
     def _remove_perm(self, idb, idu):
         """

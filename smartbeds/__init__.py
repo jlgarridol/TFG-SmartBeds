@@ -13,8 +13,7 @@ TEMPLATE_DIR = STATIC_DIR + "/html"
 app = Flask(__name__, static_folder=STATIC_DIR, template_folder=TEMPLATE_DIR)
 app.secret_key = get_secret_key()
 
-db = MySQLConnection(**get_sql_config())
-api.API(db) #Se instancia la API
+api.API(get_sql_config()) #Se instancia la API
 
 # Se cargan las camas
 load_beds_listeners()
