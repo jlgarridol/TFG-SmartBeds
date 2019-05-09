@@ -8,4 +8,4 @@ if __name__ == '__main__':
     patch_all()
     threading.Thread(target=generate_request, daemon=True).start()
     print("Lanzamiento")
-    application.run(app, debug=True, host="127.0.0.1", port=3031)
+    application.run(app)
