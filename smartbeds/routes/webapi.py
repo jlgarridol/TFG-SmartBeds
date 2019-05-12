@@ -1,13 +1,19 @@
 from smartbeds.api import api
-from smartbeds import app
+import smartbeds.vars as v
 from flask import request
 from flask import jsonify
-import traceback
 
 _api: api.API = api.API.get_instance()
 
 
-@app.route("/api/auth", methods=['GET', 'POST'])
+@v.app.teardown_appcontext
+def teardown_db(_):
+    if v.db is not None:
+        v.db.close()
+        v.db = None
+
+
+@v.app.route("/api/auth", methods=['GET', 'POST'])
 def auth():
 
     def func(response):
@@ -21,7 +27,7 @@ def auth():
     return make_response(func)
 
 
-@app.route("/api/beds", methods=['GET', 'POST'])
+@v.app.route("/api/beds", methods=['GET', 'POST'])
 def beds():
 
     def func(response):
@@ -31,7 +37,7 @@ def beds():
     return make_response(func)
 
 
-@app.route("/api/bed", methods=['GET', 'POST'])
+@v.app.route("/api/bed", methods=['GET', 'POST'])
 def bed():
 
     def func(response):
@@ -42,7 +48,7 @@ def bed():
     return make_response(func)
 
 
-@app.route("/api/users", methods=['GET', 'POST'])
+@v.app.route("/api/users", methods=['GET', 'POST'])
 def users():
     
     def func(response):
@@ -52,7 +58,7 @@ def users():
     return make_response(func)
 
 
-@app.route("/api/user/add", methods=['GET', 'POST'])
+@v.app.route("/api/user/add", methods=['GET', 'POST'])
 def useradd():
     
     def func(response):
@@ -67,7 +73,7 @@ def useradd():
     return make_response(func)
 
 
-@app.route("/api/user/mod", methods=['GET', 'POST'])
+@v.app.route("/api/user/mod", methods=['GET', 'POST'])
 def usermod():
     
     def func(response):
@@ -85,7 +91,7 @@ def usermod():
     return make_response(func)
 
 
-@app.route("/api/user/del", methods=['GET', 'POST'])
+@v.app.route("/api/user/del", methods=['GET', 'POST'])
 def userdel():
     
     def func(response):
@@ -97,7 +103,7 @@ def userdel():
     return make_response(func)
     
 
-@app.route("/api/bed/add", methods=['GET', 'POST'])
+@v.app.route("/api/bed/add", methods=['GET', 'POST'])
 def bedadd():
     
     def func(response):
@@ -110,7 +116,7 @@ def bedadd():
     return make_response(func)
 
 
-@app.route("/api/bed/mod", methods=['GET', 'POST'])
+@v.app.route("/api/bed/mod", methods=['GET', 'POST'])
 def bedmod():
 
     def func(response):
@@ -123,7 +129,7 @@ def bedmod():
     return make_response(func)
 
 
-@app.route("/api/bed/del", methods=['GET', 'POST'])
+@v.app.route("/api/bed/del", methods=['GET', 'POST'])
 def beddel():
 
     def func(response):
@@ -135,7 +141,7 @@ def beddel():
     return make_response(func)
 
 
-@app.route("/api/bed/perm", methods=['GET', 'POST'])
+@v.app.route("/api/bed/perm", methods=['GET', 'POST'])
 def bedperm():
     def func(response):
         token = request.form['token']
@@ -153,7 +159,7 @@ def bedperm():
     return make_response(func)
 
 
-@app.errorhandler(404)
+@v.app.errorhandler(404)
 def notfound(e):
     response = dict()
     response['status'] = 404
@@ -177,8 +183,8 @@ def make_response(func):
         response['status'] = 400
     except Exception as err:
         error = err
-        traceback.print_exc()
         response['status'] = 500
+        raise
 
     if error is not None:
         response['message'] = str(error)

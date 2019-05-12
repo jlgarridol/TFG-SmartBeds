@@ -1,4 +1,4 @@
-from smartbeds import app
+import smartbeds.vars as v
 from flask import request
 from flask import render_template
 from flask import session
@@ -7,7 +7,7 @@ from flask import url_for
 from smartbeds.routes import webapi as api
 
 
-@app.route('/', methods=['GET'])
+@v.app.route('/', methods=['GET'])
 def home():
     context = {"page": {"page": 'login'}, "info": get_info(), "title": "Inicio"}
     if context['info']['login']:
@@ -17,7 +17,7 @@ def home():
     return render_template('home.html', **context)
 
 
-@app.route('/auth', methods=['GET', 'POST'])
+@v.app.route('/auth', methods=['GET', 'POST'])
 def login():
     context = {"page": {"page": 'login', "bad": False}, "info": get_info(), "title": "Iniciar Sesión"}
     if request.method == "POST":
@@ -35,39 +35,39 @@ def login():
         return render_template('auth/login.html', **context)
 
 
-@app.route('/logout', methods=['GET'])
+@v.app.route('/logout', methods=['GET'])
 def logout():
     session.clear()
     return redirect(url_for("home"))
 
 
-@app.route('/bed')
+@v.app.route('/bed')
 def cama_ejemplo():
     context = {'page': {'page': 'bed'}, 'info': get_info(), "title": "Cama"}
     return render_template('cama.html', **context)
 
 
-@app.route('/bed/<bedname>', methods=['GET'])
+@v.app.route('/bed/<bedname>', methods=['GET'])
 def cama(bedname):
     pass
 
 
-@app.route('/bed/mod/<bedname>', methods=['GET', 'POST'])
+@v.app.route('/bed/mod/<bedname>', methods=['GET', 'POST'])
 def modifica_cama(bedname):
     pass
 
 
-@app.route('/bed/add', methods=['GET', 'POST'])
+@v.app.route('/bed/add', methods=['GET', 'POST'])
 def nueva_cama():
     pass
 
 
-@app.route('/bed/del/<bedname>', methods=['GET'])
+@v.app.route('/bed/del/<bedname>', methods=['GET'])
 def borrar_cama(bedname):
     pass
 
 
-@app.route('/beds', methods=['GET'])
+@v.app.route('/beds', methods=['GET'])
 def camas():
     context = {"page": {"page": 'admin_beds'}, "info": get_info(), "title": "Administrar camas"}
     mod_request()

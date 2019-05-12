@@ -1,5 +1,7 @@
 \capitulo{4}{Técnicas y herramientas}
 
+\section{Investigación}
+
 El proyecto ha sido desarrollado aplicando diversas técnicas de la minería de datos como se puede ver en el cuaderno de investigación adjuntado.
 
 %TODO: Explicar aquí el método utilizado en el clasificador final
@@ -8,3 +10,42 @@ La investigación se realizó sobre \textit{Python} utilizando el ecosistema de 
 
 %TODO: Explicar la ejecución particular de estos métodos
 
+\section{Servicio web}
+
+\subsection{\textit{Backend}}
+
+Las herramientas utilizadas para programar el servidor han sido:
+\begin{itemize}
+	\item \textbf{Flask}: \textit{Microframwork} de código abierto que ofrece una capa de abstracción muy alta de un servicio web.
+	\item \textbf{Flask-Socketio}: Integración del servicio de \textit{sockets}, \textit{Socket.IO}, compatible con los \textit{WebSockets}.
+	\item \textbf{Gevent y Eventlet}: Librerías para el uso de tiempo real asíncrono de hilos para el uso de \textit{Socket.IO}. 
+\end{itemize}
+
+Para la programación del sistema de hilos que distribuyen datos en tiempo real se siguieron los paradigmas de la programación orientada a objetos y de programación funcional. El sistema de rutas siguió las guías del \textit{microframework Flask}. 
+
+Algunos patrones de diseño utilizado han sido el \textit{Singleton} para la API, \textit{Absstract Factory} para la creación de familias de hilos, \textit{Proxy y Adapter} para ocultar a la api tras un acceso web y adaptar las peticiones \texttt{request}.
+
+\subsection{\textit{Frontend}}
+
+\section{Herramientas generales}
+
+Para el desarrollo general del proyecto se han utilizado las siguientes herramientas:
+\begin{itemize}
+	\item \textbf{Jupyter Notebooks}: IDE de programación de \textit{Python} basado en \textit{iPython} de código abierto.
+	\item \textbf{PyCharm Professional}: IDE de programación para \textit{Python} avanzado basado en \textit{InteliJ}.
+	\item \textbf{Visual Studio Code}: Editor de código genérico de código abierto.
+	\item \textbf{Postman}: IDE para la ejecución de request \textit{HTTP}.
+	\item \textbf{Selenium}: IDE de pruebas sobre web (de código abierto?).
+	\item \textbf{MariaDB}: SGBD de código abierto con la API de \textit{MySQL}.
+	\item \textbf{Proxmox}: Gestor de servidores de código abierto.
+	\item \textbf{TODO: Nombre del sistema de virtualización usado en Al-Juarismi}: Virtualizador de sistemas operativos.
+	\item \textbf{Anarchy Arch}: Sistema operativo de código abierto basado en \textit{Arch Linux}.
+	\item \textbf{Nginx}: Servidor \textit{HTTP} de código abierto.
+	\item \textbf{CertBot}: Sistema para la firma \textit{SSL} sobre \textit{HTTP} gratuito de \textit{LetsEncrypt}.
+	\item \textbf{Overleaf}: Editor de \LaTeX  online para el trabajo colaborativo.
+	\item \textbf{TexStudio}: Editor de \LaTeX  de código abierto.
+	\item \textbf{Dia}: Editor de diagramas genérico de código abierto.
+	\item \textbf{StartUML}: Editor de diagramas UML.
+	\item \textbf{Codesketch DB}: Traductor bidireccional de código-diagrama para bases de datos.
+	\item \textbf{Filezilla}: Aplicación para la trasferencia de ficheros sobre \textit{FTP} y \textit{SFTP}.
+\end{itemize}

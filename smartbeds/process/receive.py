@@ -10,6 +10,7 @@ from smartbeds.process.proc import BedProcess
 _bed_listeners = {}
 _processors = {}
 
+
 class BedListener:
 
     def __init__(self, ip: str, port: int):
@@ -51,7 +52,7 @@ def load_beds_listeners():
 
 def new_bed_listeners(ip: str, port: int, name: str):
     global _bed_listeners
-    print(name)
+    print("Lanzando procesos de la cama:", name)
     bed = BedListener(ip, port)
     bed.start()
     bedp = BedProcess(bed)

@@ -1,11 +1,8 @@
 from threading import Thread
-from multiprocessing import Process
 import pandas as pd
 from queue import Queue
 from io import StringIO
 import sys
-from time import time
-import gevent
 from smartbeds import alice
 from smartbeds.utils import get_model
 import warnings

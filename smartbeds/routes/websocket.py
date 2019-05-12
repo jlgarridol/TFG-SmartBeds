@@ -1,5 +1,4 @@
-from smartbeds import app
-from flask_socketio import SocketIO
+import smartbeds.vars as v
 from flask_socketio import emit
 from smartbeds.process.receive import get_processor
 from smartbeds.process.receive import BedProcess
@@ -10,9 +9,7 @@ from smartbeds.utils import get_sio_connect
 import eventlet
 from threading import Thread
 
-socketio = SocketIO(app)
 namespace_threads = {}
-
 
 class Broadcaster:
 
@@ -22,7 +19,7 @@ class Broadcaster:
         self._app = app
 
     def emiter(self):
-        with app.app_context():
+        with v.app.app_context():
             while not self._bed.stopped:
                 package = self._bed.next_package()
                 if package is not None:
@@ -41,7 +38,7 @@ class Broadcaster:
         Thread(target=self.emiter, daemon=True).start()
 
 
-@socketio.on('give_me_data')
+@v.socketio.on('give_me_data')
 def give_me_data(data):
     """
     Este evento se lanzaría para garantizar
@@ -55,7 +52,7 @@ def give_me_data(data):
 
     namespace = data['namespace']
     if namespace not in namespace_threads:  # Se crea el listener
-        namespace_threads[namespace] = Broadcaster(namespace, get_processor(data['bedname']), app)
+        namespace_threads[namespace] = Broadcaster(namespace, get_processor(data['bedname']), v.app)
         namespace_threads[namespace].start()
 
 
