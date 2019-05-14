@@ -29,18 +29,20 @@ Algunos patrones de diseño utilizado han sido el \textit{Singleton} para la API
 
 \section{Herramientas generales}
 
-Para el desarrollo general del proyecto se han utilizado las siguientes herramientas:
+Para el desarrollo general del proyecto se han utilizado las siguientes herramientas según el ámbito al que pertenecen:
+
+\subsubsection{Servidor}
+\paragraph{\textit{Nginx}}servidor web y de proxy reverso ligero de alto rendimiento\cite{tool:nginx,wiki:nginx} de código abierto (BSD simplificada\cite{lic:bsd}).
+\paragraph{\textit{MariaDB}}sistema de gestión de bases de datos derivado de \textit{MySQL}\cite{tool:mariadb,wiki:mariadb} de código abierto (GPLv2\cite{lic:gplv2}). Este motor es extremadamente compatible con \textit{MySQL} porque es creado como una bifuración de esto para garantizar la existencia de este motor bajo GPL.
+\paragraph{\textit{Proxmox}}es un entorno de virtualización de servidores\cite{tool:proxmox,wiki:proxmox} de código abierto (AGPL\cite{lic:agpl}). Su función principal es el despliegue y gestión de máquinas virtuales y contenedores.
+\paragraph{\textit{Anarchy Arch}}sistema GNU/Linux derivado de \textit{ArchLinux}\cite{tool:aarch,wiki:arch}
 \begin{itemize}
 	\item \textbf{Jupyter Notebooks}: IDE de programación de \textit{Python} basado en \textit{iPython} de código abierto.
 	\item \textbf{PyCharm Professional}: IDE de programación para \textit{Python} avanzado basado en \textit{InteliJ}.
 	\item \textbf{Visual Studio Code}: Editor de código genérico de código abierto.
 	\item \textbf{Postman}: IDE para la ejecución de request \textit{HTTP}.
 	\item \textbf{Selenium}: IDE de pruebas sobre web (de código abierto?).
-	\item \textbf{MariaDB}: SGBD de código abierto con la API de \textit{MySQL}.
-	\item \textbf{Proxmox}: Gestor de servidores de código abierto.
-	\item \textbf{TODO: Nombre del sistema de virtualización usado en Al-Juarismi}: Virtualizador de sistemas operativos.
-	\item \textbf{Anarchy Arch}: Sistema operativo de código abierto basado en \textit{Arch Linux}.
-	\item \textbf{Nginx}: Servidor \textit{HTTP} de código abierto.
+	
 	\item \textbf{CertBot}: Sistema para la firma \textit{SSL} sobre \textit{HTTP} gratuito de \textit{LetsEncrypt}.
 	\item \textbf{Overleaf}: Editor de \LaTeX  online para el trabajo colaborativo.
 	\item \textbf{TexStudio}: Editor de \LaTeX  de código abierto.
