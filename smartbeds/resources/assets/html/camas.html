@@ -24,8 +24,9 @@
                             <td>{{ cama.bed_name }}</td>
                             <td>
                                 <button class="btn btn-success" data-toggle="modal" data-whatever="{{ cama.bed_name }}"
-                                    data-target="#bedmodal">Modificar</button>
-                                <button class="btn btn-danger">Borrar</button>
+                                        data-target="#bedmodal">Modificar
+                                </button>
+                                <button class="btn btn-danger" onclick="del({{ cama.bed_name }})">Borrar</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -82,6 +83,9 @@
                                     <input type="text" style="width: 100%;" id="uuid" placeholder="AABBCCDDEEFF">
                                 </div>
                             </div>
+                            <div class="form-group row d-none">
+                                <input type="text" style="width: 100%;" id="mode" value="new">
+                            </div>
                         </fieldset>
                     </form>
                 </div>
@@ -113,6 +117,7 @@
         port = $("#port");
         mac_ = $("#mac");
         uuid = $("#uuid");
+        mode = $("#mode");
 
     </script>
     <script>
@@ -120,28 +125,87 @@
             var button = $(event.relatedTarget);
             var recipient = button.data('whatever');
 
-            if (recipient == ""){//Nueva cama
+            if (recipient === "") {//Nueva cama
                 modal_title.text("Nueva cama");
                 bedname.val("");
                 ip.val("");
                 port.val("");
                 mac_.val("");
                 uuid.val("");
+                mode.val("new");
 
-            }else{//Modificar cama
+            } else {//Modificar cama
                 var b = beds[recipient];
-                modal_title.text("Modificar la cama: "+b.bed_name);
+                modal_title.text("Modificar la cama: " + b.bed_name);
                 bedname.val(b.bed_name);
                 ip.val(b.ip_group);
                 port.val(b.port);
                 mac_.val(b.MAC);
                 uuid.val(b.UUID);
+                mode.val("update");
             }
-        })
-    </script>
-    <script>
-        $("#save_modal").onclick(function () {
-
         });
+
+        function correcto(data, textStatus, jQxhr) {
+            location.reload();
+        }
+
+        function incorrecto(data, textStatus, jQxhr) {
+            console.log(textStatus);
+        }
+
+        function JSON_to_URLEncoded(element, key, list) {
+            var list = list || [];
+            if (typeof (element) == 'object') {
+                for (var idx in element)
+                    JSON_to_URLEncoded(element[idx], key ? key + '[' + idx + ']' : idx, list);
+            } else {
+                list.push(key + '=' + encodeURIComponent(element));
+            }
+            return list.join('&');
+        }
+
+        $("#save_modal").click(function () {
+            var url = "";
+            let o = {bed_name: bedname.val(),
+                 ip_group: ip.val(),
+                 port: port.val(),
+                 MAC: mac_.val(),
+                 UUID: uuid.val()};
+
+            if (mode.val() === "new") {
+                url = "{{ url_for('nueva_cama') }}";
+            } else if (mode.val() === "update") {
+                url = "{{ url_for('modifica_cama') }}";
+            }
+            $.ajax({
+                url: url,
+                dataType: 'text',
+                type: 'put',
+                contentType: 'application/x-www-form-urlencoded',
+                data: JSON_to_URLEncoded(o),
+                success:
+                correcto,
+                error:
+                incorrecto
+            })
+        });
+
+        function del(recipient){
+
+            let o = {bed_name: recipient};
+
+            $.ajax({
+                url: "{{ url_for('borrar_cama') }}",
+                dataType: 'text',
+                type: 'delete',
+                contentType: 'application/x-www-form-urlencoded',
+                data: JSON_to_URLEncoded(o),
+                success:
+                correcto,
+                error:
+                incorrecto
+            })
+        }
     </script>
 {% endblock %}

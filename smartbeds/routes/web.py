@@ -56,12 +56,14 @@ def modifica_cama():
 
 @v.app.route('/bed/add', methods=['PUT'])
 def nueva_cama():
-    pass
+    mod_request()  # Introducimos el token
+    return api.bedadd()
 
 
-@v.app.route('/bed/del/<bedname>', methods=['DELETE'])
+@v.app.route('/bed/del', methods=['DELETE'])
 def borrar_cama(bedname):
-    pass
+    mod_request()  # Introducimos el token
+    return api.beddel()
 
 
 @v.app.route('/beds', methods=['GET'])

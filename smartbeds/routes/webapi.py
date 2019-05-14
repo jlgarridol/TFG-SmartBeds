@@ -108,7 +108,7 @@ def bedadd():
     
     def func(response):
         token = request.form['token']
-        params = request.form.to_dict()
+        params = request.form
         params.pop('token')
 
         _api.bedadd(token, params)
@@ -121,7 +121,7 @@ def bedmod():
 
     def func(response):
         token = request.form['token']
-        params = request.form.to_dict()
+        params = request.form
         params.pop('token')
 
         _api.bedmod(token, params)

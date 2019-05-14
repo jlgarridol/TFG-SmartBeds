@@ -184,9 +184,10 @@ class API:
         command = API.prepare_query(query)
         cursor.execute(*command)
 
-        names = [self.__get_bed(n) for [n] in cursor]
+        names = [n for [n] in cursor]
         cursor.close()
-        
+        names = [self.__get_bed(n) for n in names]
+
         return names
 
     def bed(self, token: str, bedname: str) -> str:
@@ -798,7 +799,7 @@ class API:
         conn = self._db_context()
         query = self._beds.select()
         query.where = self._beds.bed_name == bedname
-
+        print(conn)
         cursor = conn.cursor(dictionary=True)
         command = API.prepare_query(query)
         cursor.execute(*command)
