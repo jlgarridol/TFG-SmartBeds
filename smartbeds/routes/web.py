@@ -9,7 +9,7 @@ from smartbeds.routes import webapi as api
 
 @v.app.route('/', methods=['GET'])
 def home():
-    context = {"page": {"page": 'login'}, "info": get_info(), "title": "Inicio"}
+    context = {"page": {"page": 'home'}, "info": get_info(), "title": "Inicio"}
     if context['info']['login']:
         mod_request()
         response, code = api.beds()
@@ -41,28 +41,25 @@ def logout():
     return redirect(url_for("home"))
 
 
-@v.app.route('/bed')
-def cama_ejemplo():
-    context = {'page': {'page': 'bed'}, 'info': get_info(), "title": "Cama"}
+@v.app.route('/bed/<bedname>', methods=['GET'])
+def cama(bedname):
+    #TODO: Check Permsision
+    context = {'page': {'page': 'bed','bed_info': bedname}, 'info': get_info(), "title": "Cama"}
     return render_template('cama.html', **context)
 
 
-@v.app.route('/bed/<bedname>', methods=['GET'])
-def cama(bedname):
-    pass
+@v.app.route('/bed/mod', methods=['PUT'])
+def modifica_cama():
+    mod_request()  # Introducimos el token
+    return api.bedmod()
 
 
-@v.app.route('/bed/mod/<bedname>', methods=['GET', 'POST'])
-def modifica_cama(bedname):
-    pass
-
-
-@v.app.route('/bed/add', methods=['GET', 'POST'])
+@v.app.route('/bed/add', methods=['PUT'])
 def nueva_cama():
     pass
 
 
-@v.app.route('/bed/del/<bedname>', methods=['GET'])
+@v.app.route('/bed/del/<bedname>', methods=['DELETE'])
 def borrar_cama(bedname):
     pass
 

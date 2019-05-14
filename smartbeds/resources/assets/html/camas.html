@@ -8,7 +8,9 @@
                     <thead>
                     <tr>
                         <th colspan="2">
-                            <a href="{{ url_for }}" class="btn btn-primary btn-lg btn-block">Añadir cama</a>
+                            <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-whatever=""
+                                    data-target="#bedmodal">Añadir cama
+                            </button>
                         </th>
                     </tr>
                     <tr>
@@ -21,9 +23,9 @@
                         <tr>
                             <td>{{ cama.bed_name }}</td>
                             <td>
-                                <a href="{{ url_for('modifica_cama', bedname=cama.bed_name) }}"
-                                   class="btn btn-success">Modificar</a>
-                                <a href="{{ url_for('borrar_cama', bedname=cama.bed_name) }}" class="btn btn-danger">Borrar</a>
+                                <button class="btn btn-success" data-toggle="modal" data-whatever="{{ cama.bed_name }}"
+                                    data-target="#bedmodal">Modificar</button>
+                                <button class="btn btn-danger">Borrar</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -32,4 +34,114 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="bedmodal" aria-labelledby="bedmodal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <fieldset>
+                            <legend>Nombre de la cama</legend>
+                            <div class="form-group row">
+                                <label for="bedname" class="col-sm-2 col-form-label">Nombre</label>
+                                <div class="col-sm-10">
+                                    <input type="text" style="width: 100%;" id="bedname"
+                                           placeholder="Nombre de la cama">
+                                </div>
+                            </div>
+                            <legend>Dirección IP de multidifusión</legend>
+                            <div class="form-group row">
+                                <label for="ip" class="col-sm-2 col-form-label">IP</label>
+                                <div class="col-sm-10">
+                                    <input type="text" style="width: 100%;" id="ip" placeholder="224.0.0.0">
+                                </div>
+                            </div>
+                            <legend>Puerto</legend>
+                            <div class="form-group row">
+                                <label for="port" class="col-sm-2 col-form-label">Puerto</label>
+                                <div class="col-sm-10">
+                                    <input type="number" style="width: 100%;" id="port" placeholder="5000">
+                                </div>
+                            </div>
+                            <legend>Dirección MAC</legend>
+                            <div class="form-group row">
+                                <label for="mac" class="col-sm-2 col-form-label">MAC</label>
+                                <div class="col-sm-10">
+                                    <input type="text" style="width: 100%;" id="mac" placeholder="AABBCCDDEEFF">
+                                </div>
+                            </div>
+                            <legend>Identificador de cama</legend>
+                            <div class="form-group row">
+                                <label for="uuid" class="col-sm-2 col-form-label">UUID</label>
+                                <div class="col-sm-10">
+                                    <input type="text" style="width: 100%;" id="uuid" placeholder="AABBCCDDEEFF">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="save_modal" type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        //Almacenamiento de las camas
+        beds = {};
+        {% for b in beds %}
+            beds["{{ b.bed_name }}"] = {
+                bed_name: "{{ b.bed_name }}",
+                ip_group: "{{ b.ip_group }}",
+                port: "{{ b.port }}",
+                MAC: "{{ b.MAC }}",
+                UUID: "{{ b.UUID }}"
+            };
+        {% endfor %}
+        modal_title = $("#modal_title");
+        bedname = $("#bedname");
+        ip = $("#ip");
+        port = $("#port");
+        mac_ = $("#mac");
+        uuid = $("#uuid");
+
+    </script>
+    <script>
+        $('#bedmodal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var recipient = button.data('whatever');
+
+            if (recipient == ""){//Nueva cama
+                modal_title.text("Nueva cama");
+                bedname.val("");
+                ip.val("");
+                port.val("");
+                mac_.val("");
+                uuid.val("");
+
+            }else{//Modificar cama
+                var b = beds[recipient];
+                modal_title.text("Modificar la cama: "+b.bed_name);
+                bedname.val(b.bed_name);
+                ip.val(b.ip_group);
+                port.val(b.port);
+                mac_.val(b.MAC);
+                uuid.val(b.UUID);
+            }
+        })
+    </script>
+    <script>
+        $("#save_modal").onclick(function () {
+
+        });
+    </script>
 {% endblock %}

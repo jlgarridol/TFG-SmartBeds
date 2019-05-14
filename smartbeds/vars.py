@@ -8,4 +8,4 @@ def start():
 def after_db():
     from smartbeds.process.receive import load_beds_listeners
 
-    load_beds_listeners()
+    #load_beds_listeners()
