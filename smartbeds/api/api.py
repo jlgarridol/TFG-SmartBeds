@@ -30,18 +30,6 @@ class API:
 
         API._instance = self
 
-    def _db_context(self):
-        if v.db is None:
-            v.db = connect(**self._params)
-            v.db.autocommit = False
-        return v.db
-
-    @classmethod
-    def get_instance(cls):
-        if API._instance is None:
-            raise Exception("No existe una instancia de la API")
-        return cls._instance
-
     def auth(self, nick: str, password: str) -> tuple:
         """
         Comprueba que el usuario y la contraseña
@@ -66,7 +54,6 @@ class API:
         """
         print("Intento de autenticación del usuario:", nick)
         conn = self._db_context()
-        print(conn)
         self.__check_password(nick, password)
 
         token = self.__update_token(nick)
@@ -74,58 +61,6 @@ class API:
         conn.commit()
         
         return token, nick, user['rol']
-
-    def __check_password(self, nick, password):
-        """
-        Comprueba si la contraseña es correcta
-
-        :param nick: nombre de usuario
-        :param password: contraseña
-        :raise BadCredentialsError: si la combinación no es correcta
-        """
-        conn = self._db_context()
-        password = API.encrypt(password)
-
-        query = self._users.select()
-        query.where = (self._users.nickname == nick) & (self._users.password == password)
-
-        cursor = conn.cursor()
-        command = API.prepare_query(query)
-        cursor.execute(*command)
-
-        if cursor.fetchone() is None:
-            conn.rollback()
-            raise BadCredentialsError("La combinación de nombre de usuario y contraseña no coinciden")
-        cursor.close()
-
-    def __update_token(self, nick):
-        """
-        Genera un nuevo token para la sesión
-
-        :param nick: nombre del usuario
-        :return: nuevo token
-        """
-        conn = self._db_context()
-        again = True
-        while again:
-            try:
-                token = API.generate_token(API.SIZE)
-
-                token_crypt = API.encrypt(token)
-
-                query = self._users.update(columns=[self._users.token],
-                                           values=[token_crypt],
-                                           where=self._users.nickname == nick)
-
-                cursor = conn.cursor()
-                command = API.prepare_query(query)
-                cursor.execute(*command)
-                again = False
-                cursor.close()
-            except IntegrityError:
-                pass #Se ha repetido el token, se vuelve a intentar
-
-        return token
 
     def get_all_beds_info(self):
         """
@@ -687,42 +622,12 @@ class API:
         :param idu: identificador del usuario
         """
         conn = self._db_context()
-        add = self._user_bed.insert(columns=[self._user_bed.IDB, self._user_bed.IDB],
+        add = self._user_bed.insert(columns=[self._user_bed.IDB, self._user_bed.IDU],
                                     values=[[idb, idu]])
         cursor = conn.cursor()
         command = API.prepare_query(add)
         cursor.execute(*command)
         cursor.close()
-
-    @classmethod
-    def generate_token(cls, size: int) -> str:
-        """
-        Genera un token del tamaño size
-
-        Parameters
-        ----------
-        size : int
-            tamaño del token a generar
-
-        Returns
-        -------
-        string
-            token alfanumérico
-        """
-        token = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))
-        return token
-
-    @classmethod
-    def encrypt(cls, text):
-        """
-        Encripta un texto
-
-        :param text: texto a encriptar
-        :return: texto encriptado
-        """
-        hashed = sha512(text.encode('utf-8')).digest()
-        based = b64encode(hashed).decode('utf-8')
-        return based
 
     def __delete(self, table, where, error="El elemento no existe"):
         """
@@ -799,7 +704,6 @@ class API:
         conn = self._db_context()
         query = self._beds.select()
         query.where = self._beds.bed_name == bedname
-        print(conn)
         cursor = conn.cursor(dictionary=True)
         command = API.prepare_query(query)
         cursor.execute(*command)
@@ -808,12 +712,6 @@ class API:
             raise ElementNotExistsError('La cama solicitada no existe')
         cursor.close()
         return bed
-
-    @classmethod
-    def prepare_query(cls, query):
-        command = list(query)
-        command[0] = command[0].replace("\"", "")
-        return command
 
     def _get_params_from_dict(self, table, params):
         """
@@ -830,6 +728,106 @@ class API:
             values.append(v)
 
         return columns, values
+
+    def __check_password(self, nick, password):
+        """
+        Comprueba si la contraseña es correcta
+
+        :param nick: nombre de usuario
+        :param password: contraseña
+        :raise BadCredentialsError: si la combinación no es correcta
+        """
+        conn = self._db_context()
+        password = API.encrypt(password)
+
+        query = self._users.select()
+        query.where = (self._users.nickname == nick) & (self._users.password == password)
+
+        cursor = conn.cursor()
+        command = API.prepare_query(query)
+        cursor.execute(*command)
+
+        if cursor.fetchone() is None:
+            conn.rollback()
+            raise BadCredentialsError("La combinación de nombre de usuario y contraseña no coinciden")
+        cursor.close()
+
+    def __update_token(self, nick):
+        """
+        Genera un nuevo token para la sesión
+
+        :param nick: nombre del usuario
+        :return: nuevo token
+        """
+        conn = self._db_context()
+        again = True
+        while again:
+            try:
+                token = API.generate_token(API.SIZE)
+
+                token_crypt = API.encrypt(token)
+
+                query = self._users.update(columns=[self._users.token],
+                                           values=[token_crypt],
+                                           where=self._users.nickname == nick)
+
+                cursor = conn.cursor()
+                command = API.prepare_query(query)
+                cursor.execute(*command)
+                again = False
+                cursor.close()
+            except IntegrityError:
+                pass #Se ha repetido el token, se vuelve a intentar
+
+        return token
+
+    def _db_context(self):
+        if v.db is None:
+            v.db = connect(**self._params)
+            v.db.autocommit = False
+        return v.db
+
+    @classmethod
+    def prepare_query(cls, query):
+        command = list(query)
+        command[0] = command[0].replace("\"", "")
+        return command
+
+    @classmethod
+    def get_instance(cls):
+        if API._instance is None:
+            raise Exception("No existe una instancia de la API")
+        return cls._instance
+
+    @classmethod
+    def generate_token(cls, size: int) -> str:
+        """
+        Genera un token del tamaño size
+
+        Parameters
+        ----------
+        size : int
+            tamaño del token a generar
+
+        Returns
+        -------
+        string
+            token alfanumérico
+        """
+        token = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(size))
+        return token
+
+    @classmethod
+    def encrypt(cls, text):
+        """
+        Encripta un texto
+
+        :param text: texto a encriptar
+        :return: texto encriptado
+        """
+        hashed = sha512(text.encode('utf-8')).digest()
+        based = b64encode(hashed).decode('utf-8')
+        return based
 
 
 class SmartBedError(Exception):

@@ -26,6 +26,9 @@
                                 <button class="btn btn-success" data-toggle="modal" data-whatever="{{ cama.bed_name }}"
                                         data-target="#bedmodal">Modificar
                                 </button>
+                                <button class="btn btn-info" data-toggle="modal" data-whatever="{{ cama.bed_name }}"
+                                        data-target="#bedpermmodal">Permisos
+                                </button>
                                 <button class="btn btn-danger" onclick="del({{ cama.bed_name }})">Borrar</button>
                             </td>
                         </tr>
@@ -35,6 +38,7 @@
             </div>
         </div>
     </div>
+    {# Modal de añadir y modificar #}
     <div class="modal fade" tabindex="-1" role="dialog" id="bedmodal" aria-labelledby="bedmodal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -96,6 +100,49 @@
             </div>
         </div>
     </div>
+    {# Modal de permisos #}
+    <div class="modal fade" tabindex="-1" role="dialog" id="bedpermmodal" aria-labelledby="bedpermmodal"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_perm_title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <th scope="col">#</th>
+                            {% for u in users %}
+                                {% if u != "admin" %}
+                                    <th scope="col">{{ u }}</th>
+                                {% endif %}
+                            {% endfor %}
+                            </thead>
+                            <tbody>
+                            {% for b in beds %}
+                                <tr>
+                                    <th scope="row">{{ b.bed_name }}</th>
+                                    {% for u in users %}
+                                        {% if u != "admin" %}
+                                            <td><input class="bedperm"  data-bed="{{ b.bed_name }}"  type="checkbox" id="{{ b.bed_name | b64encode }}-{{ u }}"/></td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}
@@ -151,7 +198,7 @@
         }
 
         function incorrecto(data, textStatus, jQxhr) {
-            console.log(textStatus);
+            console.log(data);
         }
 
         function JSON_to_URLEncoded(element, key, list) {
@@ -167,11 +214,13 @@
 
         $("#save_modal").click(function () {
             var url = "";
-            let o = {bed_name: bedname.val(),
-                 ip_group: ip.val(),
-                 port: port.val(),
-                 MAC: mac_.val(),
-                 UUID: uuid.val()};
+            let o = {
+                bed_name: bedname.val(),
+                ip_group: ip.val(),
+                port: port.val(),
+                MAC: mac_.val(),
+                UUID: uuid.val()
+            };
 
             if (mode.val() === "new") {
                 url = "{{ url_for('nueva_cama') }}";
@@ -191,7 +240,7 @@
             })
         });
 
-        function del(recipient){
+        function del(recipient) {
 
             let o = {bed_name: recipient};
 
@@ -207,5 +256,35 @@
                 incorrecto
             })
         }
+    </script>
+    <script>
+        function update_perm(event){
+            let perm = $("#"+event.target.id);
+            console.log(perm);
+            username = event.target.id.split('-')[1];
+            let data = {mode: "change",
+                        bed_name: perm.data('bed'),
+                        username: username};
+            $.ajax({
+                url: "{{ url_for('permisos_cama') }}",
+                dataType: 'text',
+                type: 'put',
+                contentType: 'application/x-www-form-urlencoded',
+                data: JSON_to_URLEncoded(data),
+                success:function () {
+                    console.log("Todo correcto");
+                },
+                error:
+                incorrecto
+            })
+
+        }
+
+        $(document).ready(function () {
+            {% for p in perm %}
+                $("#{{ p.bed_name | b64encode }}-{{ p.username }}").prop("checked", true);
+            {% endfor %}
+            $(".bedperm").change(update_perm);
+        });
     </script>
 {% endblock %}

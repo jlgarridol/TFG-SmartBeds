@@ -172,9 +172,9 @@
 
         var socket = io.connect('http://' + document.domain + ':' + location.port);
         socket.on("connect", function (data) {
-            socket.emit('give_me_data', {namespace: "00AEFAADD6C3_886B0F59968A", bedname: 'Cama 1'});
+            socket.emit('give_me_data', {namespace: "{{ page.namespace }}", bedname: '{{ page.bedname }}'});
         });
-        var namespace = io('/00AEFAADD6C3_886B0F59968A');
+        var namespace = io('/{{ page.namespace }}');
         namespace.on("package", function (data) {
             console.log("Orden");
             var max_instances = 300;
@@ -183,16 +183,16 @@
 
             switch (result[0]) {
                 case 0:
-                    state.text("Durmiendo - Probabilidad de crisis: "+result[1].toFixed(2));
+                    state.text("🛌 Durmiendo - Probabilidad de crisis: "+result[1].toFixed(2));
                     break;
                 case 1:
-                    state.text("Crisis - Probabilidad de crisis: "+result[1].toFixed(2));
+                    state.text("😵 Crisis - Probabilidad de crisis: "+result[1].toFixed(2));
                     break;
                 case 2:
-                    state.text("Despierto");
+                    state.text("🛏️ Despierto");
 
             }
-            if (result[3] == 0){
+            if (result[3] === 0 || result[3] ===4){
                 vital_state.text("Baja calidad de datos");
             }else{
                 vital_state.text("");
@@ -203,19 +203,19 @@
                 pressure_state.text("");
             }
 
-            var instance = data.instance;
-            var vitales = data.vital;
-            var pressure = data.pressure;
+            let instance = data.instance;
+            let vitales = data.vital;
+            let pressure = data.pressure;
             if (vital.data.labels.length > max_instances) {
                 remove_last()
             }
             vital.data.labels.push(instance);
-            for (var i = 0; i < vital.data.datasets.length; i++) {
+            for (let i = 0; i < vital.data.datasets.length; i++) {
                 vital.data.datasets[i].data.push(vitales[i]);
             }
 
             pressures.data.labels.push(instance);
-            for (var i = 0; i < pressures.data.datasets.length; i++) {
+            for (let i = 0; i < pressures.data.datasets.length; i++) {
                 pressures.data.datasets[i].data.push(pressure[i]);
             }
 
