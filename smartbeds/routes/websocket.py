@@ -1,7 +1,7 @@
 import smartbeds.vars as v
 from flask_socketio import emit
 from smartbeds.process.receive import get_processor
-from smartbeds.process.receive import BedProcess
+from smartbeds.process.proc import BedProcess
 from smartbeds.api.api import API
 import numpy as np
 from socketio import Client
@@ -10,6 +10,7 @@ import eventlet
 from threading import Thread
 
 namespace_threads = {}
+
 
 class Broadcaster:
 

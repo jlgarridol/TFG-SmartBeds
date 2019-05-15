@@ -46,6 +46,8 @@ def logout():
 def cama(bedname):
     mod_request({"bedname": bedname})
     response, code = api.bed()
+    if code != 200:
+        return error(code, response.get_json()['message'])
     namespace = response.get_json()['namespace']
     context = {'page': {'page': 'bed', 'bedname': bedname, 'namespace': namespace}, 'info': get_info(), "title": bedname}
     return render_template('cama.html', **context)
@@ -68,11 +70,40 @@ def borrar_cama(bedname):
     mod_request()  # Introducimos el token
     return api.beddel()
 
+
 @v.app.route('/bed/perm', methods=['PUT'])
 def permisos_cama():
     mod_request()
-    print(request.form)
     return api.bedperm()
+
+
+@v.app.route('/users', methods=['GET'])
+def usuarios():
+    mod_request()
+    context = {"page": {"page": 'admin_users'}, "info": get_info(), "title": "Administrar usuarios"}
+    response, code = api.users()
+    if code != 200:
+        return error(code, response.get_json()['message'])
+    context["users"] = response.get_json()['users']
+    return render_template('usuarios.html', **context)
+
+
+@v.app.route('/user/add', methods=['PUT'])
+def user_add():
+    mod_request()
+    return api.useradd()
+
+
+@v.app.route('/user/del', methods=['DELETE'])
+def user_del():
+    mod_request()
+    return api.userdel()
+
+
+@v.app.route('/user/mod', methods=['PUT'])
+def user_mod():
+    mod_request()
+    return api.usermod()
 
 
 @v.app.route('/beds', methods=['GET'])
@@ -80,12 +111,15 @@ def camas():
     context = {"page": {"page": 'admin_beds'}, "info": get_info(), "title": "Administrar camas"}
     mod_request({"mode": "info"})
     response, code = api.beds()
-    #Lista de camas
+    if code != 200:
+        return error(code, response.get_json()['message'])
+
+    # Lista de camas
     context['beds'] = response.get_json()["beds"]
     response, code = api.users()
-    #Lista de usuarios
+    # Lista de usuarios
     context['users'] = response.get_json()["users"]
-    #Lista de permisos
+    # Lista de permisos
     response, code = api.bedperm()
     context['perm'] = response.get_json()["permission"]
     return render_template('camas.html', **context)
@@ -93,6 +127,7 @@ def camas():
 
 def error(code, message):
     return render_template('error.html',
+                           page={"page": "none"},
                            code=code,
                            message=message,
                            info=get_info(),

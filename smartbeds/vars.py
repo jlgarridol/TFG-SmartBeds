@@ -1,8 +1,10 @@
 def start():
-    global app, socketio, db
+    global app, socketio, db, bed_listeners, processors
     app = None
     socketio = None
     db = None
+    bed_listeners = {}
+    processors = {}
 
 
 def after_db():

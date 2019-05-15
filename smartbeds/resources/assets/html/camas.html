@@ -4,24 +4,24 @@
         <div class="row">
             <div class="col-md-8 offset-md-2 col-lg-12 offset-lg-0">
                 <h2>Administrar camas</h2>
-                <table class="table table-hover text-center">
-                    <thead>
+                <table class="table text-center table-striped">
+                    <thead class="thead-dark">
                     <tr>
                         <th colspan="2">
-                            <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-whatever=""
+                            <button class="btn btn-info btn-lg btn-block" data-toggle="modal" data-whatever=""
                                     data-target="#bedmodal">Añadir cama
                             </button>
                         </th>
                     </tr>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Acción</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Acción</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for cama in beds %}
                         <tr>
-                            <td>{{ cama.bed_name }}</td>
+                            <td scope="row">{{ cama.bed_name }}</td>
                             <td>
                                 <button class="btn btn-success" data-toggle="modal" data-whatever="{{ cama.bed_name }}"
                                         data-target="#bedmodal">Modificar
@@ -29,7 +29,7 @@
                                 <button class="btn btn-info" data-toggle="modal" data-whatever="{{ cama.bed_name }}"
                                         data-target="#bedpermmodal">Permisos
                                 </button>
-                                <button class="btn btn-danger" onclick="del({{ cama.bed_name }})">Borrar</button>
+                                <button class="btn btn-danger" onclick="del('{{ cama.bed_name }}')">Borrar</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -175,6 +175,8 @@
             if (recipient === "") {//Nueva cama
                 modal_title.text("Nueva cama");
                 bedname.val("");
+                bedname.prop('readonly', false);
+                bedname.removeClass("form-control");
                 ip.val("");
                 port.val("");
                 mac_.val("");
@@ -185,6 +187,8 @@
                 var b = beds[recipient];
                 modal_title.text("Modificar la cama: " + b.bed_name);
                 bedname.val(b.bed_name);
+                bedname.prop('readonly', true);
+                bedname.addClass("form-control");
                 ip.val(b.ip_group);
                 port.val(b.port);
                 mac_.val(b.MAC);
