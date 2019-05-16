@@ -1,5 +1,8 @@
 import threading
 
+version = 0.15
+
+
 def start():
     global app, socketio, db, bed_listeners, processors, namespace_threads
     app = None

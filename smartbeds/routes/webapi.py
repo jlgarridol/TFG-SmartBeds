@@ -111,7 +111,10 @@ def bedadd():
         params = request.form
         params.pop('token')
 
-        _api.bedadd(token, params)
+        if v.version < 1:
+            raise api.SmartBedError("La creación de camas no está disponible para esta versión")
+        else:
+            _api.bedadd(token, params)
         
     return make_response(func)
 
@@ -124,7 +127,10 @@ def bedmod():
         params = request.form
         params.pop('token')
 
-        _api.bedmod(token, params)
+        if v.version < 1:
+            raise api.SmartBedError("La modificación de camas no está disponible para esta versión")
+        else:
+            _api.bedmod(token, params)
         
     return make_response(func)
 
@@ -136,7 +142,10 @@ def beddel():
         token = request.form['token']
         bedname = response.form['bed_name']
 
-        _api.beddel(token, bedname)
+        if v.version < 1:
+            raise api.SmartBedError("La eliminación de camas no está disponible para esta versión")
+        else:
+            _api.beddel(token, bedname)
 
     return make_response(func)
 
