@@ -2,52 +2,70 @@
 
 \section{Investigación}
 
-El proyecto ha sido desarrollado aplicando diversas técnicas de la minería de datos como se puede ver en el cuaderno de investigación adjuntado.
+El proyecto ha sido desarrollado aplicando diversas técnicas de la minería de datos siguiendo el proceso KDD~\cite{ubu:mineria1}. Aunque en esta memoria se explicarán superficialmente el desarrollo completo de la investigación se encuentra en el cuaderno de investigación adjuntado.
 
-%TODO: Explicar aquí el método utilizado en el clasificador final
+Para el proceso del clasificador final el flujo KDD ha sido el siguiente:
 
-La investigación se realizó sobre \textit{Python} utilizando el ecosistema de librerías \textit{SciPy}~\cite{tool:scipy}, en particular la librería de aprendizaje automático \textit{scikit-learn}~\cite{tool:scikit-learn}, de computación \textit{NumPy}~\cite{tool:numpy}, de análisis de datos \textit{Pandas}~\cite{tool:pandas} y la de dibujado \textit{MatPlotLib}~\cite{tool:matplotlib}.
+\begin{enumerate}
+	\item \textbf{Selección}
+		Los datos han sido cedidos por la asociación abulense \textit{PRONISA} que contiene jornadas nocturnas con identificadores de la cama, datos de presiones y datos vitales. Estos datos no están balanceados ya que existe una mayor cantidad de datos del paciente durmiendo que bajo una crisis epiléptica.
+	\item \textbf{Preprocesado}
+		Los datos se han limpiado reduciendo ruidos mediante filtros de señal.
+	\item \textbf{Transformación}
+		Se han generado datos estadísticos para series temporales que optimizaban el valor del área bajo la curva PCR~\cite{saito2015precision} desde los datos preprocesados.
+	\item \textbf{Minería de datos}
+		Se ha aplicado un sistema de clasificación doble, en primer lugar se utiliza un árbol de clasificación muy simple que divide entre las situaciones de despierto (bajas presiones en la cama) y acostado, en esta situación se aplica un clasificador \textit{Random Forest}~\cite{breiman2001random} para determinar si hay crisis o no.
+	\item \textbf{Interpretación}
+		Se ha desplegado una aplicación web con datos en tiempo real para evaluar de manera constante la situación actual del paciente.
+\end{enumerate}
 
-%TODO: Explicar la ejecución particular de estos métodos
+Este proceso de investigación se realizó sobre \textit{Python} utilizando el ecosistema de librerías \textit{SciPy}~\cite{tool:scipy}, en particular la librería de aprendizaje automático \textit{scikit-learn}~\cite{tool:scikit-learn}, de computación \textit{NumPy}~\cite{tool:numpy}, de análisis de datos \textit{Pandas}~\cite{tool:pandas} y la de dibujado \textit{MatPlotLib}~\cite{tool:matplotlib}. Además, en algunas partes de la investigación se utilizó \textit{Weka}~\cite{tool:weka} para estudiar métodos que no se encontraban en \textit{scikit-learn} como el \textit{Random Balance}~\cite{diez2015random} o \textit{Rotation Forest}~\cite{rodriguez2006rotation}.
 
 \section{Servicio web}
 
 \subsection{\textit{Backend}}
 
 Las herramientas utilizadas para programar el servidor han sido:
-\begin{itemize}
-	\item \textbf{Flask}: \textit{Microframwork} de código abierto que ofrece una capa de abstracción muy alta de un servicio web.
-	\item \textbf{Flask-Socketio}: Integración del servicio de \textit{sockets}, \textit{Socket.IO}, compatible con los \textit{WebSockets}.
-	\item \textbf{Gevent y Eventlet}: Librerías para el uso de tiempo real asíncrono de hilos para el uso de \textit{Socket.IO}. 
-\end{itemize}
+\paragraph{Flask~\cite{tool:flask}}\textit{Microframwork} de código abierto (BSD) que ofrece una capa de abstracción muy alta de un servicio web.
+\paragraph{Jinja~\cite{tool:jinja}}Gestor de plantillas de código abierto (BSD) para Python.
+\paragraph{Flask-Socketio~\cite{tool:flask-socketio}}Integración del servicio de \textit{sockets}, \textit{Socket.IO}~\cite{tool:socketio}, compatible con los \textit{WebSockets}.
+\paragraph{Gevent y Eventlet~\cite{tool:gevent, tool:eventlet}}Librerías para el uso de tiempo real asíncrono de hilos para el uso de \textit{Socket.IO}. 
 
 Para la programación del sistema de hilos que distribuyen datos en tiempo real se siguieron los paradigmas de la programación orientada a objetos y de programación funcional. El sistema de rutas siguió las guías del \textit{microframework Flask}. 
 
-Algunos patrones de diseño utilizado han sido el \textit{Singleton} para la API, \textit{Absstract Factory} para la creación de familias de hilos, \textit{Proxy y Adapter} para ocultar a la api tras un acceso web y adaptar las peticiones \texttt{request}.
+Algunos patrones de diseño utilizado han sido el \textit{Singleton} para la API.
 
 \subsection{\textit{Frontend}}
+
+Para el desarrollo de la parte visible de la aplicación se han usado otra serie de herramientas:
+\paragraph{Bootstrap~\cite{wiki:boostrap}}\textit{Framework} de \textit{CSS} de código abierto (MIT) creado por \textit{Twitter} para la creación de aplicaciones web redimensionables.
+\paragraph{jQuery~\cite{wiki:jquery}}\textit{Framework} de \textit{JavaScript} de código abierto (MIT) que simplifica el acceso al \textit{HTML DOM} de la página.
+\paragraph{Chart.js}Librería de \textit{JavaScript} de código abierto (MIT) para la creación de grafos en \texttt{canvas}.
 
 \section{Herramientas generales}
 
 Para el desarrollo general del proyecto se han utilizado las siguientes herramientas según el ámbito al que pertenecen:
 
 \subsubsection{Servidor}
-\paragraph{\textit{Nginx}}servidor web y de proxy reverso ligero de alto rendimiento\cite{tool:nginx,wiki:nginx} de código abierto (BSD simplificada\cite{lic:bsd}).
-\paragraph{\textit{MariaDB}}sistema de gestión de bases de datos derivado de \textit{MySQL}\cite{tool:mariadb,wiki:mariadb} de código abierto (GPLv2\cite{lic:gplv2}). Este motor es extremadamente compatible con \textit{MySQL} porque es creado como una bifuración de esto para garantizar la existencia de este motor bajo GPL.
-\paragraph{\textit{Proxmox}}es un entorno de virtualización de servidores\cite{tool:proxmox,wiki:proxmox} de código abierto (AGPL\cite{lic:agpl}). Su función principal es el despliegue y gestión de máquinas virtuales y contenedores.
-\paragraph{\textit{Anarchy Arch}}sistema GNU/Linux derivado de \textit{ArchLinux}\cite{tool:aarch,wiki:arch}
+\paragraph{\textit{Nginx}}servidor web y de proxy reverso ligero de alto rendimient~\cite{wiki:nginx} de código abierto (BSD simplificada).
+\paragraph{\textit{MariaDB}}sistema de gestión de bases de datos derivado de \textit{MySQL}~\cite{wiki:mariadb} de código abierto (GPLv2). Este motor es extremadamente compatible con \textit{MySQL} porque es creado como una bifuración de esto para garantizar la existencia de este motor bajo GPL.
+\paragraph{\textit{Proxmox}}es un entorno de virtualización de servidore~\cite{wiki:proxmox} de código abierto (AGPL). Su función principal es el despliegue y gestión de máquinas virtuales y contenedores.
+\paragraph{\textit{Anarchy Arch}}sistema GNU/Linux derivado de \textit{ArchLinux}~\cite{wiki:arch} sobre el cual se ejecuta todo el servidor, está alojado en una máquina virtual del entorno \textit{Proxmox}.
+
+\subsubsection{Miscelanea}
 \begin{itemize}
-	\item \textbf{Jupyter Notebooks}: IDE de programación de \textit{Python} basado en \textit{iPython} de código abierto.
+	\item \textbf{Jupyter Notebooks}: IDE de programación de \textit{Python} basado en \textit{iPython} de código abierto (BSD).
 	\item \textbf{PyCharm Professional}: IDE de programación para \textit{Python} avanzado basado en \textit{InteliJ}.
-	\item \textbf{Visual Studio Code}: Editor de código genérico de código abierto.
+	\item \textbf{Visual Studio Code}: Editor de código genérico de código abierto (MIT).
 	\item \textbf{Postman}: IDE para la ejecución de request \textit{HTTP}.
-	\item \textbf{Selenium}: IDE de pruebas sobre web (de código abierto?).
-	
-	\item \textbf{CertBot}: Sistema para la firma \textit{SSL} sobre \textit{HTTP} gratuito de \textit{LetsEncrypt}.
+	\item \textbf{Selenium}: IDE de pruebas sobre web de código abierto (APACHE).
+	\item \textbf{CertBot}: Sistema para la firma \textit{SSL} sobre \textit{HTTP} gratuito de \textit{LetsEncrypt} de código abierto (MPL).
 	\item \textbf{Overleaf}: Editor de \LaTeX  online para el trabajo colaborativo.
-	\item \textbf{TexStudio}: Editor de \LaTeX  de código abierto.
-	\item \textbf{Dia}: Editor de diagramas genérico de código abierto.
+	\item \textbf{TexStudio}: Editor de \LaTeX  de código abierto (GPLv2).
+	\item \textbf{Dia}: Editor de diagramas genérico de código abierto (GPL).
 	\item \textbf{StartUML}: Editor de diagramas UML.
 	\item \textbf{Codesketch DB}: Traductor bidireccional de código-diagrama para bases de datos.
-	\item \textbf{Filezilla}: Aplicación para la trasferencia de ficheros sobre \textit{FTP} y \textit{SFTP}.
+	\item \textbf{Filezilla}: Aplicación para la trasferencia de ficheros sobre \textit{FTP} y \textit{SFTP} de código abierto (GPLv2).
+	\item \textbf{GitHub}: Servicio online de \textit{hosting} para repositorios Git.
+	\item \textbf{ZenHub}: Servicio online de integración de herramientas \textit{SCRUM} sobre GitHub.
 \end{itemize}
