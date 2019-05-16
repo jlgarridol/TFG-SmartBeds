@@ -2,14 +2,12 @@ import smartbeds.vars as v
 from flask_socketio import emit
 from smartbeds.process.receive import get_processor
 from smartbeds.process.proc import BedProcess
-from smartbeds.api.api import API
+from smartbeds.api import api
 import numpy as np
 from socketio import Client
 from smartbeds.utils import get_sio_connect
 import eventlet
 from threading import Thread
-
-namespace_threads = {}
 
 
 class Broadcaster:
@@ -52,18 +50,31 @@ def give_me_data(data):
     """
 
     namespace = data['namespace']
-    if namespace not in namespace_threads:  # Se crea el listener
-        namespace_threads[namespace] = Broadcaster(namespace, get_processor(data['bedname']), v.app)
-        namespace_threads[namespace].start()
+    if namespace not in v.namespace_threads:  # Se crea el listener
+        v.namespace_threads[namespace] = Broadcaster(namespace, get_processor(data['bedname']), v.app)
+        v.namespace_threads[namespace].start()
 
 
 # Se generan request para todas las camas y mantener el broadcast
-def generate_request():
-    beds = API.get_instance().get_all_beds_info()
+def generate_request(beds=None):
+    if beds is None:
+        beds = api.API.get_instance().get_all_beds_info()
     for bed in beds:
         namespace = bed['UUID']+"_"+bed['MAC']
         print("Comenzamos a escuchar")
         sio = Client()
-        sio.connect(get_sio_connect())
-        sio.emit("give_me_data", {"namespace": namespace, "bedname": "Cama 1"})
+        max_tries = 6
+        tries = 0
+        flag = False
+        while max_tries > tries and not flag:
+            try:
+                sio.connect(get_sio_connect())
+                flag = True
+            except:
+                tries += 1
+                eventlet.sleep(1)
+        if flag:
+            sio.emit("give_me_data", {"namespace": namespace, "bedname": "Cama 1"})
+        else:
+            raise Exception("Conexión fallada")
 

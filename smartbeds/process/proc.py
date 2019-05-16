@@ -42,10 +42,7 @@ class BedProcess:
         MAX_INTERVAL = 3600
         newRow = StringIO(newRow)
         added = False
-        df = pd.read_csv(newRow, header=None,
-                         names=self._columns,
-                         dtype=self._dtypes,
-                         parse_dates=self._datetime)
+        df = pd.read_csv(newRow, header=None, names=self._columns, dtype=self._dtypes,  parse_dates=self._datetime)
         self._index += 1
         df.index = [self._index]
 
@@ -76,7 +73,6 @@ class BedProcess:
                    "vital": [df.HR.iloc[0], df.RR.iloc[0], df.SV.iloc[0], df.HRV.iloc[0], df.B2B.iloc[0]/1000],
                    "pressure": [df.P1.iloc[0], df.P2.iloc[0], df.P3.iloc[0],
                                 df.P4.iloc[0], df.P5.iloc[0], df.P6.iloc[0]]}
-
 
         if added and len(self._last) == self._window:
             result, proba = self._get_result()

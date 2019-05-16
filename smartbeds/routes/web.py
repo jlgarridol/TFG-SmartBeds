@@ -66,7 +66,7 @@ def nueva_cama():
 
 
 @v.app.route('/bed/del', methods=['DELETE'])
-def borrar_cama(bedname):
+def borrar_cama():
     mod_request()  # Introducimos el token
     return api.beddel()
 

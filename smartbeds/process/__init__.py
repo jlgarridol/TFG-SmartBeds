@@ -4,23 +4,24 @@ from queue import Queue
 from threading import Thread
 from smartbeds.process.proc import BedProcess
 import smartbeds.vars as v
+import sys
 
 
 def new_bed_listeners(ip: str, port: int, name: str):
-    global _bed_listeners
     print("Lanzando procesos de la cama:", name)
     bed = BedListener(ip, port)
     bed.start()
     bedp = BedProcess(bed)
     bedp.start()
+
     v.bed_listeners[name] = bed
     v.processors[name] = bedp
+    print("Hola")
 
 
 def remove_bed_listener(name: str):
-    global _bed_listeners
 
-    bed = _bed_listeners.pop(name)
+    bed = v.bed_listeners.pop(name)
     if bed is not None:
         bed.stop()
 

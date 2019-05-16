@@ -8,6 +8,8 @@ from hashlib import sha512
 from base64 import b64encode
 from sql import *
 import smartbeds.process as sbpr
+from smartbeds.routes.websocket import generate_request
+import threading
 
 
 class API:
@@ -401,7 +403,9 @@ class API:
             cursor.close()
             conn.commit()
 
-            sbpr.new_bed_listeners(bedparams["ip_group"], bedparams["port"], bedparams["bed_name"])
+            #sbpr.new_bed_listeners(bedparams["ip_group"], bedparams["port"], bedparams["bed_name"])
+            #threading.Thread(target=generate_request, daemon=True, args=([bedparams],)).start()
+
 
         except IntegrityError as err:
             conn.rollback()
@@ -454,8 +458,9 @@ class API:
             cursor.close()
             conn.commit()
 
-            sbpr.remove_bed_listener(bedparams["bed_name"])
-            sbpr.new_bed_listeners(bedparams["ip_group"], bedparams["port"], bedparams["bed_name"])
+            #sbpr.remove_bed_listener(bedparams["bed_name"])
+            #sbpr.new_bed_listeners(bedparams["ip_group"], bedparams["port"], bedparams["bed_name"])
+            #threading.Thread(target=generate_request, daemon=True, args=([bedparams],)).start()
             
         except IntegrityError as err:
             conn.rollback()
@@ -494,7 +499,7 @@ class API:
             self.__delete(self._beds, self._beds.bedname == bedname, "La cama no existe")
 
             conn.commit()
-            sbpr.remove_bed_listener(bedname)
+            #sbpr.remove_bed_listener(bedname)
 
         except Exception:
             conn.rollback()

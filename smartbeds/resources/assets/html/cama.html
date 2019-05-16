@@ -61,6 +61,7 @@
                     display: true,
                     //text: 'Constantes vitales'
                 },
+                animation: false,
                 scales: {
                     yAxes: [{
                         type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -142,6 +143,7 @@
                     display: true,
                     //text: 'Constantes vitales'
                 },
+                animation: false,
                 scales: {
                     yAxes: [{
                         type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -237,7 +239,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 class="text-center">
-                    Cama 1<br>
+                    {{ page.bedname }}<br>
                     <h3 class="text-center">Estado: <span class="font-weight-bold" id="state">Durmiendo</span></h3>
                 </h1>
             </div>
