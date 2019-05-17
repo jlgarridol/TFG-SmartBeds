@@ -13,7 +13,7 @@ from threading import Thread
 class Broadcaster:
 
     def __init__(self, namespace, bed_processor: BedProcess, app):
-        self._namespace = "/"+namespace
+        self._namespaces = ["/"+namespace]
         self._bed = bed_processor
         self._app = app
 
@@ -23,8 +23,12 @@ class Broadcaster:
                 package = self._bed.next_package()
                 if package is not None:
                     Broadcaster.clean_package(package)
-                    emit("package", package, namespace=self._namespace, json=True, broadcast=True)
-                    eventlet.sleep(0)
+                    for n in self._namespaces:
+                        emit("package", package, namespace=n, json=True, broadcast=True)
+                        eventlet.sleep(0)
+
+    def add_namespace(self, namespace):
+        self._namespaces.append("/"+namespace)
 
     @staticmethod
     def clean_package(package):
@@ -50,7 +54,11 @@ def give_me_data(data):
     """
 
     namespace = data['namespace']
-    if namespace not in v.namespace_threads:  # Se crea el listener
+    if v.version < 1 and len(v.namespace_threads) > 0:
+        brd = v.namespace_threads.values()[0]
+        brd.add_namespace(namespace)
+        v.namespace_threads[namespace] = brd
+    elif namespace not in v.namespace_threads:  # Se crea el listener
         v.namespace_threads[namespace] = Broadcaster(namespace, get_processor(data['bedname']), v.app)
         v.namespace_threads[namespace].start()
 
@@ -77,4 +85,5 @@ def generate_request(beds=None):
             sio.emit("give_me_data", {"namespace": namespace, "bedname": "Cama 1"})
         else:
             raise Exception("Conexión fallada")
-
+        if v.version < 1:
+            break  # En esta situación solo se crea una request.

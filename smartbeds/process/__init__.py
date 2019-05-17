@@ -7,16 +7,19 @@ import smartbeds.vars as v
 import sys
 
 
-def new_bed_listeners(ip: str, port: int, name: str):
+def new_bed_listeners(ip: str, port: int, name: str, mode="ALL"):
     print("Lanzando procesos de la cama:", name)
-    bed = BedListener(ip, port)
-    bed.start()
-    bedp = BedProcess(bed)
-    bedp.start()
+    if mode == "ALL" or len(v.bed_listeners) == 0:
+        bed = BedListener(ip, port)
+        bed.start()
+        bedp = BedProcess(bed)
+        bedp.start()
 
-    v.bed_listeners[name] = bed
-    v.processors[name] = bedp
-    print("Hola")
+        v.bed_listeners[name] = bed
+        v.processors[name] = bedp
+    elif mode == "ONLY":
+        v.bed_listeners[name] = v.bed_listener.values()[0]
+        v.processor[name] = v.processor.values()[0]
 
 
 def remove_bed_listener(name: str):
