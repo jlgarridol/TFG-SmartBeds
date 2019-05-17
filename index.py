@@ -21,5 +21,5 @@ if __name__ == '__main__':
     threading.Thread(target=wbs.generate_request, daemon=True).start()
     print("Arranque")
     sys.stdout.flush()
-    v.socketio.run(v.app, debug=False, host="127.0.0.1", port=3031, )
+    v.socketio.run(v.app, debug=False, host="127.0.0.1", port=3031)
     print("Cierre")

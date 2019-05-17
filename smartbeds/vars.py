@@ -16,7 +16,7 @@ def start():
 def after_db():
     from smartbeds.process.receive import load_beds_listeners
 
-    th = threading.Thread(target=load_beds_listeners)
+    th = threading.Thread(target=load_beds_listeners, daemon=True)
     th.start()
 
     return th

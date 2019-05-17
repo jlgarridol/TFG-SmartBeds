@@ -18,8 +18,8 @@ def new_bed_listeners(ip: str, port: int, name: str, mode="ALL"):
         v.bed_listeners[name] = bed
         v.processors[name] = bedp
     elif mode == "ONLY":
-        v.bed_listeners[name] = v.bed_listener.values()[0]
-        v.processor[name] = v.processor.values()[0]
+        v.bed_listeners[name] = next(iter(v.bed_listeners.values()))
+        v.processors[name] = next(iter(v.processors.values()))
 
 
 def remove_bed_listener(name: str):

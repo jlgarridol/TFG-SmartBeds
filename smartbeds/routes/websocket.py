@@ -55,7 +55,7 @@ def give_me_data(data):
 
     namespace = data['namespace']
     if v.version < 1 and len(v.namespace_threads) > 0:
-        brd = v.namespace_threads.values()[0]
+        brd = next(iter(v.namespace_threads.values()))
         brd.add_namespace(namespace)
         v.namespace_threads[namespace] = brd
     elif namespace not in v.namespace_threads:  # Se crea el listener
