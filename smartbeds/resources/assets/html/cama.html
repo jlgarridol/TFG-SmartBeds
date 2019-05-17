@@ -188,7 +188,7 @@
                     state.text("🛌 Durmiendo - Probabilidad de crisis: "+result[1].toFixed(2));
                     break;
                 case 1:
-                    state.text("😵 Crisis - Probabilidad de crisis: "+result[1].toFixed(2));
+                    state.text("⚠ Crisis - Probabilidad de crisis: "+result[1].toFixed(2));
                     break;
                 case 2:
                     state.text("🛏️ Despierto");
@@ -240,7 +240,7 @@
             <div class="col-md-12">
                 <h1 class="text-center">
                     {{ page.bedname }}<br>
-                    <h3 class="text-center">Estado: <span class="font-weight-bold" id="state">Durmiendo</span></h3>
+                    <h3 class="text-center">Estado: <span class="font-weight-bold" id="state">...</span></h3>
                 </h1>
             </div>
         </div>

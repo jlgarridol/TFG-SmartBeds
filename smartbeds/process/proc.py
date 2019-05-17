@@ -6,6 +6,8 @@ import sys
 from smartbeds import alice
 from smartbeds.utils import get_model
 import warnings
+from smartbeds.vars import version
+from numpy import random
 warnings.filterwarnings("ignore")
 
 
@@ -16,6 +18,7 @@ class BedProcess:
     def __init__(self, bed):
         self._bed = bed
         self._cuento = 0
+        self._last_state = 0
         self._window = 90
         self._index = 0
         self._datetime = ["DateTime"]
@@ -83,13 +86,33 @@ class BedProcess:
         return package
 
     def _get_result(self):
-        _input = self._preprocess()
-        return self._predict(_input)
+        if version < 1:
+            return self._random_predict()
+        else:
+            _input = self._preprocess()
+            return self._predict(_input)
 
     def _preprocess(self):
         to_proc = self._last[["DateTime"]+["P" + str(i) for i in range(1, 7)]]
         _input = alice.rolling_extract_features(to_proc, self._window, alice.fc_parameters)
         return _input
+
+    def _random_predict(self):
+        if self._cuento == self._window:  # Se cambia de estado
+            self._cuento = 0
+            if self._last_state == 2:
+                self._last_state = 0
+            else:
+                self._last_state += 1
+
+        proba = 0
+        if self._last_state == 1:  # Crisis
+            proba = random.uniform(0.5, 1)
+        elif self._last_state == 0:  # No crisis
+            proba = random.uniform(0, 0.5)
+
+        self._cuento += 1
+        return self._last_state, proba
 
     @staticmethod
     def _predict(_input):
