@@ -93,8 +93,8 @@
         mode = $("#mode");
 
         $('#usermodal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var recipient = button.data('whatever');
+            let button = $(event.relatedTarget);
+            let recipient = button.data('whatever');
 
             if (recipient === "") {//Nueva cama
                 modal_title.text("Nuevo usuario");
@@ -123,7 +123,7 @@
         function JSON_to_URLEncoded(element, key, list) {
             var list = list || [];
             if (typeof (element) == 'object') {
-                for (var idx in element)
+                for (let idx in element)
                     JSON_to_URLEncoded(element[idx], key ? key + '[' + idx + ']' : idx, list);
             } else {
                 list.push(key + '=' + encodeURIComponent(element));
@@ -132,7 +132,7 @@
         }
 
         $("#save_modal").click(function () {
-            var url = "";
+            let url = "";
             let o = {
                 username: nick.val(),
                 password: pass.val(),

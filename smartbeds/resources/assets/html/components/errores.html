@@ -1,0 +1,45 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="errormodal" aria-labelledby="errormodal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_error_title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="alert alert-danger col-12">
+                            <strong><i class="fas fa-exclamation-triangle"></i></strong>
+                            <p id="modal_error_message"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function show_modal_error(title, message) {
+        let error_modal = $("#errormodal");
+        let mtitle = $("#modal_error_title");
+        let mmessage = $("#modal_error_message");
+        mtitle.text(title);
+        mmessage.text(message);
+
+        if (($("#bedmodal").data('bs.modal') || {})._isShown) {
+            $("#bedmodal").modal("toggle");
+        }
+        if (($("#usermodal").data('bs.modal') || {})._isShown) {
+            $("#usermodal").modal("toggle");
+        }
+
+        error_modal.modal("toggle");
+    }
+</script>

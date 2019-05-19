@@ -133,14 +133,18 @@ class BedProcess:
             return self._queue.get()
 
     def run(self):
-        while not self._bed.stopped:
-            newrow = self._bed.next_package()
-            if newrow is not None:
-                df, added = self._new_row(newrow)
-                package = self._create_basic_package(df, added)
-                self._queue.put(package)
-        else:
+        try:
+            while not self._bed.stopped:
+                newrow = self._bed.next_package()
+                if newrow is not None:
+                    df, added = self._new_row(newrow)
+                    package = self._create_basic_package(df, added)
+                    self._queue.put(package)
+            else:
+                self.stopped = True
+        except (KeyboardInterrupt, SystemExit):
             self.stopped = True
+            raise
 
     def start(self):
         Thread(target=self.run, daemon=True).start()

@@ -7,9 +7,14 @@
                 <table class="table text-center table-striped">
                     <thead class="thead-dark">
                     <tr>
-                        <th colspan="2">
+                        <th>
                             <button class="btn btn-info btn-lg btn-block" data-toggle="modal" data-whatever=""
                                     data-target="#bedmodal">Añadir cama
+                            </button>
+                        </th>
+                        <th>
+                            <button class="btn btn-warning btn-lg btn-block" data-toggle="modal" data-whatever=""
+                                    data-target="#bedpermmodal">Permisos
                             </button>
                         </th>
                     </tr>
@@ -25,9 +30,6 @@
                             <td>
                                 <button class="btn btn-success" data-toggle="modal" data-whatever="{{ cama.bed_name }}"
                                         data-target="#bedmodal">Modificar
-                                </button>
-                                <button class="btn btn-info" data-toggle="modal" data-whatever="{{ cama.bed_name }}"
-                                        data-target="#bedpermmodal">Permisos
                                 </button>
                                 <button class="btn btn-danger" onclick="del('{{ cama.bed_name }}')">Borrar</button>
                             </td>
@@ -55,36 +57,48 @@
                             <div class="form-group row">
                                 <label for="bedname" class="col-sm-2 col-form-label">Nombre</label>
                                 <div class="col-sm-10">
-                                    <input type="text" style="width: 100%;" id="bedname"
+                                    <input type="text" maxlength="50" class="form-control" style="width: 100%;"
+                                           id="bedname"
                                            placeholder="Nombre de la cama">
+                                    <div id="bedname_fb"></div>
                                 </div>
                             </div>
                             <legend>Dirección IP de multidifusión</legend>
                             <div class="form-group row">
                                 <label for="ip" class="col-sm-2 col-form-label">IP</label>
                                 <div class="col-sm-10">
-                                    <input type="text" style="width: 100%;" id="ip" placeholder="224.0.0.0">
+                                    <input type="text" maxlength="15" class="form-control" style="width: 100%;" id="ip"
+                                           placeholder="224.0.0.0">
+                                    <div id="ip_fb"></div>
                                 </div>
                             </div>
                             <legend>Puerto</legend>
                             <div class="form-group row">
                                 <label for="port" class="col-sm-2 col-form-label">Puerto</label>
                                 <div class="col-sm-10">
-                                    <input type="number" style="width: 100%;" id="port" placeholder="5000">
+                                    <input type="number" min="1" max="65535" class="form-control" style="width: 100%;"
+                                           id="port"
+                                           placeholder="5000">
+                                    <div id="port_fb"></div>
                                 </div>
                             </div>
                             <legend>Dirección MAC</legend>
                             <div class="form-group row">
                                 <label for="mac" class="col-sm-2 col-form-label">MAC</label>
                                 <div class="col-sm-10">
-                                    <input type="text" style="width: 100%;" id="mac" placeholder="AABBCCDDEEFF">
+                                    <input type="text" maxlength="12" class="form-control" style="width: 100%;" id="mac"
+                                           placeholder="AABBCCDDEEFF">
+                                    <div id="mac_fb"></div>
                                 </div>
                             </div>
                             <legend>Identificador de cama</legend>
                             <div class="form-group row">
                                 <label for="uuid" class="col-sm-2 col-form-label">UUID</label>
                                 <div class="col-sm-10">
-                                    <input type="text" style="width: 100%;" id="uuid" placeholder="AABBCCDDEEFF">
+                                    <input type="text" maxlength="12" class="form-control" style="width: 100%;"
+                                           id="uuid"
+                                           placeholder="AABBCCDDEEFF">
+                                    <div id="uuid_fb"></div>
                                 </div>
                             </div>
                             <div class="form-group row d-none">
@@ -95,10 +109,12 @@
                 </div>
                 <div class="modal-footer">
                     <button id="save_modal" type="button" class="btn btn-primary">Save changes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
+
+
     </div>
     {# Modal de permisos #}
     <div class="modal fade" tabindex="-1" role="dialog" id="bedpermmodal" aria-labelledby="bedpermmodal"
@@ -128,7 +144,8 @@
                                     <th scope="row">{{ b.bed_name }}</th>
                                     {% for u in users %}
                                         {% if u != "admin" %}
-                                            <td><input class="bedperm"  data-bed="{{ b.bed_name }}"  type="checkbox" id="{{ b.bed_name | b64encode }}-{{ u }}"/></td>
+                                            <td><input class="bedperm" data-bed="{{ b.bed_name }}" type="checkbox"
+                                                       id="{{ b.bed_name | b64encode }}-{{ u }}"/></td>
                                         {% endif %}
                                     {% endfor %}
                                 </tr>
@@ -138,12 +155,13 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
 
 {% block js %}
     <script>
@@ -166,17 +184,25 @@
         uuid = $("#uuid");
         mode = $("#mode");
 
+        bednamefb = $("#bedname_fb");
+        ipfb = $("#ip_fb");
+        portfb = $("#port_fb");
+        macfb = $("#mac_fb");
+        uuidfb = $("#uuid_fb");
+
+        let fields = [bedname, ip, port, mac_, uuid];
+        let fb = [bednamefb, ipfb, portfb, macfb, uuidfb];
+
     </script>
     <script>
         $('#bedmodal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var recipient = button.data('whatever');
+            let button = $(event.relatedTarget);
+            let recipient = button.data('whatever');
 
             if (recipient === "") {//Nueva cama
                 modal_title.text("Nueva cama");
                 bedname.val("");
                 bedname.prop('readonly', false);
-                bedname.removeClass("form-control");
                 ip.val("");
                 port.val("");
                 mac_.val("");
@@ -184,7 +210,7 @@
                 mode.val("new");
 
             } else {//Modificar cama
-                var b = beds[recipient];
+                let b = beds[recipient];
                 modal_title.text("Modificar la cama: " + b.bed_name);
                 bedname.val(b.bed_name);
                 bedname.prop('readonly', true);
@@ -195,6 +221,7 @@
                 uuid.val(b.UUID);
                 mode.val("update");
             }
+            checkbed();
         });
 
         function correcto(data, textStatus, jQxhr) {
@@ -203,12 +230,16 @@
 
         function incorrecto(data, textStatus, jQxhr) {
             console.log(data);
+            let datos = JSON.parse(data.responseText);
+            if (data.status == 418) {  //La solicitud no se puede atender
+                show_modal_error("Operación no válida", datos.message);
+            }
         }
 
         function JSON_to_URLEncoded(element, key, list) {
             var list = list || [];
             if (typeof (element) == 'object') {
-                for (var idx in element)
+                for (let idx in element)
                     JSON_to_URLEncoded(element[idx], key ? key + '[' + idx + ']' : idx, list);
             } else {
                 list.push(key + '=' + encodeURIComponent(element));
@@ -217,7 +248,7 @@
         }
 
         $("#save_modal").click(function () {
-            var url = "";
+            let url = "";
             let o = {
                 bed_name: bedname.val(),
                 ip_group: ip.val(),
@@ -262,20 +293,22 @@
         }
     </script>
     <script>
-        function update_perm(event){
-            let perm = $("#"+event.target.id);
+        function update_perm(event) {
+            let perm = $("#" + event.target.id);
             console.log(perm);
             username = event.target.id.split('-')[1];
-            let data = {mode: "change",
-                        bed_name: perm.data('bed'),
-                        username: username};
+            let data = {
+                mode: "change",
+                bed_name: perm.data('bed'),
+                username: username
+            };
             $.ajax({
                 url: "{{ url_for('permisos_cama') }}",
                 dataType: 'text',
                 type: 'put',
                 contentType: 'application/x-www-form-urlencoded',
                 data: JSON_to_URLEncoded(data),
-                success:function () {
+                success: function () {
                     console.log("Todo correcto");
                 },
                 error:
@@ -290,5 +323,8 @@
             {% endfor %}
             $(".bedperm").change(update_perm);
         });
+    </script>
+    <script>
+        {% include "components/functions.js" %}
     </script>
 {% endblock %}

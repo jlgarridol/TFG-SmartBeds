@@ -18,14 +18,17 @@ class Broadcaster:
         self._app = app
 
     def emiter(self):
-        with v.app.app_context():
-            while not self._bed.stopped:
-                package = self._bed.next_package()
-                if package is not None:
-                    Broadcaster.clean_package(package)
-                    for n in self._namespaces:
-                        emit("package", package, namespace=n, json=True, broadcast=True)
-                        eventlet.sleep(0)
+        try:
+            with v.app.app_context():
+                while not self._bed.stopped:
+                    package = self._bed.next_package()
+                    if package is not None:
+                        Broadcaster.clean_package(package)
+                        for n in self._namespaces:
+                            emit("package", package, namespace=n, json=True, broadcast=True)
+                            eventlet.sleep(0)
+        except (KeyboardInterrupt, SystemExit):
+            raise
 
     def add_namespace(self, namespace):
         self._namespaces.append("/"+namespace)
