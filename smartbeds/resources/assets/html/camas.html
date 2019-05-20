@@ -51,6 +51,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <strong class="container form-group text-danger row" id="errormsg"></strong>
                     <form>
                         <fieldset>
                             <legend>Nombre de la cama</legend>
@@ -193,6 +194,11 @@
         let fields = [bedname, ip, port, mac_, uuid];
         let fb = [bednamefb, ipfb, portfb, macfb, uuidfb];
 
+        opt = "bed";
+
+    </script>
+    <script>
+        {% include "components/functions.js" %}
     </script>
     <script>
         $('#bedmodal').on('show.bs.modal', function (event) {
@@ -223,18 +229,6 @@
             }
             checkbed();
         });
-
-        function correcto(data, textStatus, jQxhr) {
-            location.reload();
-        }
-
-        function incorrecto(data, textStatus, jQxhr) {
-            console.log(data);
-            let datos = JSON.parse(data.responseText);
-            if (data.status == 418) {  //La solicitud no se puede atender
-                show_modal_error("Operación no válida", datos.message);
-            }
-        }
 
         function JSON_to_URLEncoded(element, key, list) {
             var list = list || [];
@@ -323,8 +317,5 @@
             {% endfor %}
             $(".bedperm").change(update_perm);
         });
-    </script>
-    <script>
-        {% include "components/functions.js" %}
     </script>
 {% endblock %}

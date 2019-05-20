@@ -1,3 +1,16 @@
+function correcto(data, textStatus, jQxhr) {
+    location.reload();
+}
+
+function incorrecto(data, textStatus, jQxhr) {
+    let msg = JSON.parse(data.responseText).message;
+    if (data.status === 418) {
+        show_modal_error("Operación no válida", );
+    }else{
+        $("#errormsg").text(msg);
+    }
+}
+
 function reset() {
 
     fields.forEach(function (element) {
@@ -23,32 +36,58 @@ function checkempty() {
     }
 }
 
-function checkbed() {
+function checkstart() {
     $("#save_modal").attr("disabled", false);
     reset();
     checkempty();
+}
+
+function campo_correcto(field, fb) {
+    field.addClass("is-valid");
+    fb.addClass("valid-feedback");
+    fb.text("Correcto");
+}
+
+function campo_incorrecto(field, fb, text) {
+    field.addClass("is-invalid");
+    fb.addClass("invalid-feedback");
+    fb.text(text);
+    block_submit();
+}
+
+function checkuser() {
+    checkstart();
+
+    if (nick.val() != "") {
+        campo_correcto(nick, nickfb);
+    }
+
+    if (pass_re.val() != "" && pass.val() != "") {
+        if (pass_re.val() === pass.val()) {
+            campo_correcto(pass, passfb);
+            campo_correcto(pass_re, pass_refb);
+        } else {
+            campo_incorrecto(pass_re, pass_refb, "Las contraseñas no coinciden");
+        }
+    }
+}
+
+
+function checkbed() {
+    checkstart();
 
     if (!checkip(ip.val())) {
-        ip.addClass("is-invalid");
-        ipfb.addClass("invalid-feedback");
-        ipfb.text("La ip no es correcta, ha de estar entre 224.0.0.0 y 239.255.255.255");
-        block_submit();
+        campo_incorrecto(ip, ipfb, "La ip no es correcta, ha de estar entre 224.0.0.0 y 239.255.255.255");
     } else if (ip.val() != "") {
-        ip.addClass("is-valid");
-        ipfb.addClass("valid-feedback");
-        ipfb.text("Correcto");
+        campo_correcto(ip, ipfb);
     }
 
     if (bedname.val() != "") {
-        bedname.addClass("is-valid");
-        bednamefb.addClass("valid-feedback");
-        bednamefb.text("Correcto");
+        campo_correcto(bedname, bednamefb)
     }
 
     if (port.val() != "") {
-        port.addClass("is-valid");
-        portfb.addClass("valid-feedback");
-        portfb.text("Correcto");
+        campo_correcto(port, portfb)
     }
 
     checkmacuuid(mac_, macfb);
@@ -64,14 +103,9 @@ function block_submit() {
 function checkmacuuid(muid, fb) {
     let condicion = /^(([a-f0-9]){12})$/gmi;
     if (!condicion.test(muid.val())) {
-        muid.addClass("is-invalid");
-        fb.addClass("invalid-feedback");
-        fb.text("El formato no es correcto, ha de ser: AABBCCDDEEFF");
-        block_submit();
+        campo_incorrecto(muid, fb, "El formato no es correcto, ha de ser: AABBCCDDEEFF");
     } else if (muid.val() != "") {
-        muid.addClass("is-valid");
-        fb.addClass("valid-feedback");
-        fb.text("Correcto");
+        campo_correcto(muid, fb);
     }
 
 }
@@ -99,7 +133,14 @@ function checkip(ip) {
 }
 
 $(document).ready(function () {
+    let fun = undefined;
+    if (opt === "bed") {
+        fun = checkbed;
+    } else if (opt === "user") {
+        fun = checkuser;
+    }
     fields.forEach(function (element) {
-        element.keyup(checkbed)
-    })
+        element.keyup(fun)
+    });
+
 });

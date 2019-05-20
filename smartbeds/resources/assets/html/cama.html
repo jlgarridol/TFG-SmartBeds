@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block js %}
     <script>
-        let ctx = document.getElementById('vitales').getContext('2d');
+        ctx = document.getElementById('vitales').getContext('2d');
         vital = new Chart(ctx, {
             type: 'line',
             data: {
@@ -75,7 +75,7 @@
         });
     </script>
     <script>
-        let ctx = document.getElementById('presiones').getContext('2d');
+        ctx = document.getElementById('presiones').getContext('2d');
         pressures = new Chart(ctx, {
             type: 'line',
             data: {

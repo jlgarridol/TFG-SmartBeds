@@ -46,27 +46,31 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <strong class="container form-group text-danger row" id="errormsg"></strong>
                     <form>
                         <fieldset>
                             <legend>Nickname del usuario</legend>
                             <div class="form-group row">
                                 <label for="nick" class="col-sm-4 col-form-label">Nickname</label>
                                 <div class="col-sm-8">
-                                    <input type="text" style="width: 100%;" id="nick"
+                                    <input type="text" maxlength="50" style="width: 100%;" class="form-control" id="nick"
                                            placeholder="nickname">
+                                    <div id="nickfb"></div>
                                 </div>
                             </div>
                             <legend>Contraseña</legend>
                             <div class="form-group row">
                                 <label for="pass" class="col-sm-4 col-form-label">Contraseña</label>
                                 <div class="col-sm-8">
-                                    <input type="password" style="width: 100%;" id="pass" placeholder="">
+                                    <input type="password" style="width: 100%;" class="form-control" id="pass" placeholder="">
+                                    <div id="passfb"></div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="pass-re" class="col-sm-4 col-form-label">Repetir contraseña</label>
+                                <label for="pass_re" class="col-sm-4 col-form-label">Repetir contraseña</label>
                                 <div class="col-sm-8">
-                                    <input type="password" style="width: 100%;" id="pass-re" placeholder="">
+                                    <input type="password" class="form-control" style="width: 100%;" id="pass_re" placeholder="">
+                                    <div id="pass_refb"></div>
                                 </div>
                             </div>
                             <div class="form-group row d-none">
@@ -76,8 +80,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button id="save_modal" type="button" class="btn btn-primary">Save changes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="save_modal" type="button" class="btn btn-primary">Guardar cambios</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -86,39 +90,45 @@
 
 {% block js %}
     <script>
-        modal_title =  $("#modal_title");
+        //Almacenamiento de las camas
+        modal_title = $("#modal_title");
         nick = $("#nick");
         pass = $("#pass");
-        pass_re = $("#pass-re");
+        pass_re = $("#pass_re");
         mode = $("#mode");
+
+        nickfb = $("#nickfb");
+        passfb = $("#passfb");
+        pass_refb = $("#pass_refb");
+
+        let fields = [nick, pass, pass, pass_re];
+        let fb = [nickfb, passfb, passfb, pass_refb];
+
+        opt = "user";
+    </script>
+    <script>
+        {% include "components/functions.js" %}
+    </script>
+    <script>
+
 
         $('#usermodal').on('show.bs.modal', function (event) {
             let button = $(event.relatedTarget);
             let recipient = button.data('whatever');
 
-            if (recipient === "") {//Nueva cama
+            if (recipient === "") {//Nuevo usuario
                 modal_title.text("Nuevo usuario");
                 nick.val("");
                 nick.prop('readonly', false);
-                nick.removeClass("form-control");
                 mode.val("new");
 
-            } else {//Modificar cama
+            } else {//Modificar usuario
                 modal_title.text("Modificar contraseña de: " + recipient);
                 nick.val(recipient);
                 nick.prop('readonly', true);
-                nick.addClass("form-control");
                 mode.val("update");
             }
         });
-
-        function correcto(data, textStatus, jQxhr) {
-            location.reload();
-        }
-
-        function incorrecto(data, textStatus, jQxhr) {
-            console.log(data);
-        }
 
         function JSON_to_URLEncoded(element, key, list) {
             var list = list || [];
