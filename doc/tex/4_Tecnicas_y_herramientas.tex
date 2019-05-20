@@ -2,7 +2,7 @@
 
 \section{Investigación}
 
-El proyecto ha sido desarrollado aplicando diversas técnicas de la minería de datos siguiendo el proceso KDD~\cite{ubu:mineria1}. Aunque en esta memoria se explicarán superficialmente el desarrollo completo de la investigación se encuentra en el cuaderno de investigación adjuntado.
+El proyecto ha sido desarrollado aplicando diversas técnicas de minería de datos siguiendo el proceso KDD~\cite{ubu:mineria1}. Aunque en esta memoria se explicará superficialmente, el desarrollo completo de la investigación se encuentra en el cuaderno de investigación adjuntado.
 
 Para el proceso del clasificador final el flujo KDD ha sido el siguiente:
 
@@ -25,15 +25,15 @@ Este proceso de investigación se realizó sobre \textit{Python} utilizando el e
 
 \subsection{\textit{Backend}}
 
-Las herramientas utilizadas para programar el servidor han sido:
+Las herramientas utilizadas para programar el servidor han sido las siguientes:
 \paragraph{Flask~\cite{tool:flask}}\textit{Microframwork} de código abierto (BSD) que ofrece una capa de abstracción muy alta de un servicio web.
 \paragraph{Jinja~\cite{tool:jinja}}Gestor de plantillas de código abierto (BSD) para Python.
 \paragraph{Flask-Socketio~\cite{tool:flask-socketio}}Integración del servicio de \textit{sockets}, \textit{Socket.IO}~\cite{tool:socketio}, compatible con los \textit{WebSockets}.
-\paragraph{Gevent y Eventlet~\cite{tool:gevent, tool:eventlet}}Librerías para el uso de tiempo real asíncrono de hilos para el uso de \textit{Socket.IO}. 
+\paragraph{Gevent y Eventlet~\cite{tool:eventlet, tool:gevent}}Librerías para el uso de tiempo real, asíncrono de hilos para el uso de \textit{Socket.IO}. 
 
 Para la programación del sistema de hilos que distribuyen datos en tiempo real se siguieron los paradigmas de la programación orientada a objetos y de programación funcional. El sistema de rutas siguió las guías del \textit{microframework Flask}. 
 
-Algunos patrones de diseño utilizado han sido el \textit{Singleton} para la API.
+Algunos patrones de diseño utilizados han sido el \textit{Singleton} para la API así como un \textit{Proxy} entre la interfaz web y la lógica de el API.
 
 \subsection{\textit{Frontend}}
 
@@ -47,21 +47,21 @@ Para el desarrollo de la parte visible de la aplicación se han usado otra serie
 Para el desarrollo general del proyecto se han utilizado las siguientes herramientas según el ámbito al que pertenecen:
 
 \subsubsection{Servidor}
-\paragraph{\textit{Nginx}}servidor web y de proxy reverso ligero de alto rendimient~\cite{wiki:nginx} de código abierto (BSD simplificada).
+\paragraph{\textit{Nginx}}servidor web y de proxy reverso ligero de alto rendimiento~\cite{wiki:nginx} de código abierto (BSD simplificada).
 \paragraph{\textit{MariaDB}}sistema de gestión de bases de datos derivado de \textit{MySQL}~\cite{wiki:mariadb} de código abierto (GPLv2). Este motor es extremadamente compatible con \textit{MySQL} porque es creado como una bifuración de esto para garantizar la existencia de este motor bajo GPL.
-\paragraph{\textit{Proxmox}}es un entorno de virtualización de servidore~\cite{wiki:proxmox} de código abierto (AGPL). Su función principal es el despliegue y gestión de máquinas virtuales y contenedores.
+\paragraph{\textit{Proxmox}}es un entorno de virtualización de servidores~\cite{wiki:proxmox} de código abierto (AGPL). Su función principal es el despliegue y gestión de máquinas virtuales y contenedores.
 \paragraph{\textit{Anarchy Arch}}sistema GNU/Linux derivado de \textit{ArchLinux}~\cite{wiki:arch} sobre el cual se ejecuta todo el servidor, está alojado en una máquina virtual del entorno \textit{Proxmox}.
 
-\subsubsection{Miscelanea}
+\subsubsection{Miscelánea}
 \begin{itemize}
 	\item \textbf{Jupyter Notebooks}: IDE de programación de \textit{Python} basado en \textit{iPython} de código abierto (BSD).
-	\item \textbf{PyCharm Professional}: IDE de programación para \textit{Python} avanzado basado en \textit{InteliJ}.
+	\item \textbf{PyCharm Professional}: IDE de programación para \textit{Python} avanzado basado en \textit{IntelliJ}.
 	\item \textbf{Visual Studio Code}: Editor de código genérico de código abierto (MIT).
 	\item \textbf{Postman}: IDE para la ejecución de request \textit{HTTP}.
 	\item \textbf{Selenium}: IDE de pruebas sobre web de código abierto (APACHE).
 	\item \textbf{CertBot}: Sistema para la firma \textit{SSL} sobre \textit{HTTP} gratuito de \textit{LetsEncrypt} de código abierto (MPL).
-	\item \textbf{Overleaf}: Editor de \LaTeX  online para el trabajo colaborativo.
-	\item \textbf{TexStudio}: Editor de \LaTeX  de código abierto (GPLv2).
+	\item \textbf{Overleaf}: Editor de \LaTeX{} online para el trabajo colaborativo.
+	\item \textbf{TexStudio}: Editor de \LaTeX{} de código abierto (GPLv2).
 	\item \textbf{Dia}: Editor de diagramas genérico de código abierto (GPL).
 	\item \textbf{StartUML}: Editor de diagramas UML.
 	\item \textbf{Codesketch DB}: Traductor bidireccional de código-diagrama para bases de datos.
