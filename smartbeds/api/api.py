@@ -261,7 +261,7 @@ class API:
             conn.commit()
         except IntegrityError as err:
             conn.rollback()
-            raise UsernameExistsError(str(err))
+            raise UsernameExistsError("El usuario "+nick+" ya existe")
 
     def usermod(self, token: str, nick: str, password: str, oldpass=None):
         """

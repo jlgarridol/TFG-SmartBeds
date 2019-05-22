@@ -15,6 +15,12 @@ def home():
         mod_request()
         response, code = api.beds()
         context['beds'] = response.get_json()["beds"]
+        try:
+            for b in context['beds']:
+                mod_request({"bedname": b["bed_name"]})
+                b['namespace'] = api.bed()[0].get_json()['namespace']
+        except KeyError:
+            return logout()
     return render_template('home.html', **context)
 
 
@@ -49,7 +55,8 @@ def cama(bedname):
     if code != 200:
         return error(code, response.get_json()['message'])
     namespace = response.get_json()['namespace']
-    context = {'page': {'page': 'bed', 'bedname': bedname, 'namespace': namespace}, 'info': get_info(), "title": bedname}
+    context = {'page': {'page': 'bed', 'bedname': bedname, 'namespace': namespace}, 'info': get_info(),
+               "title": bedname}
     return render_template('cama.html', **context)
 
 
@@ -86,6 +93,17 @@ def usuarios():
         return error(code, response.get_json()['message'])
     context["users"] = response.get_json()['users']
     return render_template('usuarios.html', **context)
+
+
+@v.app.route('/user', methods=['GET'])
+def usuario_info():
+    mod_request()
+    info = get_info()
+    if info["login"]:
+        context = {"page": {"page": 'own_user'}, "info": info, "title": session['username']}
+        return render_template('usuario.html', **context)
+    else:
+        return logout()
 
 
 @v.app.route('/user/add', methods=['PUT'])
@@ -125,13 +143,19 @@ def camas():
     return render_template('camas.html', **context)
 
 
+@v.app.route('/about', methods=['GET'])
+def sobre():
+    context = {"page": {"page": 'about'}, "info": get_info(), "title": "Acerca de"}
+    return render_template('sobre.html', **context)
+
+
 def error(code, message):
     return render_template('error.html',
                            page={"page": "none"},
                            code=code,
                            message=message,
                            info=get_info(),
-                           title="Error "+str(code))
+                           title="Error " + str(code))
 
 
 def get_info():

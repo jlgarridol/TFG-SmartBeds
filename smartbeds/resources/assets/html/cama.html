@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block js %}
     <script>
-        var ctx = document.getElementById('vitales').getContext('2d');
+        ctx = document.getElementById('vitales').getContext('2d');
         vital = new Chart(ctx, {
             type: 'line',
             data: {
@@ -61,7 +61,8 @@
                     display: true,
                     //text: 'Constantes vitales'
                 },
-                animation: false,
+                animation: true,
+                showTooltips: false,
                 scales: {
                     yAxes: [{
                         type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -74,7 +75,7 @@
         });
     </script>
     <script>
-        var ctx = document.getElementById('presiones').getContext('2d');
+        ctx = document.getElementById('presiones').getContext('2d');
         pressures = new Chart(ctx, {
             type: 'line',
             data: {
@@ -143,7 +144,8 @@
                     display: true,
                     //text: 'Constantes vitales'
                 },
-                animation: false,
+                animation: true,
+                showTooltips: false,
                 scales: {
                     yAxes: [{
                         type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -172,16 +174,16 @@
             });
         }
 
-        var socket = io.connect('https://' + document.domain + ':' + location.port);
+        let socket = io.connect('https://' + document.domain + ':' + location.port);
         socket.on("connect", function (data) {
             socket.emit('give_me_data', {namespace: "{{ page.namespace }}", bedname: '{{ page.bedname }}'});
         });
-        var namespace = io('/{{ page.namespace }}');
+        let namespace = io('/{{ page.namespace }}');
         namespace.on("package", function (data) {
             console.log("Orden");
-            var max_instances = 300;
+            let max_instances = 300;
 
-            var result = data.result;
+            let result = data.result;
 
             switch (result[0]) {
                 case 0:

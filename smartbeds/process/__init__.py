@@ -48,9 +48,13 @@ class BedListener:
         mreq = struct.pack('4sL', group, socket.INADDR_ANY)
         s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
-        while not self.stopped:
-            package = s.recv(1024).decode("utf-8")
-            self._queue.put(package)
+        try:
+            while not self.stopped:
+                package = s.recv(1024).decode("utf-8")
+                self._queue.put(package)
+        except (KeyboardInterrupt, SystemExit):
+            self.stop()
+            raise
 
     def next_package(self):
         if self._queue.empty():
