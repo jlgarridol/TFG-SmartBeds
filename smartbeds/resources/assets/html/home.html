@@ -1,62 +1,99 @@
 {% extends "base.html" %}
-{% block js %}
-    <script>
-        // Set the date we're counting down to
-        let countDownDate = new Date("Jun 1, 2019 00:00:00").getTime();
-        let x = setInterval(function () {
-
-            // Get todays date and time
-            let now = new Date().getTime();
-
-            // Find the distance between now and the count down date
-            let distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Display the result in the element with id="demo"
-            $("#dias").text(days);
-            $("#horas").text(hours);
-            $("#minutos").text(minutes);
-            $("#segundos").text(seconds);
-
-
-            // If the count down is finished, write some text
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countdow").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    </script>
-    <script>
-
-    </script>
-{% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
             <h2 class="col-md-12 text-center font-weight-bold">
-                En construcción
+                SmartBeds - Sistema de monitorización de pacientes
             </h2>
         </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <div class="countdown countdown-large divcenter bottommargin is-countdown" id="countdown-4"
-                     style="max-width:700px; color:black"><span class="countdown-row countdown-show4"><span
-                        class="countdown-section"><span class="countdown-amount" id="dias"></span><span
-                        class="countdown-period">Días</span></span><span
-                        class="countdown-section"><span class="countdown-amount" id="horas"></span><span
-                        class="countdown-period">Horas</span></span><span
-                        class="countdown-section"><span class="countdown-amount" id="minutos"></span><span
-                        class="countdown-period">Minutos</span></span><span
-                        class="countdown-section"><span class="countdown-amount" id="segundos"></span><span
-                        class="countdown-period">Segundos</span></span></span>
+
+        {% if info.login %}
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-center">Camas disponibles</h3>
                 </div>
             </div>
-        </div>
+            <div class="row">
+                {% for b in beds %}
+                    <div class="col-lg-6">
+                        <a href="{{ url_for('cama', bedname=b.bed_name) }}" class="btn btn-lg btn-block btn-primary"
+                           name="bed" data-bed="{{ b.bed_name }}"
+                           data-namespace="{{ b.namespace }}">
+                            {{ b.bed_name }} - Estado: <span>...</span>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-center">Antes de comenzar, por favor, <a href="{{ url_for('login') }}">inicie sesión</a> </h3>
+                </div>
+            </div>
+        {% endif %}
+
 
     </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            beds = {};
+            let bs = $("[name=bed]");
+            for (let i = 0; i < bs.length; i++) {
+                let b = $(bs[i]);
+                beds[b.data("bed")] = b;
+            }
+
+            socket = io.connect('https://' + document.domain + ':' + location.port);
+
+            socket.on("connect", function (data) {
+                let b = Object.entries(beds);
+
+                b.forEach(function (element) {
+                    socket.emit('give_me_data', {
+                        namespace: element[1].data('namespace'),
+                        bedname: element[1].data("bed")
+                    });
+                });
+            });
+        });
+
+
+        function draw(obj, state, proba = 0) {
+            const crisis = "btn-danger";
+            const sleep = "btn-success";
+            const awake = "btn-light";
+            const base = "btn-primary";
+            obj.removeClass(crisis);
+            obj.removeClass(sleep);
+            obj.removeClass(awake);
+            obj.removeClass(base);
+            let span = obj.children().first();
+            switch (state) {
+                case 0:
+                    span.text("🛌 Durmiendo - Probabilidad de crisis: " + proba);
+                    obj.addClass(sleep);
+                    break;
+                case 1:
+                    span.text("⚠ ¡Crisis!- Probabilidad de crisis: " + proba);
+                    obj.addClass(crisis);
+                    break;
+                case 2:
+                    span.text("🛏️ Despierto");
+                    obj.addClass(awake);
+                    break;
+                default:
+                    obj.addClass(base);
+                    span.text("");
+            }
+        }
+        {% for b in beds %}
+            let nm_{{b.bed_name | b64encode}} = io('/{{ b.namespace }}');
+            nm_{{b.bed_name | b64encode}}.on("package", function (data) {
+                let result = data.result;
+                draw(beds["{{ b.bed_name }}"], result[0], result[1].toFixed(2));
+            });
+        {% endfor %}
+    </script>
 {% endblock %}

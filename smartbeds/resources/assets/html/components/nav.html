@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="nav">
-    <a class="navbar-brand" href="#">SmartBeds</a>
+    <a class="navbar-brand" href="{{ url_for('home') }}">SmartBeds</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
             aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -26,7 +26,7 @@
                 </li>
             {% endif %}
             <li class="nav-item {% if page.page == 'about' %}active{% endif %}">
-                <a class="nav-link" href="#">Acerca de</a>
+                <a class="nav-link" href="{{ url_for('sobre') }}">Acerca de</a>
             </li>
         </ul>
         <ul class="navbar-nav mr-right">
