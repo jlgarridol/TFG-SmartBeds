@@ -4,6 +4,39 @@
 
 \section{Estructura de directorios}
 
+Los directorios del proyecto son:
+
+\dirtree{%
+.1 /.
+.2 doc.
+.3 design.
+.3 img.
+.3 tex.
+.2 research.
+.3 model.
+.3 src.
+.4 Análisis de proyecciones.
+.4 images.
+.4 One-Class.
+.3 tests.
+.4 samples.
+.5 input.
+.5 output.
+.2 smartbeds.
+.3 api.
+.3 process.
+.3 resources.
+.4 assets.
+.5 css.
+.5 html.
+.6 auth.
+.6 components.
+.5 img.
+.5 js.
+.3 routes.
+.3 test.
+}
+
 \section{Manual del programador}
 
 \subsection{API}
@@ -21,7 +54,7 @@ El funcionamiento general de la API serán peticiones \texttt{POST} mediante \te
 Todas las respuestas del servidor contendrán los siguientes campos
 \begin{lstlisting}[language=JSON]
 {
-  "status": 200|400|401|403|404|500,
+  "status": 200|400|401|403|404|418|500,
   "message": "OK"|"Error description"
 }
 \end{lstlisting}
@@ -74,7 +107,7 @@ Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}
   "role": text,
   "username": text
 }\end{lstlisting}
-\\\hubu
+\\
 CU-2.1  CU-4		&	\texttt{/api/beds}	& 
 \begin{lstlisting}[language=JSONT]
 "token": text
@@ -91,7 +124,7 @@ CU-2.1  CU-4		&	\texttt{/api/beds}	&
     }
     ...]
 \end{lstlisting}
-\\
+\\\hubu
 CU-2.2		&	\texttt{/api/bed}	& 
 \begin{lstlisting}[language=JSONT]
 token=text&
@@ -118,7 +151,7 @@ CU-2.2		&	\texttt{/} \textit{(WebSocket)}	&
   "vital": [HR,RR,SV,HRV,B2B],
   "pressure": [P1,P2,..,P6] 
 }\end{lstlisting}
-\\\hubu
+\\
 CU-3		&	\texttt{/api/users}	& 
 \begin{lstlisting}[language=JSONT]
 token=text
@@ -182,7 +215,7 @@ UUID=text
 {
   ...
 }\end{lstlisting}
-\\
+\\\hubu
 CU-4.2		&	\texttt{/api/bed/mod}	& 
 \begin{lstlisting}[language=JSONT]
 token=text&
@@ -234,5 +267,100 @@ username=text]
 \end{center}
 
 \section{Compilación, instalación y ejecución del proyecto}
+
+En este apartado se explicarán los pasos necesarios para desplegar el proyecto.
+
+\subsection{Requisitos del sistema}
+
+Para el funcionamiento correcto de la aplicación se requiere de \textit{hardware} los siguientes mínimos:
+
+\begin{itemize}
+	\item \textbf{Procesador}: arquitectura de 64 bits con soporte multihilo. Se recomienda un mínimo de 1,5 GHz, 16MiB de memoria caché y dos núcleos.
+	\item \textbf{Memoria}: 768MiB, incorporando 256MiB aprox. por cada nueva cama incorporada. 
+	\item \textbf{Almacenamiento}: 16MiB aprox.
+\end{itemize}
+
+\subsection{Requisitos software}
+
+Para poder ejecutar la aplicación se necesitan los siguientes apartados de software.
+
+Entorno \textit{Python}, versión 3.7 con las librerías de \textit{requeriments.txt} instaladas (\texttt{pip install -r requeriments.txt}).
+Base de datos \textit{MySQL} o con API compatible como \textit{MariaDB}. Servidor web con soporte de \textit{proxy} reverso y \textit{websokets} como \textit{Nginx} versión 1.16.
+
+\subsection{Instalación en entorno GNU/Linux}
+
+El primer paso necesario es la configuración de la base de datos en la cual se van a almacenar los datos del sistema. La estructura de esta base de datos se encuentra en el fichero \texttt{/smartbeds/resources/database.sql}. Tras esto es necesario crear el fichero \texttt{/smartbeds/resources/project.json} que tendrá la configuración de la aplicación siguiendo este formato:
+
+\begin{lstlisting}[language=JSON]
+{
+	"secret-key": "clave secreta",
+	"url":  "http://127.0.0.1",
+	"port": 3031,
+	"database": {
+		"host": "database-host",
+		"database": "database-name",
+		"user": "database-user",
+		"password": "database-password"
+	}
+}
+\end{lstlisting}
+
+En cada campo habría que incorporar los cambios oportunos y se recomienda no modificar el campo \texttt{url}. Tras esto ya el programa es ejecutable y puede funcionar al ejecutar el fichero \texttt{/index.py}.
+
+El siguiente paso es crear la configuración del servidor \textit{HTTP} para redirigir las peticiones externas a la aplicación local. Como ejemplo, para un servidor \textit{Nginx} la configuración sería la siguiente:
+
+\begin{lstlisting}[language=JSON]
+server {
+	listen 443 ssl http2;
+	server_name $server_name$;
+	root $route$;
+	
+	location / {
+		include proxy_params;
+		proxy_pass http://127.0.0.1:3031;
+	}
+	
+	location /socket.io {
+		include proxy_params;
+		proxy_http_version 1.1;
+		proxy_buffering off;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "Upgrade";
+		proxy_pass http://127.0.0.1:3031/socket.io;
+	}
+	
+	include php.conf;
+}
+\end{lstlisting}
+
+Siendo necesario modificar el nombre del servidor por el dominio o ip de acceso y la raíz como la ruta donde se encuentra el fichero \texttt{index.py}, aunque esto último no es necesario para el funcionamiento, solo como referencia interna.
+
+Por último es necesario crear un demonio de \texttt{systemd} que ejecute la aplicación en segundo plano. El fichero de configuración de este demonio se alojaría en \texttt{/usr/lib/systemd/system/smartbeds.service}. Siendo el fichero en cuestión semejante a:
+\begin{lstlisting}[language={Ini}]
+[Unit]
+Description=Smartbed Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=http
+WorkingDirectory=/ruta/a/la/carpeta
+ExecStart=python index.py
+
+[Install]
+WantedBy=multi-user.target
+\end{lstlisting}
+
+El campo \texttt{ExecStart} podría cambiar en el caso de utilizar algún entornos \textit{Python} como son los que provee conda. En el caso de ser así se recomienda cambiar el campo por \texttt{bash index.sh} siendo el fichero semejante a:
+
+\begin{lstlisting}[language=bashb]
+#!/bin/bash
+/opt/miniconda3/envs/entorno/bin/python index.py
+\end{lstlisting}
+
+Finalmente solo hace falta lanzar el demonio con el comando \texttt{systemctl start smartbeds}.
 
 \section{Pruebas del sistema}

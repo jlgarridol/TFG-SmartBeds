@@ -9,6 +9,7 @@
 \usepackage{microtype}
 \usepackage{placeins}
 \usepackage{subcaption}
+\usepackage{dirtree}
 
 \RequirePackage{booktabs}
 \RequirePackage[table]{xcolor}
@@ -22,6 +23,23 @@
 \definecolor{background}{HTML}{EEEEEE}
 \definecolor{delim}{RGB}{20,105,176}
 \colorlet{numb}{magenta!60!black}
+
+\lstset{basicstyle=\normalfont\ttfamily,
+	showstringspaces=false,
+	commentstyle=\color{gray},
+	keywordstyle=\color{numb},
+}
+
+\lstdefinelanguage{bashb}{
+	numbers=left,
+	numberstyle=\scriptsize,
+	stepnumber=1,
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines = true,
+	frame=lines,
+	backgroundcolor=\color{background},
+}[bash]
 
 \lstdefinelanguage{json}{
 	basicstyle=\normalfont\ttfamily,
@@ -78,6 +96,27 @@
 	{[}{{{\color{delim}{[}}}}{1}
 	{]}{{{\color{delim}{]}}}}{1},
 }
+
+\lstdefinelanguage{Ini}
+{
+	basicstyle=\normalfont\ttfamily,
+	numbers=left,
+	numberstyle=\scriptsize,
+	stepnumber=1,
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines = true,
+	frame=lines,
+	backgroundcolor=\color{background},
+	tag=[s]{[]},
+	tagstyle=\color{numb}\bfseries,
+	usekeywordsintag=true,
+	morecomment=[l]{;},
+	commentstyle=\color{gray}\ttfamily,
+	alsoletter={=},
+	ndkeywords={=},
+	ndkeywordstyle=\color{green}\bfseries
+}[html]
 
 % Links
 \usepackage[colorlinks]{hyperref}

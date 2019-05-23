@@ -5,8 +5,8 @@ function correcto(data, textStatus, jQxhr) {
 function incorrecto(data, textStatus, jQxhr) {
     let msg = JSON.parse(data.responseText).message;
     if (data.status === 418) {
-        show_modal_error("Operación no válida", );
-    }else{
+        show_modal_error("Operación no válida",);
+    } else {
         $("#errormsg").text(msg);
     }
 }
@@ -38,6 +38,7 @@ function checkempty() {
 
 function checkstart() {
     $("#save_modal").attr("disabled", false);
+
     reset();
     checkempty();
 }
@@ -72,6 +73,22 @@ function checkuser() {
     }
 }
 
+function checkpass() {
+    checkstart();
+
+    if (old.val() != "") {
+        campo_correcto(old, oldfb);
+    }
+
+    if (new_re.val() != "" && new_.val() != "") {
+        if (new_re.val() === new_.val()) {
+            campo_correcto(new_, new_fb);
+            campo_correcto(new_re, new_refb);
+        } else {
+            campo_incorrecto(new_re, new_refb, "Las contraseñas no coinciden");
+        }
+    }
+}
 
 function checkbed() {
     checkstart();
@@ -138,6 +155,8 @@ $(document).ready(function () {
         fun = checkbed;
     } else if (opt === "user") {
         fun = checkuser;
+    } else if (opt === "usermod") {
+        fun = checkpass;
     }
     fields.forEach(function (element) {
         element.keyup(fun)

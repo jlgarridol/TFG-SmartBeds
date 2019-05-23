@@ -95,12 +95,17 @@ def usuarios():
     return render_template('usuarios.html', **context)
 
 
-@v.app.route('/user', methods=['GET'])
+@v.app.route('/user', methods=['GET', 'POST'])
 def usuario_info():
     mod_request()
     info = get_info()
     if info["login"]:
-        context = {"page": {"page": 'own_user'}, "info": info, "title": session['username']}
+        msg = ""
+        if request.method == "POST":
+            response, code = api.usermod()
+            if code != 200:
+                msg = response.get_json()['message']
+        context = {"page": {"page": 'own_user'}, "info": info, "title": session['username'], "message": msg}
         return render_template('usuario.html', **context)
     else:
         return logout()
