@@ -1,6 +1,4 @@
-import pandas as pd  # se importa pandas como pd
-import numpy as np  # numpy como np
-import seaborn as sns
+import pandas as pd
 import tsfresh as tf
 
 

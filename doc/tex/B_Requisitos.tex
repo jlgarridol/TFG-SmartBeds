@@ -10,7 +10,7 @@ En esta sección se presentan los requisitos funcionales y los no funcionales
 \begin{itemize}
 \tightlist
 \item
-\textbf{RF-1 Confidencialidad del sistema:} solamente usuarios permitidos podrán acceder al sistema.
+\textbf{RF-1 Confidencialidad del sistema:} solamente usuarios autorizados podrán acceder al sistema.
 	\begin{itemize}
 		\tightlist
 		\item
@@ -59,7 +59,7 @@ En esta sección se presentan los requisitos funcionales y los no funcionales
 \item 
 \textbf{RNF-2 Disponibilidad:} las camas existentes han de ser siempre accesibles por sus usuarios asociados y dar una información correcta de su estado
 \item 
-\textbf{RNF-3 Confidencialidad:} los datos de las camas, al ser en parte constantes vitales de pacientes, solamente han de ser accesibles por los usuarios permitidos.
+\textbf{RNF-3 Confidencialidad:} los datos de las camas, al ser en parte constantes vitales de pacientes, solamente han de ser accesibles por los usuarios autorizados.
 \item
 \textbf{RNF-4 Escalabilidad:} el sistema debe ser escalable para adaptarse mejor a un incremento de carga del sistema.
 \item 
@@ -114,7 +114,7 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Anónimo} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente envía sus credenciales al servidor \\\cline{2-3}
-	& 2    & El servidor acepta las credenciales devolviendo el token de sesión \\\cline{2-3}
+	& 2    & El servidor acepta las credenciales devolviendo el token de sesión \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene una sesión activa válida} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Si las credenciales son incorrectas el servidor responde con error \\\hubu
@@ -132,7 +132,7 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-1.3, RF-1.4} \\\hubu
 	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador y Usuario} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
-	& 1    & El cliente solicita ver las camas disponibles \\\cline{2-3}
+	& 1    & El cliente solicita ver las camas disponibles \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El cliente está en la pantalla de camas disponibles} \\\hubu
 	Frecuencia                             & Alta \\\hubu
 	Importancia                            & Alta \\
@@ -149,7 +149,7 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente solicita ver las camas disponibles \\\cline{2-3}
 	& 2    & El servidor abre conexiones paralelas para actualizar en tiempo real el estado de las camas \\\cline{2-3}
-	& 3    & El cliente decide que cama ver \\\cline{2-3}
+	& 3    & El cliente decide que cama ver \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El cliente entra en la ventana de los datos en tiempo real} \\\hubu
 	Frecuencia                             & Alta \\\hubu
 	Importancia                            & Alta \\
@@ -165,10 +165,10 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador y usuario} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & El cliente solicita una nueva conexión \\\cline{2-3}
-	& 2    & El servidor provee una conexión en tiempo real con los datos \\\cline{2-3}
+	& 2    & El servidor provee una conexión en tiempo real con los datos \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene una conexión paralela abierta con los datos en tiempo real} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
-	& 2    & Si un paquete faltase o la señal fuera débil se alertaría al usuario \\\cline{2-3}
+	& 2    & Si un paquete faltase o la señal fuera, débil se alertaría al usuario \\\hubu
 	Frecuencia                             & Alta \\\hubu
 	Importancia                            & Máxima \\}
 
@@ -181,7 +181,7 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-3} \\\hubu
 	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
-	& 1    & El administrador entra en el menú de administración de usuarios \\\cline{2-3}
+	& 1    & El administrador entra en el menú de administración de usuarios \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El administrador está en el menú de administración de usuarios} \\\hubu
 	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Alta \\
@@ -199,11 +199,11 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	& 1    & El administrador elige añadir un nuevo usuario \\\cline{2-3}
 	& 2    & Se introduce un nombre de usuario para identificarlo \\\cline{2-3}
 	& 3    & Se introduce una contraseña dos veces \\\cline{2-3}
-	& 4    & Se almacenan los datos \\\cline{2-3}
+	& 4    & Se almacenan los datos \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Existe un nuevo usuario en el sistema} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & Si el nickname existiese \\\cline{2-3}
-	& 3    & La contraseña añadida no coincide en las dos ocasiones \\\cline{2-3}
+	& 3    & La contraseña añadida no coincide en las dos ocasiones \\\hubu
 	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Alta \\
 }
@@ -220,10 +220,10 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	& 1    & Si es usuario normal ir a 3 \\\cline{2-3}
 	& 2    & Si es administrador elegir a qué usuario cambiar la contraseña \\\cline{2-3}
 	& 3    & Se introduce una contraseña nueva dos veces \\\cline{2-3}
-	& 4    & Se actualizan los datos \\\cline{2-3}
+	& 4    & Se actualizan los datos \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{La contraseña ha cambiado} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
-	& 3    & La contraseña añadida no coincide en las dos ocasiones \\\cline{2-3}
+	& 3    & La contraseña añadida no coincide en las dos ocasiones \\\hubu
 	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Alta \\
 }
@@ -238,7 +238,7 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Elegir a que usuario (no administrador) eliminar \\\cline{2-3}
-	& 2    & Eliminar usuario y todos los datos vinculados \\\cline{2-3}
+	& 2    & Eliminar usuario y todos los datos vinculados \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario ha sido eliminado} \\\hubu
 	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Media \\
@@ -253,7 +253,7 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2} \\\hubu
 	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
-	& 1    & El administrador entra en el menú de administración de camas \\\cline{2-3}
+	& 1    & El administrador entra en el menú de administración de camas \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El administrador está en el menú de administración de camas} \\\hubu
 	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Media \\
@@ -271,11 +271,11 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	& 1    & El administrador elige añadir una nueva cama \\\cline{2-3}
 	& 2    & Se introduce el grupo multicast de la cama (IP y Puerto) \\\cline{2-3}
 	& 3    & Se introduce el nombre identificador\\\cline{2-3}
-	& 4    & Se almacenan los datos \\\cline{2-3}
+	& 4    & Se almacenan los datos \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Existe una nueva cama en el sistema} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
 	& 2    & El grupo multicast pertenece a otra cama \\\cline{2-3}
-	& 3    & El nombre identificativo existe para otra cama \\\cline{2-3}
+	& 3    & El nombre identificativo existe para otra cama \\\hubu
 	Frecuencia                             & Media \\\hubu
 	Importancia                            & Crítica \\\hubu
 	Comentarios                            & \multicolumn{2}{p{10.25cm}}{El grupo multicast se configura en la cama y el administrador solamente debe conocerlo, no configurar la cama física} \\
@@ -286,16 +286,16 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 }
 {
 	Descripción                            & \multicolumn{2}{p{10.25cm}}{Modificar los datos de la cama} \\\hubu
-	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Sesión de administración valida, cama existente} \\\hubu
+	Precondiciones                         & \multicolumn{2}{p{10.25cm}}{Sesión de administración válida, cama existente} \\\hubu
 	Requisitos                         	   & \multicolumn{2}{p{10.25cm}}{RF-2.2} \\\hubu
 	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Se elige que cama modificar \\\cline{2-3}
 	& 2    & Se actualizan los datos a conveniencia del administrador según CU-4.1\\\cline{2-3}
-	& 4    & Se actualizan los datos \\\cline{2-3}
+	& 4    & Se actualizan los datos \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{Los datos de la cama se modifican} \\\hubu
 	\multirow{2}{3.5cm}{Excepciones}       & Paso & Acción \\\cline{2-3}
-	& 2    & Mismas excepciones que en CU-4.1 \\\cline{2-3}
+	& 2    & Mismas excepciones que en CU-4.1 \\\hubu
 	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Alta \\
 }
@@ -310,13 +310,13 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	Usuario                         	   & \multicolumn{2}{p{10.25cm}}{Administrador} \\\hubu
 	\multirow{3}{3.5cm}{Secuencia normal}  & Paso & Acción \\\cline{2-3}
 	& 1    & Elegir a que cama eliminar \\\cline{2-3}
-	& 2    & Eliminar cama y todos los datos vinculados \\\cline{2-3}
+	& 2    & Eliminar cama y todos los datos vinculados \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{La cama ya no está en la base de datos} \\\hubu
 	Frecuencia                             & Baja \\\hubu
 	Importancia                            & Media \\
 }
 
-\tablaSmallSinColores{Caso de uso 4.4: Asignar cama a usuario }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU43}{
+\tablaSmallSinColores{Caso de uso 4.4: Asignar cama a usuario }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU44}{
 	\multicolumn{3}{p{10.25cm}}{CU-4.4: Asignar cama a usuario} \\
 }
 {
@@ -328,7 +328,7 @@ Los requisitos funcionales generan un conjunto de casos de uso que serán la bas
 	& 1    & Elegir cama \\\cline{2-3}
 	& 2    & Elegir usuario \\\cline{2-3}
 	& 3    & Si la relación existe se puede eliminar el permiso \\\cline{2-3}
-	& 3    & Si la relación no existe se puede crear el permiso \\\cline{2-3}
+	& 3    & Si la relación no existe se puede crear el permiso \\\hubu
 	Postcondiciones                        & \multicolumn{2}{p{10.25cm}}{El usuario tiene acceso a la cama, o pierde el mismo} \\\hubu
 	Frecuencia                             & Media \\\hubu
 	Importancia                            & Crítica \\

@@ -242,7 +242,10 @@ class API:
             si el nombre de usuario existía con anterioridad.
         """
         conn = self._db_context()
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         if user['rol'] != 'admin':
             raise PermissionsError('Orden válida solo para administrador')
 
@@ -288,7 +291,10 @@ class API:
             si el usuario no existe
         """
         conn = self._db_context()
-        user = self.__get_user_by_token(token)
+        if token != self._master_key:
+            user = self.__get_user_by_token(token)
+        else:
+            user = {'rol': "admin"}
         if user['rol'] != 'admin':
 
             if user['nickname'] != nick:

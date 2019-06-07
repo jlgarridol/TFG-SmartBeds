@@ -13,7 +13,7 @@ from threading import Thread
 class Broadcaster:
 
     def __init__(self, namespace, bed_processor: BedProcess, app):
-        self._namespaces = ["/"+namespace]
+        self._namespaces = {"/"+namespace}
         self._bed = bed_processor
         self._app = app
 
@@ -31,7 +31,7 @@ class Broadcaster:
             raise
 
     def add_namespace(self, namespace):
-        self._namespaces.append("/"+namespace)
+        self._namespaces.add("/"+namespace)
 
     @staticmethod
     def clean_package(package):

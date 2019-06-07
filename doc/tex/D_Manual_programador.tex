@@ -13,6 +13,7 @@ Los directorios del proyecto son:
 .3 img.
 .3 tex.
 .2 research.
+.3 data.
 .3 model.
 .3 src.
 .4 Análisis de proyecciones.
@@ -24,6 +25,7 @@ Los directorios del proyecto son:
 .5 output.
 .2 smartbeds.
 .3 api.
+.3 bed.
 .3 process.
 .3 resources.
 .4 assets.
@@ -37,12 +39,17 @@ Los directorios del proyecto son:
 .3 test.
 }
 
+En la carpeta \textit{\textbf{doc}} se encuentra toda la documentación de este proyecto. En \textit{\textbf{research}} están los ficheros de la investigación, dentro de esta están \textit{\textbf{data}}\footnote{Esta carpeta no se encuentra en el repositorio \textit{GitHub} porque contienen datos privados} que contiene los datos proporcionados para realizar el estudio, \textit{\textbf{model}} con los modelos binarios, \textit{\textbf{src}} con los ficheros fuentes y los \textit{Jupyter Notebooks} con la investigación y en \textit{\textbf{tests}} con los tests sobre algunas fuentes.
+
+La carpeta \textbf{\textit{smartebs}} están las fuentes de la aplicación web siendo el modulo raíz. Dentro de esta están los módulo \textit{\textbf{api}} con la \texttt{API} web, \textit{\textbf{process}} con los algoritmos de procesamiento de los datos, \textit{\textbf{resources}} con la configuración y los \textit{assets} de la página web (plantillas, códigos \textit{JavaScript} etc), \textit{\textbf{routes}} que engloba las rutas \textit{URI} para dirigir las peticiones. Por último, está la carpeta \textit{\textbf{test}} con las pruebas unitarias.
+
+De manera especial se encuentra la carpeta \textit{\textbf{bed}} dentro de \textbf{\textit{smartbeds}} que contiene un \textit{script} para la simulación de camas.
 \section{Manual del programador}
 
 \subsection{API}
-Para proveer los servicios de esta aplicación a nuevos entornos se incorpora una API para utilizar los diferentes servicios del sistema especificados en los Casos de Uso \ref{casos-uso}.
+Para proveer los servicios de esta aplicación a nuevos entornos se incorpora una API para utilizar los diferentes servicios del sistema especificados en los Casos de Uso, sección~\ref{casos-uso}.
 
-El funcionamiento general de la API serán peticiones \texttt{POST} mediante \texttt{application/x-www-form-urlencoded} ante rutas específicas con los datos requeridos para cada petición. Y según sea el caso el servidor contestará con un fichero \texttt{JSON} con la respuesta adecuada. De manera particular está el sistema en tiempo real que funciona mediante mensajes de \textit{WebSockets}\cite{wiki:websocket} usando la librería \textit{SocketIO}\cite{tool:socketio} mediante la serie de eventos de la Figura~\ref{fig:ws-secuence}
+El funcionamiento general de la API serán peticiones \texttt{POST} mediante \texttt{application/x-www-form-urlencoded} ante rutas específicas con los datos requeridos para cada petición. Y según sea el caso el servidor contestará con un fichero \texttt{JSON} con la respuesta adecuada. De manera particular está el sistema en tiempo real que funciona mediante mensajes de \textit{WebSockets}~\cite{wiki:websocket} usando la librería \textit{SocketIO}~\cite{tool:socketio} mediante la serie de eventos de la Figura~\ref{fig:ws-secuence}
 
 \begin{figure}
 	\centering
@@ -59,22 +66,9 @@ Todas las respuestas del servidor contendrán los siguientes campos
 }
 \end{lstlisting}
 
-El valor de \texttt{status} tendrá un valor según los códigos HTTP definidos en el RFC 7231 y el mensaje será una explicación detallada del error producido.
+El valor de \texttt{status} tendrá un valor según los códigos HTTP definidos en el RFC 7231~\cite{RFC7231} y el mensaje será una explicación detallada del error producido.
 
 Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}
-%\begin{table}[H]
-%	\begin{center}
-%		\begin{tabular}{p{0.095\textwidth} p{0.2\textwidth} p{0.37\textwidth} p{0.33\textwidth}}
-%			\toprule
-%			
-%			\otoprule
-%			
-%			\bottomrule
-%		\end{tabular}
-%		\caption{Especificaciones del API}
-%		\label{tabla:api-specs}
-%	\end{center}
-%\end{table}
 
 \begin{center}\small
 	\tablefirsthead{
@@ -268,7 +262,10 @@ username=text]
 
 \section{Compilación, instalación y ejecución del proyecto}
 
-En este apartado se explicarán los pasos necesarios para desplegar el proyecto.
+Este proyecto contiene un servidor web, sobre el cual se explicará su proceso de despliegue en este apartado. Sin embargo, no disponemos de camas reales que puedan aportar datos en tiempo real como hemos visto en la figura~\ref{fig:componentes} debido a que este \textit{hardware} es privado.
+
+En su lugar se ha creado un \textit{script} de \textit{Python} que emite cada 0,4 segundos de manera indefinida datos que se han obtenido previamente. Este \textit{script} se encuentra en la carpeta \texttt{smartbeds/bed}.
+
 
 \subsection{Requisitos del sistema}
 
@@ -328,8 +325,6 @@ server {
 		proxy_set_header Connection "Upgrade";
 		proxy_pass http://127.0.0.1:3031/socket.io;
 	}
-	
-	include php.conf;
 }
 \end{lstlisting}
 

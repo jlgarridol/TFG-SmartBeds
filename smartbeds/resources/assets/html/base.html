@@ -18,6 +18,9 @@
     {% block css %}{% endblock %}
 </head>
 <body class="bg-primary">
+<div id="loader-div">
+    <div id="loader"></div>
+</div>
 {% include "components/nav.html" %}
 <section class="container-fluid p-md-3 p-lg-5 p-sm-1 p-xs-1">
     {% block content %}{% endblock %}
@@ -25,6 +28,10 @@
 {% include "components/footer.html" %}
 {% include "components/errores.html" %}
 {% block js %}{% endblock %}
-
+<script>
+    window.addEventListener("load", function () {
+        $("#loader-div").fadeOut();
+    });
+</script>
 </body>
 </html>

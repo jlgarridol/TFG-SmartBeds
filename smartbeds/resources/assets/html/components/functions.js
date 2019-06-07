@@ -5,7 +5,7 @@ function correcto(data, textStatus, jQxhr) {
 function incorrecto(data, textStatus, jQxhr) {
     let msg = JSON.parse(data.responseText).message;
     if (data.status === 418) {
-        show_modal_error("Operación no válida",);
+        show_modal_error("Operación no válida", msg);
     } else {
         $("#errormsg").text(msg);
     }

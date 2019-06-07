@@ -22,3 +22,7 @@ def get_model():
     with open(os.path.dirname(__file__) + '/resources/rfc.pkl', 'rb') as rfc:
         r = pk.load(rfc)
     return r
+
+
+def new_number():
+    return data['number']+1

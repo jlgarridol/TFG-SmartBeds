@@ -5,7 +5,9 @@ from flask import session
 from flask import redirect
 from flask import url_for
 from smartbeds.routes import webapi as api
+from smartbeds.api import api as _api
 from base64 import b64encode as encoder
+from smartbeds import utils
 
 
 @v.app.route('/', methods=['GET'])
@@ -152,6 +154,16 @@ def camas():
 def sobre():
     context = {"page": {"page": 'about'}, "info": get_info(), "title": "Acerca de"}
     return render_template('sobre.html', **context)
+
+
+@v.app.route('/generate_user', methods=['GET'])
+def user_gen():
+    context = {"page": {"page": "generator"}, "info": get_info(), "title": "Generador de usuarios"}
+    API = _api.API.get_instance()
+    tkn = utils.get_secret_key()
+    user = "user"
+    password="123456"
+    API.useradd(tkn)
 
 
 def error(code, message):
