@@ -805,11 +805,6 @@ class API:
             v.db.autocommit = False
         return v.db
 
-    def get_user_intern(self, token, internal):
-        if internal == self._master_key:
-            return self.__get_user_by_token(token)
-        return None
-
     @classmethod
     def prepare_query(cls, query):
         command = list(query)
