@@ -1,11 +1,9 @@
 import smartbeds.vars as v
-from flask import request
-from flask import render_template
-from flask import session
-from flask import redirect
-from flask import url_for
+from flask import (request, render_template, redirect, url_for)
+from flask_login import (login_user, logout_user, login_required, current_user)
 from smartbeds.routes import webapi as api
 from smartbeds.api import api as _api
+from smartbeds.routes import user_loader
 from base64 import b64encode as encoder
 from smartbeds import utils
 
@@ -33,9 +31,7 @@ def login():
         response, code = api.auth()
         if code == 200:
             response_json = response.get_json()
-            session['token'] = response_json['token']
-            session['role'] = response_json['role']
-            session['username'] = response_json['username']
+            login_user(user_loader(response_json['token']))
             return redirect(url_for("home"))
         context["page"]['nick'] = request.form['user']
         context["page"]['bad'] = True
@@ -45,8 +41,9 @@ def login():
 
 
 @v.app.route('/logout', methods=['GET'])
+@login_required
 def logout():
-    session.clear()
+    logout_user()
     return redirect(url_for("home"))
 
 
@@ -98,6 +95,7 @@ def usuarios():
 
 
 @v.app.route('/user', methods=['GET', 'POST'])
+@login_required
 def usuario_info():
     mod_request()
     info = get_info()
@@ -107,7 +105,7 @@ def usuario_info():
             response, code = api.usermod()
             if code != 200:
                 msg = response.get_json()['message']
-        context = {"page": {"page": 'own_user'}, "info": info, "title": session['username'], "message": msg}
+        context = {"page": {"page": 'own_user'}, "info": info, "title": current_user.get_username(), "message": msg}
         return render_template('usuario.html', **context)
     else:
         return logout()
@@ -162,7 +160,7 @@ def user_gen():
     API = _api.API.get_instance()
     tkn = utils.get_secret_key()
     user = "user"
-    password="123456"
+    password = "123456"
     API.useradd(tkn)
 
 
@@ -176,9 +174,9 @@ def error(code, message):
 
 
 def get_info():
-    if 'token' in session:
+    if current_user is not None and current_user.is_authenticated:
         try:
-            return {"login": True, "role": session['role'], "user": session['username']}
+            return {"login": True, "role": current_user.get_role(), "user": current_user.get_username()}
         except KeyError:
             return {"login": False}
     else:
@@ -187,7 +185,8 @@ def get_info():
 
 def mod_request(params=None):
     data = dict(request.form)
-    data['token'] = session['token']
+    data['token'] = current_user.get_token()
+
     if params is not None:
         for p in params:
             data[p] = params[p]
