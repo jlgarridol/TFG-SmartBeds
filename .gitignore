@@ -361,3 +361,4 @@ data/
 project.json
 app.nginx.conf
 app.uwsgi.ini
+flask_session/
