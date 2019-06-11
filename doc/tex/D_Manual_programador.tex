@@ -2,6 +2,8 @@
 
 \section{Introducción}
 
+En este apéndice se explicarán todas las partes necesarias para poder entender los componentes software que existen así como como desarrollar aplicaciones siguiendo la \textit{API REST} provista.
+
 \section{Estructura de directorios}
 
 Los directorios del proyecto son:
@@ -46,17 +48,10 @@ La carpeta \textbf{\textit{smartebs}} están las fuentes de la aplicación web s
 De manera especial se encuentra la carpeta \textit{\textbf{bed}} dentro de \textbf{\textit{smartbeds}} que contiene un \textit{script} para la simulación de camas.
 \section{Manual del programador}
 
-\subsection{API}
+\subsection{API}\label{sec:api}
 Para proveer los servicios de esta aplicación a nuevos entornos se incorpora una API para utilizar los diferentes servicios del sistema especificados en los Casos de Uso, sección~\ref{casos-uso}.
 
-El funcionamiento general de la API serán peticiones \texttt{POST} mediante \texttt{application/x-www-form-urlencoded} ante rutas específicas con los datos requeridos para cada petición. Y según sea el caso el servidor contestará con un fichero \texttt{JSON} con la respuesta adecuada. De manera particular está el sistema en tiempo real que funciona mediante mensajes de \textit{WebSockets}~\cite{wiki:websocket} usando la librería \textit{SocketIO}~\cite{tool:socketio} mediante la serie de eventos de la Figura~\ref{fig:ws-secuence}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{img/ws-secuence.png}
-	\caption{Comunicación cliente servidor \textit{websocket}}
-	\label{fig:ws-secuence}
-\end{figure}
+El funcionamiento general de la API serán peticiones \texttt{POST} mediante \texttt{application/x-www-form-urlencoded} ante rutas específicas con los datos requeridos para cada petición. Y según sea el caso el servidor contestará con un fichero \texttt{JSON} con la respuesta adecuada. De manera particular está el sistema en tiempo real que funciona mediante mensajes de \textit{WebSockets}~\cite{wiki:websocket} usando la librería \textit{SocketIO}~\cite{tool:socketio} mediante la serie de eventos que se pueden ver en la sección~\ref{sec:disproc} en la figura~\ref{fig:ws-secuence}
 
 Todas las respuestas del servidor contendrán los siguientes campos
 \begin{lstlisting}[language=JSON]

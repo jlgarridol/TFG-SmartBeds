@@ -65,7 +65,7 @@ class API:
         
         return token, nick, user['rol']
 
-    def get_all_beds_info(self):
+    def get_all_beds_info(self) -> list:
         """
         Obtiene toda la lista de camas
         con todos sus datos. Recomendado

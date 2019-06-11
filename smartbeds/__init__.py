@@ -18,7 +18,6 @@ def start():
     v.app.secret_key = utils.get_secret_key()
     v.socketio = SocketIO(v.app)
     print(v.app.secret_key)
-    print(v.sess)
 
     from smartbeds.api import api
     api.API(utils.get_sql_config())  # Se instancia la API
