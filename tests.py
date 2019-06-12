@@ -1,9 +1,10 @@
-from api import API
 import smartbeds.vars as v
 import unittest
 import json
 from mysql.connector import connect
 from smartbeds.utils import get_sql_config
+from smartbeds import start
+
 
 class ParametrizedTestCase(unittest.TestCase):
     """ TestCase classes that want to be parametrized should
@@ -80,6 +81,9 @@ def generateSuiteOfTests():
 
 
 if __name__ == '__main__':
+
+    start()
+    from smartbeds.api import API
 
     with open("smartbeds/test/test_database.sql") as file:
         query = file.read()
