@@ -1,9 +1,8 @@
 """Recibimos datos de la cama"""
 
-from smartbeds.api import api
+import smartbeds.api as api
 from smartbeds.process import new_bed_listeners
 import smartbeds.vars as v
-import eventlet
 
 
 def load_beds_listeners():

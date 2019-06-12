@@ -5,9 +5,10 @@ from flask import session
 from flask import redirect
 from flask import url_for
 from smartbeds.routes import webapi as api
-from smartbeds.api import api as _api
-from base64 import b64encode as encoder
+import smartbeds.api as _api
 from smartbeds import utils
+from smartbeds.routes import (garanteed_logged, get_info, mod_request, b64encode)
+from smartbeds.routes import logout as rlogout
 
 
 @v.app.route('/', methods=['GET'])
@@ -46,8 +47,7 @@ def login():
 
 @v.app.route('/logout', methods=['GET'])
 def logout():
-    session.clear()
-    return redirect(url_for("home"))
+    return rlogout()
 
 
 @v.app.route('/bed/<bedname>', methods=['GET'])
@@ -99,18 +99,27 @@ def usuarios():
 
 @v.app.route('/user', methods=['GET', 'POST'])
 def usuario_info():
-    mod_request()
-    info = get_info()
-    if info["login"]:
-        msg = ""
+    logged = garanteed_logged()
+    if logged is None:
+        info = get_info()
+        msg = "La contraseña se ha actualizado correctamente"
+        mode = "default"
         if request.method == "POST":
             response, code = api.usermod()
             if code != 200:
                 msg = response.get_json()['message']
-        context = {"page": {"page": 'own_user'}, "info": info, "title": session['username'], "message": msg}
+                mode = "error"
+            else:
+                mode = "update"
+
+        context = {"page": {"page": 'own_user',
+                            "mode": mode},
+                   "info": info,
+                   "title": session['username'],
+                   "message": msg}
         return render_template('usuario.html', **context)
     else:
-        return logout()
+        return logged
 
 
 @v.app.route('/user/add', methods=['PUT'])
@@ -161,9 +170,16 @@ def user_gen():
     context = {"page": {"page": "generator"}, "info": get_info(), "title": "Generador de usuarios"}
     API = _api.API.get_instance()
     tkn = utils.get_secret_key()
-    user = "user"
-    password="123456"
-    API.useradd(tkn)
+    v.testusers += 1
+    user = "user"+str(v.testusers)
+    password = "123456"
+    API.useradd(tkn, user, password)
+    API.bedmodperm(tkn, "Cama 1", user)
+    API.bedmodperm(tkn, "Cama 2", user)
+
+    context["user"] = user
+    context["password"] = password
+    return render_template("genuser.html", **context)
 
 
 def error(code, message):
@@ -173,31 +189,6 @@ def error(code, message):
                            message=message,
                            info=get_info(),
                            title="Error " + str(code))
-
-
-def get_info():
-    if 'token' in session:
-        try:
-            return {"login": True, "role": session['role'], "user": session['username']}
-        except KeyError:
-            return {"login": False}
-    else:
-        return {"login": False}
-
-
-def mod_request(params=None):
-    data = dict(request.form)
-    data['token'] = session['token']
-    if params is not None:
-        for p in params:
-            data[p] = params[p]
-    request.form = data  # Técnicamente esta operación no es legal, pero funciona
-
-
-def b64encode(text):
-    text = str.encode(text)
-    based = encoder(text).decode('utf-8')
-    return based
 
 
 v.app.add_template_filter(b64encode)

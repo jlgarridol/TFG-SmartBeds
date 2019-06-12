@@ -1,4 +1,4 @@
-from smartbeds.api import api
+import smartbeds.api as api
 import smartbeds.vars as v
 from flask import request
 from flask import jsonify
@@ -8,6 +8,12 @@ _api: api.API = api.API.get_instance()
 
 @v.app.teardown_appcontext
 def teardown_db(_):
+    """
+    Cierre de la base de datos.
+    Al terminar la aplicación se cierra la
+    conexión de la base de datos.
+    :param _: parametro desechado
+    """
     if v.db is not None:
         v.db.close()
         v.db = None
@@ -15,6 +21,11 @@ def teardown_db(_):
 
 @v.app.route("/api/auth", methods=['GET', 'POST'])
 def auth():
+    """
+    Inicio de sesión.
+
+    :return: Respuesta CU-1
+    """
 
     def func(response):
         user = request.form["user"]
@@ -29,6 +40,11 @@ def auth():
 
 @v.app.route("/api/beds", methods=['GET', 'POST'])
 def beds():
+    """
+    Lista de camas.
+
+    :return: Respuesta CU-2.1 CU-4
+    """
 
     def func(response):
         token = request.form['token']
@@ -39,6 +55,11 @@ def beds():
 
 @v.app.route("/api/bed", methods=['GET', 'POST'])
 def bed():
+    """
+    Namespace de la cama.
+
+    :return: Respuesta CU-2.2
+    """
 
     def func(response):
         token = request.form['token']
@@ -50,6 +71,11 @@ def bed():
 
 @v.app.route("/api/users", methods=['GET', 'POST'])
 def users():
+    """
+    Obtiene la lista de usuarios.
+
+    :return: Respuesta CU-3
+    """
     
     def func(response):
         token = request.form['token']

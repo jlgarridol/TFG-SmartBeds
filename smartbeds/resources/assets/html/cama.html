@@ -174,7 +174,7 @@
             });
         }
 
-        let socket = io.connect('https://' + document.domain + ':' + location.port);
+        let socket = io.connect('http{% if info.mode == 'ssl' %}s{% endif %}://' + document.domain + ':' + location.port);
         socket.on("connect", function (data) {
             socket.emit('give_me_data', {namespace: "{{ page.namespace }}", bedname: '{{ page.bedname }}'});
         });

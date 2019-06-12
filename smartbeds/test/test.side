@@ -1,0 +1,1157 @@
+{
+  "id": "615c7f34-a18b-4e7a-b3d3-5e44747ddca4",
+  "version": "2.0",
+  "name": "TFG",
+  "url": "http://127.0.0.1:3031",
+  "tests": [{
+    "id": "39504604-7f4d-47ca-9bb9-083ef183bf0d",
+    "name": "1. Iniciar sesión - administrador",
+    "commands": [{
+      "id": "129b0297-2c45-46e4-b428-b7acc51fdd3f",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7b5792a3-a3e4-45dd-8bbf-7c2f1825549a",
+      "comment": "",
+      "command": "assertText",
+      "target": "linkText=inicie sesión",
+      "targets": [],
+      "value": "inicie sesión"
+    }, {
+      "id": "063c9eb2-9672-4ca3-8443-3176b36ba0fc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=inicie sesión",
+      "targets": [
+        ["linkText=inicie sesión", "linkText"],
+        ["css=.col-12 a", "css:finder"],
+        ["xpath=//a[contains(text(),'inicie sesión')]", "xpath:link"],
+        ["xpath=(//a[contains(@href, '/auth')])[2]", "xpath:href"],
+        ["xpath=//h3/a", "xpath:position"],
+        ["xpath=//a[contains(.,'inicie sesión')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e7525d49-ec15-43e2-bf00-deb93fab6114",
+      "comment": "",
+      "command": "click",
+      "target": "id=user",
+      "targets": [
+        ["id=user", "id"],
+        ["name=user", "name"],
+        ["css=#user", "css:finder"],
+        ["xpath=//input[@id='user']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "14a5f47d-e78d-46ca-bda6-371f6f4be65e",
+      "comment": "",
+      "command": "type",
+      "target": "id=user",
+      "targets": [
+        ["id=user", "id"],
+        ["name=user", "name"],
+        ["css=#user", "css:finder"],
+        ["xpath=//input[@id='user']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "52bd3781-46e1-4502-8b61-e59152d9fcf6",
+      "comment": "",
+      "command": "type",
+      "target": "id=pass",
+      "targets": [
+        ["id=pass", "id"],
+        ["name=pass", "name"],
+        ["css=#pass", "css:finder"],
+        ["xpath=//input[@id='pass']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "5a4014db-8f67-415a-b3a5-8f455f572e42",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit",
+      "targets": [
+        ["id=submit", "id"],
+        ["css=#submit", "css:finder"],
+        ["xpath=//button[@id='submit']", "xpath:attributes"],
+        ["xpath=//fieldset/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Entrar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "53bfbacb-462b-4805-846a-6b0da3771f1e",
+      "comment": "",
+      "command": "click",
+      "target": "id=nav",
+      "targets": [
+        ["id=nav", "id"],
+        ["css=#nav", "css:finder"],
+        ["xpath=//nav[@id='nav']", "xpath:attributes"],
+        ["xpath=//nav", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1919f683-e15f-457f-b1c4-2105fd54020c",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.col-12 > .text-center",
+      "targets": [
+        ["css=.col-12 > .text-center", "css:finder"],
+        ["xpath=//h3", "xpath:position"],
+        ["xpath=//h3[contains(.,'Camas disponibles')]", "xpath:innerText"]
+      ],
+      "value": "Camas disponibles"
+    }, {
+      "id": "30035a32-fb5c-4bd1-95c4-7c4b330d42f3",
+      "comment": "",
+      "command": "assertText",
+      "target": "linkText=Administrar camas",
+      "targets": [
+        ["linkText=Administrar camas", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Administrar camas')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/beds')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Administrar camas')]", "xpath:innerText"]
+      ],
+      "value": "Administrar camas"
+    }, {
+      "id": "b4c49466-9c90-4baa-8d61-cecd2b7dd0d2",
+      "comment": "",
+      "command": "assertText",
+      "target": "linkText=Administrar usuarios",
+      "targets": [
+        ["linkText=Administrar usuarios", "linkText"],
+        ["css=.nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Administrar usuarios')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/users')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Administrar usuarios')]", "xpath:innerText"]
+      ],
+      "value": "Administrar usuarios"
+    }]
+  }, {
+    "id": "8d63ea27-f1c4-4020-9036-087d63e4b31f",
+    "name": "1.1 Administrar camas",
+    "commands": [{
+      "id": "62c98758-ccbd-4a4d-860b-16ebb1781532",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8ae64f48-af57-4f76-a86e-8e1f6bd2061d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Administrar camas",
+      "targets": [
+        ["linkText=Administrar camas", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Administrar camas')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/beds')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Administrar camas')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8dd5dcee-09ab-407d-a52a-f09f6ffb45ee",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-info",
+      "targets": [
+        ["css=.btn-info", "css:finder"],
+        ["xpath=//th/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Añadir cama')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e3854b8d-4f16-4b74-ab31-5e107ac05530",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=bedname_fb",
+      "targets": [
+        ["id=bedname_fb", "id"],
+        ["css=#bedname_fb", "css:finder"],
+        ["xpath=//div[@id='bedname_fb']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div/div/div", "xpath:idRelative"],
+        ["xpath=//fieldset/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ac1313a1-a896-4092-ace8-d5f966f965c8",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=bedname_fb",
+      "targets": [
+        ["id=bedname_fb", "id"],
+        ["css=#bedname_fb", "css:finder"],
+        ["xpath=//div[@id='bedname_fb']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div/div/div", "xpath:idRelative"],
+        ["xpath=//fieldset/div/div/div", "xpath:position"]
+      ],
+      "value": "Este campo no puede estar vacío"
+    }, {
+      "id": "1e5a82a2-c70b-4b95-80d5-f3eb6f7ab021",
+      "comment": "",
+      "command": "type",
+      "target": "id=bedname",
+      "targets": [
+        ["id=bedname", "id"],
+        ["css=#bedname", "css:finder"],
+        ["xpath=//input[@id='bedname']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "Cama 3"
+    }, {
+      "id": "a0b503d6-61e3-48cf-863c-5c79945f8e80",
+      "comment": "",
+      "command": "click",
+      "target": "id=bedname",
+      "targets": [
+        ["id=bedname", "id"],
+        ["css=#bedname", "css:finder"],
+        ["xpath=//input[@id='bedname']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "082b5e84-7e5d-47f6-9cf1-bcb500128612",
+      "comment": "",
+      "command": "type",
+      "target": "id=ip",
+      "targets": [
+        ["id=ip", "id"],
+        ["css=#ip", "css:finder"],
+        ["xpath=//input[@id='ip']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "215.255.1.36"
+    }, {
+      "id": "cc64a76d-abcc-4200-9055-87410a2915d8",
+      "comment": "",
+      "command": "click",
+      "target": "id=port",
+      "targets": [
+        ["id=port", "id"],
+        ["css=#port", "css:finder"],
+        ["xpath=//input[@id='port']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5df1082e-a16a-4e93-a0a7-bb4351779be4",
+      "comment": "",
+      "command": "click",
+      "target": "id=ip",
+      "targets": [
+        ["id=ip", "id"],
+        ["css=#ip", "css:finder"],
+        ["xpath=//input[@id='ip']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "98cb2996-fa49-47d7-996f-963b5b3ab0d6",
+      "comment": "",
+      "command": "type",
+      "target": "id=ip",
+      "targets": [
+        ["id=ip", "id"],
+        ["css=#ip", "css:finder"],
+        ["xpath=//input[@id='ip']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "226.255.1.36"
+    }, {
+      "id": "b606a5c8-a190-4c6a-b54f-42625921432d",
+      "comment": "",
+      "command": "click",
+      "target": "css=legend:nth-child(5)",
+      "targets": [
+        ["css=legend:nth-child(5)", "css:finder"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/legend[3]", "xpath:idRelative"],
+        ["xpath=//legend[3]", "xpath:position"],
+        ["xpath=//legend[contains(.,'Puerto')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "396fd017-b466-4a61-aa7c-63674271aaf5",
+      "comment": "",
+      "command": "click",
+      "target": "id=port",
+      "targets": [
+        ["id=port", "id"],
+        ["css=#port", "css:finder"],
+        ["xpath=//input[@id='port']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b9b9cf75-5daf-4193-9e0d-824837212b20",
+      "comment": "",
+      "command": "type",
+      "target": "id=port",
+      "targets": [
+        ["id=port", "id"],
+        ["css=#port", "css:finder"],
+        ["xpath=//input[@id='port']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": "5000"
+    }, {
+      "id": "64ac45ec-d798-4af4-a1cc-e8bdede3b2aa",
+      "comment": "",
+      "command": "click",
+      "target": "id=mac",
+      "targets": [
+        ["id=mac", "id"],
+        ["css=#mac", "css:finder"],
+        ["xpath=//input[@id='mac']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "05b5db31-56ec-4f85-88b3-d686e67e5b5c",
+      "comment": "",
+      "command": "click",
+      "target": "id=mac",
+      "targets": [
+        ["id=mac", "id"],
+        ["css=#mac", "css:finder"],
+        ["xpath=//input[@id='mac']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "93297ba0-3978-4609-8f1f-71cd71c4f2fd",
+      "comment": "",
+      "command": "click",
+      "target": "id=mac",
+      "targets": [
+        ["id=mac", "id"],
+        ["css=#mac", "css:finder"],
+        ["xpath=//input[@id='mac']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "71b8b1a3-b9b5-4da3-a81e-43f85c750f74",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=mac",
+      "targets": [
+        ["id=mac", "id"],
+        ["css=#mac", "css:finder"],
+        ["xpath=//input[@id='mac']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "17dc129a-18d3-471a-8692-14c20a2cc2e5",
+      "comment": "",
+      "command": "type",
+      "target": "id=mac",
+      "targets": [
+        ["id=mac", "id"],
+        ["css=#mac", "css:finder"],
+        ["xpath=//input[@id='mac']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[4]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": "AABBCCDDEEFF"
+    }, {
+      "id": "4ccd7321-2e67-4dc8-bbec-e4530b32ac25",
+      "comment": "",
+      "command": "click",
+      "target": "id=uuid",
+      "targets": [
+        ["id=uuid", "id"],
+        ["css=#uuid", "css:finder"],
+        ["xpath=//input[@id='uuid']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[5]/div/input", "xpath:idRelative"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a7414bdd-b4d4-4348-99ef-6f66f376e5f9",
+      "comment": "",
+      "command": "type",
+      "target": "id=uuid",
+      "targets": [
+        ["id=uuid", "id"],
+        ["css=#uuid", "css:finder"],
+        ["xpath=//input[@id='uuid']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[2]/form/fieldset/div[5]/div/input", "xpath:idRelative"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": "AABBCCDDEEFF"
+    }, {
+      "id": "c427b3d1-98e5-479a-b3ae-e59222ea12d4",
+      "comment": "",
+      "command": "click",
+      "target": "id=save_modal",
+      "targets": [
+        ["id=save_modal", "id"],
+        ["css=#save_modal", "css:finder"],
+        ["xpath=//button[@id='save_modal']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Save changes')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "920c4584-2c97-4ef3-b23b-be68f2636e37",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.alert",
+      "targets": [
+        ["css=.alert", "css:finder"],
+        ["xpath=//div[@id='errormodal']/div/div/div[2]/div/div/div", "xpath:idRelative"],
+        ["xpath=//div/div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": "La creación de camas no está disponible para esta versión"
+    }]
+  }, {
+    "id": "87e531cc-216a-4f87-af45-a06e3464d3f4",
+    "name": "1.2 Borrar y modificar cama",
+    "commands": [{
+      "id": "535780f9-75d6-4026-a515-6b37d8f5ca5a",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3da99d67-b08b-42e1-8990-ee7952cb6634",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Administrar camas",
+      "targets": [
+        ["linkText=Administrar camas", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Administrar camas')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/beds')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Administrar camas')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0c555424-cc31-4180-8b48-cac286ed797f",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(1) .btn-danger",
+      "targets": [
+        ["css=tr:nth-child(1) .btn-danger", "css:finder"],
+        ["xpath=//button[@onclick=\"del('Cama 1')\"]", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Borrar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9430d61e-bd22-41c7-818f-d47d93e9670e",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=modal_error_message",
+      "targets": [
+        ["id=modal_error_message", "id"],
+        ["css=#modal_error_message", "css:finder"],
+        ["xpath=//p[@id='modal_error_message']", "xpath:attributes"],
+        ["xpath=//div[@id='errormodal']/div/div/div[2]/div/div/div/p", "xpath:idRelative"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'La eliminación de camas no está disponible para esta versión')]", "xpath:innerText"]
+      ],
+      "value": "La eliminación de camas no está disponible para esta versión"
+    }, {
+      "id": "645a33a4-a79e-471f-b86c-c8c682bfe26c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-secondary",
+      "targets": [
+        ["css=.btn-secondary", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='errormodal']/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//body/div[2]/div/div/div[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "edf48048-0b72-474a-b772-dc6a9ee8093a",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(1) .btn-success",
+      "targets": [
+        ["css=tr:nth-child(1) .btn-success", "css:finder"],
+        ["xpath=//td[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modificar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6003225a-571d-449b-9ec6-45558f38de49",
+      "comment": "",
+      "command": "click",
+      "target": "id=save_modal",
+      "targets": [
+        ["id=save_modal", "id"],
+        ["css=#save_modal", "css:finder"],
+        ["xpath=//button[@id='save_modal']", "xpath:attributes"],
+        ["xpath=//div[@id='bedmodal']/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Save changes')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f980909c-0867-4546-a261-1489add15326",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=modal_error_message",
+      "targets": [
+        ["id=modal_error_message", "id"],
+        ["css=#modal_error_message", "css:finder"],
+        ["xpath=//p[@id='modal_error_message']", "xpath:attributes"],
+        ["xpath=//div[@id='errormodal']/div/div/div[2]/div/div/div/p", "xpath:idRelative"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'La modificación de camas no está disponible para esta versión')]", "xpath:innerText"]
+      ],
+      "value": "La modificación de camas no está disponible para esta versión"
+    }]
+  }, {
+    "id": "f337a07b-6d37-48ba-8305-bbc5d79e0281",
+    "name": "1.3 Gestionar permisos",
+    "commands": [{
+      "id": "09a3b622-dcc1-4867-a044-0859c0d6d028",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ca9d7aad-887f-4c73-b897-654ab6b36ed3",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Administrar camas",
+      "targets": [
+        ["linkText=Administrar camas", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Administrar camas')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/beds')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Administrar camas')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a42fa593-9d51-4400-8e82-f29b579c25f1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-warning",
+      "targets": [
+        ["css=.btn-warning", "css:finder"],
+        ["xpath=//th[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Permisos')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fdd3eab7-6864-486a-8a8e-9cc6b7ba5e59",
+      "comment": "",
+      "command": "click",
+      "target": "id=Q2FtYSAx-alicia",
+      "targets": [
+        ["id=Q2FtYSAx-alicia", "id"],
+        ["css=#Q2FtYSAx-alicia", "css:finder"],
+        ["xpath=//input[@id='Q2FtYSAx-alicia']", "xpath:attributes"],
+        ["xpath=//div[@id='bedpermmodal']/div/div/div[2]/form/table/tbody/tr/td/input", "xpath:idRelative"],
+        ["xpath=//td/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e5d420c-b9d6-419c-b9b8-135b7baec9fb",
+      "comment": "",
+      "command": "click",
+      "target": "id=Q2FtYSAy-alicia",
+      "targets": [
+        ["id=Q2FtYSAy-alicia", "id"],
+        ["css=#Q2FtYSAy-alicia", "css:finder"],
+        ["xpath=//input[@id='Q2FtYSAy-alicia']", "xpath:attributes"],
+        ["xpath=//div[@id='bedpermmodal']/div/div/div[2]/form/table/tbody/tr[2]/td/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9a2dad87-7647-44c6-b983-ac08c59f93cb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-danger:nth-child(1)",
+      "targets": [
+        ["css=.btn-danger:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='bedpermmodal']/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "dd1269f1-128a-4ab4-b4a5-e4ac45ad9705",
+    "name": "1.4 Administrar usuarios",
+    "commands": [{
+      "id": "2344b9ee-c366-4a55-b3da-5258cb7a47d7",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ddda55e1-e5ea-44e1-9029-bbbbcc427fc0",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Administrar usuarios",
+      "targets": [
+        ["linkText=Administrar usuarios", "linkText"],
+        ["css=.nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Administrar usuarios')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/users')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Administrar usuarios')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f423acd1-f7da-4ea6-afda-8dcf24f7fd28",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-lg",
+      "targets": [
+        ["css=.btn-lg", "css:finder"],
+        ["xpath=//th/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Añadir usuarios')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "675b61a9-7d3b-4514-b211-57c37bd9cbc6",
+      "comment": "",
+      "command": "click",
+      "target": "id=nick",
+      "targets": [
+        ["id=nick", "id"],
+        ["css=#nick", "css:finder"],
+        ["xpath=//input[@id='nick']", "xpath:attributes"],
+        ["xpath=//div[@id='usermodal']/div/div/div[2]/form/fieldset/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bac69bc3-8c8a-4775-9091-e2d7c32f5c06",
+      "comment": "",
+      "command": "type",
+      "target": "id=nick",
+      "targets": [
+        ["id=nick", "id"],
+        ["css=#nick", "css:finder"],
+        ["xpath=//input[@id='nick']", "xpath:attributes"],
+        ["xpath=//div[@id='usermodal']/div/div/div[2]/form/fieldset/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "usuario_nuevo"
+    }, {
+      "id": "9e6dfa40-64a3-4de5-9f4e-a9dedf0b5cdc",
+      "comment": "",
+      "command": "type",
+      "target": "id=pass",
+      "targets": [
+        ["id=pass", "id"],
+        ["css=#pass", "css:finder"],
+        ["xpath=//input[@id='pass']", "xpath:attributes"],
+        ["xpath=//div[@id='usermodal']/div/div/div[2]/form/fieldset/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "123456"
+    }, {
+      "id": "2415122e-8e99-4604-8586-2c37257f9c87",
+      "comment": "",
+      "command": "type",
+      "target": "id=pass_re",
+      "targets": [
+        ["id=pass_re", "id"],
+        ["css=#pass_re", "css:finder"],
+        ["xpath=//input[@id='pass_re']", "xpath:attributes"],
+        ["xpath=//div[@id='usermodal']/div/div/div[2]/form/fieldset/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": "123456"
+    }, {
+      "id": "8222d026-0d2c-43cf-8f49-6a947d5ea53c",
+      "comment": "",
+      "command": "click",
+      "target": "id=save_modal",
+      "targets": [
+        ["id=save_modal", "id"],
+        ["css=#save_modal", "css:finder"],
+        ["xpath=//button[@id='save_modal']", "xpath:attributes"],
+        ["xpath=//div[@id='usermodal']/div/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Guardar cambios')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ea5741e7-4260-4f50-ad32-aa9120ac0000",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "css=tr:nth-child(5) > td:nth-child(1)",
+      "targets": [
+        ["css=tr:nth-child(5) > td:nth-child(1)", "css:finder"],
+        ["xpath=//tr[5]/td", "xpath:position"],
+        ["xpath=//td[contains(.,'usuario_nuevo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "86d4f4de-469a-4690-9498-e80b55157710",
+      "comment": "",
+      "command": "verifyText",
+      "target": "xpath=//tr[last()]/td",
+      "targets": [
+        ["css=tr:nth-child(4) > td:nth-child(1)", "css:finder"],
+        ["xpath=//tr[4]/td", "xpath:position"],
+        ["xpath=//td[contains(.,'user1')]", "xpath:innerText"]
+      ],
+      "value": "usuario_nuevo"
+    }, {
+      "id": "df592166-f623-4d45-9577-8f96b56b7657",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(5) .btn-danger",
+      "targets": [
+        ["css=tr:nth-child(5) .btn-danger", "css:finder"],
+        ["xpath=//button[@onclick=\"del('usuario_nuevo')\"]", "xpath:attributes"],
+        ["xpath=//tr[5]/td[2]/button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "0e7637d7-1864-48e6-8211-3b2a7ec6ebb3",
+    "name": "1.5 Desloguearse",
+    "commands": [{
+      "id": "db89af12-139c-4f6c-9e1b-a8a0baa457a2",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "28e03d70-3441-4b35-909c-bde5c7788ea3",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1920x1052",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "19296da0-677c-4a82-acd2-4d6de2dd132d",
+      "comment": "",
+      "command": "assertText",
+      "target": "linkText=Cerrar sesión",
+      "targets": [
+        ["linkText=Cerrar sesión", "linkText"],
+        ["css=.mr-right > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Cerrar sesión')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul[2]/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
+        ["xpath=//ul[2]/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Cerrar sesión')]", "xpath:innerText"]
+      ],
+      "value": "Cerrar sesión"
+    }, {
+      "id": "3d51d4dc-b8e1-4666-b64f-d90c37da5c46",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Cerrar sesión",
+      "targets": [
+        ["linkText=Cerrar sesión", "linkText"],
+        ["css=.mr-right > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Cerrar sesión')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul[2]/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
+        ["xpath=//ul[2]/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Cerrar sesión')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f931922e-b55b-4138-8a84-e8d040172814",
+      "comment": "",
+      "command": "assertText",
+      "target": "linkText=inicie sesión",
+      "targets": [
+        ["linkText=inicie sesión", "linkText"],
+        ["css=.col-12 a", "css:finder"],
+        ["xpath=//a[contains(text(),'inicie sesión')]", "xpath:link"],
+        ["xpath=(//a[contains(@href, '/auth')])[2]", "xpath:href"],
+        ["xpath=//h3/a", "xpath:position"],
+        ["xpath=//a[contains(.,'inicie sesión')]", "xpath:innerText"]
+      ],
+      "value": "inicie sesión"
+    }]
+  }, {
+    "id": "176d2f47-8d53-488d-a89c-068a7da5d20e",
+    "name": "2. Iniciar sesión como usuario normal",
+    "commands": [{
+      "id": "8cca438b-9c63-45ff-ad83-4bc5df34f8a9",
+      "comment": "",
+      "command": "open",
+      "target": "/generate_user",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "31cb8b22-9dc1-466e-9fed-85941b156b34",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1920x1052",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e8918acf-6a64-448a-8a22-608b2e679b73",
+      "comment": "",
+      "command": "storeText",
+      "target": "id=user",
+      "targets": [
+        ["id=user", "id"],
+        ["css=#user", "css:finder"],
+        ["xpath=//span[@id='user']", "xpath:attributes"],
+        ["xpath=//h2/span", "xpath:position"],
+        ["xpath=//span[contains(.,'user1')]", "xpath:innerText"]
+      ],
+      "value": "user"
+    }, {
+      "id": "b2738b46-0fca-483d-bdaf-25be53f54145",
+      "comment": "",
+      "command": "storeText",
+      "target": "id=pass",
+      "targets": [
+        ["id=pass", "id"],
+        ["css=#pass", "css:finder"],
+        ["xpath=//span[@id='pass']", "xpath:attributes"],
+        ["xpath=//h2[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'123456')]", "xpath:innerText"]
+      ],
+      "value": "password"
+    }, {
+      "id": "0a7065f2-8e03-453a-a61b-d62ed5891091",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Iniciar sesión",
+      "targets": [
+        ["linkText=Iniciar sesión", "linkText"],
+        ["css=.mr-right .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Iniciar sesión')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul[2]/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/auth')]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Iniciar sesión')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d6b201e0-ad0f-41ae-9393-5ec0b98591aa",
+      "comment": "",
+      "command": "type",
+      "target": "id=user",
+      "targets": [],
+      "value": "${user}"
+    }, {
+      "id": "08577f5a-57fe-4252-83ab-7ed0d513c80f",
+      "comment": "",
+      "command": "type",
+      "target": "id=pass",
+      "targets": [],
+      "value": "${password}"
+    }, {
+      "id": "bacbf58a-cd67-46c6-94e3-ed0078f4c781",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit",
+      "targets": [
+        ["id=submit", "id"],
+        ["css=#submit", "css:finder"],
+        ["xpath=//button[@id='submit']", "xpath:attributes"],
+        ["xpath=//fieldset/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Entrar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "924d4606-1ecb-43bc-a96a-c411e6b856c1",
+      "comment": "",
+      "command": "assertTitle",
+      "target": "Inicio - SmartBeds",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ae4d5c6c-da8c-4211-85c8-171bfe95e303",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[@name='bed']",
+      "targets": [
+        ["linkText=Cama 1 - Estado: ...", "linkText"],
+        ["name=bed", "name"],
+        ["css=.col-lg-6:nth-child(1) > .btn", "css:finder"],
+        ["xpath=//a[@name='bed']", "xpath:attributes"],
+        ["xpath=//a[contains(@href, '/bed/Cama%201')]", "xpath:href"],
+        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Cama 1 - Estado: ...')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8487c371-21a9-4573-8dbb-202665bbee55",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.col-md-6:nth-child(1) > .text-center",
+      "targets": [
+        ["css=.col-md-6:nth-child(1) > .text-center", "css:finder"],
+        ["xpath=//div[2]/div/h3", "xpath:position"],
+        ["xpath=//h3[contains(.,'Constantes vitales')]", "xpath:innerText"]
+      ],
+      "value": "Constantes vitales"
+    }, {
+      "id": "9469baf4-06b5-4292-97b2-06bb3e1c0b43",
+      "comment": "",
+      "command": "verifyTitle",
+      "target": "Cama 1 - SmartBeds",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "d614dcd6-94f6-4ac6-a480-0723d93ccc8d",
+    "name": "2.1 Cambiar contraseña",
+    "commands": [{
+      "id": "d23f9536-1bce-4582-9ce6-e1d84de8e1e9",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f5013078-78e7-4272-a982-fac5676b6a1d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mr-right > .nav-item:nth-child(1) > .nav-link",
+      "targets": [
+        ["linkText=user2", "linkText"],
+        ["css=.mr-right > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'user2')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul[2]/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/user')]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'user2')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e60d456b-028c-45c4-ba58-6fe2c11e77e6",
+      "comment": "",
+      "command": "click",
+      "target": "id=password-old",
+      "targets": [
+        ["id=password-old", "id"],
+        ["name=password-old", "name"],
+        ["css=#password-old", "css:finder"],
+        ["xpath=//input[@id='password-old']", "xpath:attributes"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "db5e019c-0ddc-4e28-9ccf-18290f0f3555",
+      "comment": "",
+      "command": "type",
+      "target": "id=password-old",
+      "targets": [
+        ["id=password-old", "id"],
+        ["name=password-old", "name"],
+        ["css=#password-old", "css:finder"],
+        ["xpath=//input[@id='password-old']", "xpath:attributes"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": "no es lacontraseña"
+    }, {
+      "id": "d76c745a-5220-4778-aa27-00b01b6062c3",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": "123456"
+    }, {
+      "id": "70de396e-4d06-4f3a-8dab-4d669a1c88f3",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=password-refb",
+      "targets": [
+        ["id=password-refb", "id"],
+        ["css=#password-refb", "css:finder"],
+        ["xpath=//div[@id='password-refb']", "xpath:attributes"],
+        ["xpath=//div[5]/div/div", "xpath:position"]
+      ],
+      "value": "Este campo no puede estar vacío"
+    }, {
+      "id": "f05b7a9a-30fb-45db-bb5a-f545f27bdcea",
+      "comment": "",
+      "command": "type",
+      "target": "id=password-re",
+      "targets": [
+        ["id=password-re", "id"],
+        ["name=password-re", "name"],
+        ["css=#password-re", "css:finder"],
+        ["xpath=//input[@id='password-re']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": "patata"
+    }, {
+      "id": "da1628db-593f-4289-9599-a4130e8a54db",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=password-refb",
+      "targets": [
+        ["id=password-refb", "id"],
+        ["css=#password-refb", "css:finder"],
+        ["xpath=//div[@id='password-refb']", "xpath:attributes"],
+        ["xpath=//div[5]/div/div", "xpath:position"]
+      ],
+      "value": "Las contraseñas no coinciden"
+    }, {
+      "id": "28586064-aed3-4160-ab77-ae84d43b7253",
+      "comment": "",
+      "command": "type",
+      "target": "id=password-re",
+      "targets": [
+        ["id=password-re", "id"],
+        ["name=password-re", "name"],
+        ["css=#password-re", "css:finder"],
+        ["xpath=//input[@id='password-re']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": "123456"
+    }, {
+      "id": "872984f3-d837-4418-a082-c8693e67c53e",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=password-refb",
+      "targets": [
+        ["id=password-refb", "id"],
+        ["css=#password-refb", "css:finder"],
+        ["xpath=//div[@id='password-refb']", "xpath:attributes"],
+        ["xpath=//div[5]/div/div", "xpath:position"]
+      ],
+      "value": "Correcto"
+    }, {
+      "id": "0577a2e6-fdf5-44e1-88dc-d08aaad2ad83",
+      "comment": "",
+      "command": "click",
+      "target": "id=save_modal",
+      "targets": [
+        ["id=save_modal", "id"],
+        ["css=#save_modal", "css:finder"],
+        ["xpath=//button[@id='save_modal']", "xpath:attributes"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Actualizar contraseña')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "29d79110-10b1-4298-83b4-ddb0ee515539",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.text-danger",
+      "targets": [
+        ["css=.text-danger", "css:finder"],
+        ["xpath=//div/div/div", "xpath:position"]
+      ],
+      "value": "Contraseña anterior no válida"
+    }, {
+      "id": "f233a27d-cf61-4d37-bb35-3caf200685b8",
+      "comment": "",
+      "command": "type",
+      "target": "id=password-old",
+      "targets": [],
+      "value": "123456"
+    }, {
+      "id": "069c19cb-c578-4bfd-a66e-c5756cf246be",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[4]/div/input", "xpath:position"]
+      ],
+      "value": "123456"
+    }, {
+      "id": "5c208331-84b2-4857-aa94-6f0aa71d705b",
+      "comment": "",
+      "command": "type",
+      "target": "id=password-re",
+      "targets": [
+        ["id=password-re", "id"],
+        ["name=password-re", "name"],
+        ["css=#password-re", "css:finder"],
+        ["xpath=//input[@id='password-re']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": "123456"
+    }, {
+      "id": "7be96792-7168-4755-97a0-7b8806e00a8f",
+      "comment": "",
+      "command": "click",
+      "target": "id=save_modal",
+      "targets": [
+        ["id=save_modal", "id"],
+        ["css=#save_modal", "css:finder"],
+        ["xpath=//button[@id='save_modal']", "xpath:attributes"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Actualizar contraseña')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "809dbc76-2e39-4253-89c8-6c3e936c5aa6",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.text-success",
+      "targets": [
+        ["css=.text-success", "css:finder"],
+        ["xpath=//div/div/div", "xpath:position"]
+      ],
+      "value": "La contraseña se ha actualizado correctamente"
+    }]
+  }],
+  "suites": [{
+    "id": "764ddca3-d14f-4658-9836-abd5af346555",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["39504604-7f4d-47ca-9bb9-083ef183bf0d"]
+  }],
+  "urls": ["http://127.0.0.1:3031/"],
+  "plugins": []
+}

@@ -1,5 +1,4 @@
-from smartbeds.api.api import API
-from smartbeds.api.api import SmartBedError
+from api import API
 import smartbeds.vars as v
 import unittest
 import json

@@ -362,3 +362,7 @@ project.json
 app.nginx.conf
 app.uwsgi.ini
 flask_session/
+
+#Node
+node_modules/
+package-lock.json

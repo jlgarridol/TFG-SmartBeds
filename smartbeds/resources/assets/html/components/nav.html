@@ -32,8 +32,9 @@
         <ul class="navbar-nav mr-right">
             {% if info.login %}
 
-                <li class="nav-item">
-                    <a class="nav-link {% if page.page == 'own_user' %}active{% endif %}" href="{{ url_for('home') }}">
+                <li class="nav-item {% if page.page == 'own_user' %}active{% endif %}">
+                    <a class="nav-link"
+                       href="{{ url_for('usuario_info') }}">
                         {{ info.user }}
                     </a>
                 </li>

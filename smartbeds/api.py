@@ -31,6 +31,10 @@ class API:
         self._user_bed = Table('Users_Beds')
         self._master_key = get_secret_key()
 
+        if v.version < 1:
+            # En este caso se borran todos los usuarios del tipo "user" que usamos en los test de usabilidad
+            self._del_all_testuser()
+
         API._instance = self
 
     def auth(self, nick: str, password: str) -> tuple:
@@ -804,6 +808,15 @@ class API:
             v.db = connect(**self._params)
             v.db.autocommit = False
         return v.db
+
+    def _del_all_testuser(self):
+        conn = self._db_context()
+        query = ("DELETE FROM Users WHERE nickname LIKE \"user%\"", '')
+
+        cursor = conn.cursor()
+        cursor.execute(*query)
+        cursor.close()
+        conn.commit()
 
     @classmethod
     def prepare_query(cls, query):

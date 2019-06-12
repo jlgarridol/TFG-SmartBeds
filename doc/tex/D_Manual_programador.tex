@@ -293,6 +293,7 @@ El primer paso necesario es la configuración de la base de datos en la cual se 
 	"secret-key": "clave secreta",
 	"url":  "http://127.0.0.1",
 	"port": 3031,
+	"mode": "ssl"
 	"database": {
 		"host": "database-host",
 		"database": "database-name",
@@ -302,7 +303,7 @@ El primer paso necesario es la configuración de la base de datos en la cual se 
 }
 \end{lstlisting}
 
-En cada campo habría que incorporar los cambios oportunos y se recomienda no modificar el campo \texttt{url}. Tras esto ya el programa es ejecutable y puede funcionar al ejecutar el fichero \texttt{/index.py}.
+En cada campo habría que incorporar los cambios oportunos y se recomienda no modificar el campo \texttt{url}. De manera especial el campo mode puede ser \texttt{ssl} o \texttt{no-ssl} si los \textit{websockets} se ejecutan sobre \textit{SSL} o no. Tras esto ya el programa es ejecutable y puede funcionar al ejecutar el fichero \texttt{/index.py}.
 
 El siguiente paso es crear la configuración del servidor \textit{HTTP} para redirigir las peticiones externas a la aplicación local. Como ejemplo, para un servidor \textit{Nginx} la configuración sería la siguiente:
 

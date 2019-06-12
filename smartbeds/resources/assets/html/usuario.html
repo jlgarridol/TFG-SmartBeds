@@ -6,37 +6,52 @@
             <h3 class="col-sm-offset-1">Cambiar contraseña</h3>
         </div>
         <div class="row">
-            <form class="form-horizontal" method="post">
-                <div class="form-group">
-                    <div class="text-danger">{{ message }}</div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="password-old">Contraseña actual:</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" required="required" name="password-old" id="password-old"
-                               placeholder="Contraseña actual">
-                        <div id="password-oldfb"></div>
+            <form class="form-horizontal col-md-12" method="post">
+                <div class="container-fluid">
+                    <div class="form-group">
+                    {% if page.mode != "default" %}
+                        <div class="{% if page.mode == "error" %}text-danger{% else %}text-success{% endif %}">{{ message }}</div>
+                    {% endif %}
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="password">Contraseña nueva:</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" required="required" name="password" id="password"
-                               placeholder="Nueva contraseña">
-                        <div id="password-fb"></div>
+                    <div class="form-group d-none row">
+                        <label class="control-label col-sm-2" for="user">Contraseña actual:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" required="required" readonly="readonly"
+                                   name="username" id="username"
+                                   value="{{ info.user }}">
+                            <div id="password-oldfb"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="password-re">Repite la nueva contraseña</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" required="required" name="password-re"
-                               id="password-re" placeholder="Repite la nueva contraseña">
-                        <div id="password-refb"></div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-2" for="password-old">Contraseña actual:</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" required="required" name="password-old"
+                                   id="password-old"
+                                   placeholder="Contraseña actual">
+                            <div id="password-oldfb"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success" id="save_modal">Actualizar contraseña</button>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-2" for="password">Contraseña nueva:</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" required="required" name="password"
+                                   id="password"
+                                   placeholder="Nueva contraseña">
+                            <div id="password-fb"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-2" for="password-re">Repite la nueva contraseña</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" required="required" name="password-re"
+                                   id="password-re" placeholder="Repite la nueva contraseña">
+                            <div id="password-refb"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-success" id="save_modal">Actualizar contraseña</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -61,7 +76,5 @@
 
         let fields = [old, new_, new_re];
         let fb = [oldfb, new_fb, new_refb];
-
-
     </script>
 {% endblock %}

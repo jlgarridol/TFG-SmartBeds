@@ -1,5 +1,6 @@
 import smartbeds.vars as v
 
+
 def start():
     v.start()
 
@@ -17,10 +18,8 @@ def start():
     v.app = Flask(__name__, static_folder=STATIC_DIR, template_folder=TEMPLATE_DIR)
     v.app.secret_key = utils.get_secret_key()
     v.socketio = SocketIO(v.app)
-    print(v.app.secret_key)
-    print(v.sess)
 
-    from smartbeds.api import api
+    import smartbeds.api as api
     api.API(utils.get_sql_config())  # Se instancia la API
 
     # Se cargan las camas

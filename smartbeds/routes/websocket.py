@@ -2,7 +2,7 @@ import smartbeds.vars as v
 from flask_socketio import emit
 from smartbeds.process.receive import get_processor
 from smartbeds.process.proc import BedProcess
-from smartbeds.api import api
+import smartbeds.api as api
 import numpy as np
 from socketio import Client
 from smartbeds.utils import get_sio_connect
@@ -13,7 +13,8 @@ from threading import Thread
 class Broadcaster:
 
     def __init__(self, namespace, bed_processor: BedProcess, app):
-        self._namespaces = {"/"+namespace}
+        self._namespaces = set()
+        self._namespaces.add("/"+namespace)
         self._bed = bed_processor
         self._app = app
 
@@ -26,7 +27,7 @@ class Broadcaster:
                         Broadcaster.clean_package(package)
                         for n in self._namespaces:
                             emit("package", package, namespace=n, json=True, broadcast=True)
-                            eventlet.sleep(0)
+                        eventlet.sleep(0)
         except (KeyboardInterrupt, SystemExit):
             raise
 
@@ -58,6 +59,7 @@ def give_me_data(data):
 
     namespace = data['namespace']
     if v.version < 1 and len(v.namespace_threads) > 0:
+        print("Se ha solicitado emitir a un nuevo namespace:",namespace)
         brd = next(iter(v.namespace_threads.values()))
         brd.add_namespace(namespace)
         v.namespace_threads[namespace] = brd

@@ -18,6 +18,10 @@ def get_sio_connect():
     return data['url']+":"+str(data['port'])
 
 
+def get_mode():
+    return data['mode']
+
+
 def get_model():
     with open(os.path.dirname(__file__) + '/resources/rfc.pkl', 'rb') as rfc:
         r = pk.load(rfc)
