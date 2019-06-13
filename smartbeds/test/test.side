@@ -580,13 +580,6 @@
         ["xpath=//div/div[2]/div/div/div", "xpath:position"]
       ],
       "value": "La creación de camas no está disponible para esta versión"
-    }, {
-      "id": "830878b5-27af-4ed3-84fa-ba1fde1b0efc",
-      "comment": "",
-      "command": "exec",
-      "target": "",
-      "targets": [],
-      "value": ""
     }]
   }, {
     "id": "87e531cc-216a-4f87-af45-a06e3464d3f4",
@@ -1523,6 +1516,20 @@
       "target": "1280x768",
       "targets": [],
       "value": ""
+    }, {
+      "id": "d8425172-21ba-48ed-991c-cbb1306f4d75",
+      "comment": "",
+      "command": "waitForElementNotVisible",
+      "target": "id=loader-div",
+      "targets": [
+        ["linkText=inicie sesión", "linkText"],
+        ["css=.col-12 a", "css:finder"],
+        ["xpath=//a[contains(text(),'inicie sesión')]", "xpath:link"],
+        ["xpath=(//a[contains(@href, '/auth')])[2]", "xpath:href"],
+        ["xpath=//h3/a", "xpath:position"],
+        ["xpath=//a[contains(.,'inicie sesión')]", "xpath:innerText"]
+      ],
+      "value": "10000"
     }, {
       "id": "e8918acf-6a64-448a-8a22-608b2e679b73",
       "comment": "",
