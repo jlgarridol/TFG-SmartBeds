@@ -1,5 +1,11 @@
 SmartBeds
 =
+
+[![Website ubu.joselucross.com](https://img.shields.io/website-up-down-green-red/http/ubu.joselucross.com.svg)](http://ubu.joselucross.com)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![made-with-latex](https://img.shields.io/badge/Made%20with-LaTeX-1f425f.svg)](https://www.latex-project.org/)
+[![GitHub license](https://img.shields.io/github/license/jlgarridol/TFG-SmartBeds.svg)](https://github.com/jlgarridol/TFG-SmartBeds/blob/master/LICENSE)
+
 ###### *__MINERÍA DE DATOS APLICADA A LA DETECCIÓN DE CRISIS EPILÉPTICAS__*
 Trabajo de fin de grado, del grado de **Ingeniería Informática** en la **Universidad de Burgos**
 
