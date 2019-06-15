@@ -17,13 +17,12 @@ def home():
     if context['info']['login']:
         mod_request()
         response, code = api.beds()
-        context['beds'] = response.get_json()["beds"]
-        try:
-            for b in context['beds']:
-                mod_request({"bedname": b["bed_name"]})
-                b['namespace'] = api.bed()[0].get_json()['namespace']
-        except KeyError:
+        if code != 200:
             return logout()
+        context['beds'] = response.get_json()["beds"]
+        for b in context['beds']:
+            mod_request({"bedname": b["bed_name"]})
+            b['namespace'] = api.bed()[0].get_json()['namespace']
     return render_template('home.html', **context)
 
 

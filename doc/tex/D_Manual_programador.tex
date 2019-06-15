@@ -2,50 +2,56 @@
 
 \section{Introducción}
 
-En este apéndice se explicarán todas las partes necesarias para poder entender los componentes software que existen así como como desarrollar aplicaciones siguiendo la \textit{API REST} provista.
+En este apéndice se explicarán todos los detalles necesarios para poder entender los componentes software que existen así como como desarrollar aplicaciones siguiendo la \textit{API REST} provista.
 
 \section{Estructura de directorios}
 
-Los directorios del proyecto son:
+En la carpeta \texttt{doc} se encuentra toda la documentación de este proyecto. En \texttt{research} están los ficheros de la investigación, dentro de esta están \texttt{data}\footnote{Esta carpeta no se encuentra en el repositorio \textit{GitHub} porque contienen datos privados} que contiene los datos proporcionados para realizar el estudio, \texttt{model} con los modelos binarios, \texttt{src} con los ficheros fuentes y los \textit{Jupyter Notebooks} con la investigación y en \texttt{tests} con los tests sobre algunas fuentes.
 
-\dirtree{%
-.1 /.
-.2 doc.
-.3 design.
-.3 img.
-.3 tex.
-.2 research.
-.3 data.
-.3 model.
-.3 src.
-.4 Análisis de proyecciones.
-.4 images.
-.4 One-Class.
-.3 tests.
-.4 samples.
-.5 input.
-.5 output.
-.2 smartbeds.
-.3 api.
-.3 bed.
-.3 process.
-.3 resources.
-.4 assets.
-.5 css.
-.5 html.
-.6 auth.
-.6 components.
-.5 img.
-.5 js.
-.3 routes.
-.3 test.
-}
+La carpeta \texttt{smartebs} están las fuentes de la aplicación web siendo el modulo raíz. Dentro de esta están los módulo \texttt{api} con la \texttt{API} web, \texttt{process} con los algoritmos de procesamiento de los datos, \texttt{resources} con la configuración y los \texttt{assets} de la página web (plantillas, códigos \texttt{JavaScript} etc), \texttt{routes} que engloba las rutas \textit{URI} para dirigir las peticiones. Por último, está la carpeta \texttt{test} con las pruebas unitarias.
 
-En la carpeta \textit{\textbf{doc}} se encuentra toda la documentación de este proyecto. En \textit{\textbf{research}} están los ficheros de la investigación, dentro de esta están \textit{\textbf{data}}\footnote{Esta carpeta no se encuentra en el repositorio \textit{GitHub} porque contienen datos privados} que contiene los datos proporcionados para realizar el estudio, \textit{\textbf{model}} con los modelos binarios, \textit{\textbf{src}} con los ficheros fuentes y los \textit{Jupyter Notebooks} con la investigación y en \textit{\textbf{tests}} con los tests sobre algunas fuentes.
+De manera especial se encuentra la carpeta \texttt{bed} dentro de \texttt{smartbeds} que contiene un \textit{script} para la simulación de camas.
 
-La carpeta \textbf{\textit{smartebs}} están las fuentes de la aplicación web siendo el modulo raíz. Dentro de esta están los módulo \textit{\textbf{api}} con la \texttt{API} web, \textit{\textbf{process}} con los algoritmos de procesamiento de los datos, \textit{\textbf{resources}} con la configuración y los \textit{assets} de la página web (plantillas, códigos \textit{JavaScript} etc), \textit{\textbf{routes}} que engloba las rutas \textit{URI} para dirigir las peticiones. Por último, está la carpeta \textit{\textbf{test}} con las pruebas unitarias.
+El árbol de directorios del proyecto se puede ver en la figura~\ref{fig:dirtree}
 
-De manera especial se encuentra la carpeta \textit{\textbf{bed}} dentro de \textbf{\textit{smartbeds}} que contiene un \textit{script} para la simulación de camas.
+\begin{figure}
+	\dirtree{%
+		.1 /.
+		.2 doc.
+		.3 design.
+		.3 img.
+		.3 tex.
+		.2 research.
+		.3 data.
+		.3 model.
+		.3 src.
+		.4 Análisis de proyecciones.
+		.4 images.
+		.4 One-Class.
+		.3 tests.
+		.4 samples.
+		.5 input.
+		.5 output.
+		.2 smartbeds.
+		.3 api.
+		.3 bed.
+		.3 process.
+		.3 resources.
+		.4 assets.
+		.5 css.
+		.5 html.
+		.6 auth.
+		.6 components.
+		.5 img.
+		.5 js.
+		.3 routes.
+		.3 test.
+	}
+	\caption{Árbol de directorios}
+	\label{fig:dirtree}
+\end{figure}
+
+
 \section{Manual del programador}
 
 \subsection{API}\label{sec:api}
@@ -63,7 +69,7 @@ Todas las respuestas del servidor contendrán los siguientes campos
 
 El valor de \texttt{status} tendrá un valor según los códigos HTTP definidos en el RFC 7231~\cite{RFC7231} y el mensaje será una explicación detallada del error producido.
 
-Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}
+Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}.
 
 \begin{center}\small
 	\tablefirsthead{
@@ -85,7 +91,7 @@ Las distintas peticiones se especifican en la tabla \ref{tabla:api-specs2}
 		\hline
 	}
 	\bottomcaption{Especificaciones del API}
-	\begin{xtabular}{p{0.095\textwidth} p{0.2\textwidth} p{0.37\textwidth} p{0.33\textwidth}}
+	\begin{xtabular}{p{0.09\textwidth} p{0.2\textwidth} p{0.20\textwidth} p{0.38\textwidth}}
 		CU-1		&	\texttt{/api/auth}	& \begin{lstlisting}[language=JSONT]
 "user": text,
 "pass": text
@@ -129,7 +135,7 @@ bedname=text
 CU-2.2		&	\texttt{/} \textit{(WebSocket)}	& 
 \begin{lstlisting}[language=JSONT]
 {
-   "namespace": namespace
+   "namespace":namespace
 }
 \end{lstlisting}
 &
@@ -204,7 +210,7 @@ UUID=text
 {
   ...
 }\end{lstlisting}
-\\\hubu
+\\
 CU-4.2		&	\texttt{/api/bed/mod}	& 
 \begin{lstlisting}[language=JSONT]
 token=text&
@@ -257,7 +263,7 @@ username=text]
 
 \section{Compilación, instalación y ejecución del proyecto}
 
-Este proyecto contiene un servidor web, sobre el cual se explicará su proceso de despliegue en este apartado. Sin embargo, no disponemos de camas reales que puedan aportar datos en tiempo real como hemos visto en la figura~\ref{fig:componentes} debido a que este \textit{hardware} es privado.
+Este proyecto contiene un servidor web, del cual se explicará su proceso de despliegue en este apartado. Sin embargo, no disponemos de camas reales que puedan aportar datos en tiempo real como hemos visto en la figura~\ref{fig:despl} debido a que este \textit{hardware} es privado.
 
 En su lugar se ha creado un \textit{script} de \textit{Python} que emite cada 0,4 segundos de manera indefinida datos que se han obtenido previamente. Este \textit{script} se encuentra en la carpeta \texttt{smartbeds/bed}.
 
@@ -298,7 +304,7 @@ El primer paso necesario es la configuración de la base de datos en la cual se 
 }
 \end{lstlisting}
 
-En cada campo habría que incorporar los cambios oportunos y se recomienda no modificar el campo \texttt{url}. De manera especial el campo mode puede ser \texttt{ssl} o \texttt{no-ssl} si los \textit{websockets} se ejecutan sobre \textit{SSL} o no. Tras esto ya el programa es ejecutable y puede funcionar al ejecutar el fichero \texttt{/index.py}.
+En cada campo habría que incorporar los cambios oportunos y se recomienda no modificar el campo \texttt{url}. De manera especial el campo \texttt{mode} puede ser \texttt{ssl} o \texttt{no-ssl} si los \textit{websockets} se ejecutan sobre \textit{SSL} o no. Tras esto ya el programa es ejecutable y puede funcionar al ejecutar el fichero \texttt{/index.py}.
 
 El siguiente paso es crear la configuración del servidor \textit{HTTP} para redirigir las peticiones externas a la aplicación local. Como ejemplo, para un servidor \textit{Nginx} la configuración sería la siguiente:
 
@@ -324,7 +330,7 @@ server {
 }
 \end{lstlisting}
 
-Siendo necesario modificar el nombre del servidor por el dominio o ip de acceso y la raíz como la ruta donde se encuentra el fichero \texttt{index.py}, aunque esto último no es necesario para el funcionamiento, solo como referencia interna.
+Siendo necesario modificar el nombre del servidor por el dominio o IP de acceso y la raíz como la ruta donde se encuentra el fichero \texttt{index.py}, aunque esto último no es necesario para el funcionamiento, solo como referencia interna.
 
 Por último es necesario crear un demonio de \texttt{systemd} que ejecute la aplicación en segundo plano. El fichero de configuración de este demonio se alojaría en \texttt{/usr/lib/systemd/system/smartbeds.service}. Siendo el fichero en cuestión semejante a:
 \begin{lstlisting}[language={Ini}]

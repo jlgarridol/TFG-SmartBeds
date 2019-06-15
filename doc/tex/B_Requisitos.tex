@@ -12,9 +12,9 @@ La aplicación web tiene lo siguientes objetivos:
 	\item
 	Monitorizar en tiempo real a los pacientes con epilepsia.
 	\item 
-	Gestionar los distintos accesos del personal médico a los datos de los pacientes
+	Gestionar los distintos accesos del personal médico a los datos de los pacientes.
 	\item 
-	Ofrecer una API REST de la aplicación
+	Ofrecer una API REST de la aplicación.
 	\item 
 	Crear una interfaz web fácil e intuitiva.
 \end{itemize}
@@ -89,35 +89,30 @@ En esta sección se presentan los requisitos funcionales y los no funcionales
 
 \section{Especificación de requisitos}\label{casos-uso}
 
-Los requisitos funcionales generan un conjunto de casos de uso que serán la base del desarrollo de la aplicación. La especificación de los mismos se encuentran entre la tabla~\ref{tabla:tablaCU1} y la tabla~\ref{tabla:tablaCU43}. La representación gráfica se puede ver en los diagramas de las figuras~\ref{fig:cu-1} y \ref{fig:cu-2}. Existen dos actores, el \textbf{administrador} que se encarga de toda la labor de gestión tanto de usuarios como de camas y el \textbf{usuario} que únicamente puede gestionarse a si mismo y ver los datos de las camas que tenga permitidas.
+Los requisitos funcionales generan un conjunto de casos de uso que serán la base del desarrollo de la aplicación. La especificación de los mismos se encuentran entre la tabla~\ref{tabla:tablaCU1} y la tabla~\ref{tabla:tablaCU43}. La representación gráfica se puede ver en los diagramas de las figuras~\ref{fig:cu-1},~\ref{fig:cu_1.1},~\ref{fig:cu-2} y~\ref{fig:cu-2.1}. Existen dos actores, el \textbf{administrador} que se encarga de toda la labor de gestión tanto de usuarios como de camas y el \textbf{usuario} que únicamente puede gestionarse a si mismo y ver los datos de las camas que tenga permitidas.
 
 \begin{figure}[h]
-	\centering
-	\begin{subfigure}[b]{0.75\textwidth}
-		\includegraphics[width=\textwidth]{cu-lv1}
-		\caption{Diagrama casos de uso - Nivel 0}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.75\textwidth}
-		\includegraphics[width=\textwidth]{cu-lv11}
-		\caption{Diagrama CU-2 - Nivel 1}
-	\end{subfigure}
-	\caption{Diagramas de casos de uso}
+	\includegraphics[width=\textwidth]{cu-lv1}
+	\caption{Diagrama casos de uso - Nivel 0}
 	\label{fig:cu-1}
 \end{figure}
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{cu-lv11}
+	\caption{Diagrama CU-2 - Nivel 1}
+	\label{fig:cu-1.1}
+\end{figure}
 
 \begin{figure}[h]
-	\centering
-	\begin{subfigure}[b]{0.75\textwidth}
-		\includegraphics[width=\textwidth]{cu-lv12}
-		\caption{Diagrama CU-3 - Nivel 1}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.75\textwidth}
-		\includegraphics[width=\textwidth]{cu-lv13}
-		\caption{Diagrama CU-4 - Nivel 1}
-	\end{subfigure}
-	\caption{Diagramas de casos de uso}
+	\includegraphics[width=\textwidth]{cu-lv12}
+	\caption{Diagrama CU-3 - Nivel 1}
 	\label{fig:cu-2}
 \end{figure}
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{cu-lv13}
+	\caption{Diagrama CU-4 - Nivel 1}
+	\label{fig:cu-2.1}
+\end{figure}
+
 
 \tablaSmallSinColores{Caso de uso 1: Loguear }{p{3cm} p{.75cm} p{9.5cm}}{tablaCU1}{
 	\multicolumn{3}{p{10.25cm}}{CU-1: Loguear} \\

@@ -6,7 +6,7 @@ Tras el estudio de los requisitos se pasa a un diseño, en este apéndice se exp
 
 \section{Diseño de datos}
 
-De los requisitos y casos de usos se deduce el diseño de los datos. Para poder cumplir correctamente con las necesidades del cliente se introducen dos entidades, los \textbf{usuario} y las \textbf{camas} en la que cada uno almacena la información relevante propia. A su vez se relacionan en el sistema de permisos de que persona puede ver que cama. El diagrama Entidad-Relación se puede observar en la figura~\ref{fig:erDia}
+De los requisitos y casos de usos se deduce el diseño de los datos. Para poder cumplir correctamente con las necesidades del cliente se introducen dos entidades, los \textbf{usuario} y las \textbf{camas} en la que cada uno almacena la información relevante propia. A su vez se relacionan en el sistema de permisos de qué persona puede ver qué cama. El diagrama Entidad-Relación se puede observar en la figura~\ref{fig:erDia}.
 
 \begin{figure}
 	\centering
@@ -15,7 +15,7 @@ De los requisitos y casos de usos se deduce el diseño de los datos. Para poder 
 	\label{fig:erDia}
 \end{figure}
 
-De este diagrama generamos el diagrama relacional (figura~\ref{fig:relational}) en el que se especifican las tablas que se usarán en el producto final.
+De este diagrama se genera el diagrama relacional (figura~\ref{fig:relational}) en el que se especifican las tablas que se usarán en el producto final.
 
 \begin{figure}
 	\centering
@@ -32,7 +32,7 @@ Existen diversos procesos importantes en la aplicación. El primero es la creaci
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{proc}
-	\caption{Diagrama de secuencias de la creación de camas y la petición de paquetes}
+	\caption{Diagrama de secuencia de la creación de camas y la petición de paquetes}
 	\label{fig:proc_sec}
 \end{figure}
 
@@ -47,11 +47,11 @@ El proceso completo de la conexión del cliente se puede ver en la figura~\ref{f
 	\label{fig:ws-secuence}
 \end{figure}
 
-Los procedimiento de toda la \textit{API} se especifican luego en la sección~\ref{sec:api}.
+Los procedimiento de toda la \textit{API} se especifican más adelante en la sección~\ref{sec:api}.
 
 \section{Diseño arquitectónico}
 
-La arquitectura software sigue el patrón \textit{MVC}~\cite{wiki:mvc}. Sin embargo, al ser un problema sencillo no se traslada a un diseño literal de este patrón. El \textit{modelo} se mantiene en la base de datos y no tiene una representación en ninguna clase. El \textit{controlador} está pensado en varios componentes, una \textit{API} que gestiona todo los accesos a la base de datos y un \textit{proxy} que recoge las peticiones web y las preprocesa para redirigirlas a la \textit{API}. Por último, la \textit{vista} puede ser completamente diseñada para la situación que se requiera, en esta aplicación se gestiona mediante plantillas \textit{HTML} y peticiones \textit{AJAX} ya que se trata de una aplicación web. Gracias a que el controlador funciona como una \textit{API REST} esta vista puede ser cambiada según se desee.
+La arquitectura software sigue el patrón \textit{MVC}~\cite{wiki:mvc}. Sin embargo, al ser un problema sencillo no se traslada a un diseño literal de este patrón. El \textit{modelo} se mantiene en la base de datos y no tiene una representación en ninguna clase. El \textit{controlador} está pensado en varios componentes, una \textit{API} que gestiona todos los accesos a la base de datos y un \textit{proxy} que recoge las peticiones web y las preprocesa para redirigirlas a la \textit{API}. Por último, la \textit{vista} puede ser completamente diseñada para la situación que se requiera, en esta aplicación se gestiona mediante plantillas \textit{HTML} y peticiones \textit{AJAX} ya que se trata de una aplicación web. Gracias a que el controlador funciona como una \textit{API REST} esta vista puede ser cambiada según se desee.
 
 Otra arquitectura relevante es el \textit{pipeline} de procesamiento de los datos de pacientes. Se puede observar, junto con los módulo de \textit{routing}, en la figura~\ref{fig:classes}. Se trata de tres componentes, dos con contexto en toda la aplicación, que se trata del \textit{listener} de la cama y el procesador de la misma. El último es el \textit{broadcaster} que emite los datos a los pacientes. En la sección~\ref{sec:disproc} se puede ver la comunicación del cliente y el proceso de inicialización de los componentes de este \textit{pipeline}.
 
@@ -75,7 +75,7 @@ La arquitectura global de la aplicación sigue el diagrama de componentes de la 
 
 \section{Diseño de interfaces}
 
-Las interfaces se han diseñado teniendo en cuenta la usabilidad de la misma así como un diseño simple que permitiese que fuese más intuitiva con una curva de aprendizaje leve. Se ha tenido en cuenta también que la interfaz sea adaptable a una gran variedad de pantallas teniendo en cuenta que, al ser una aplicación web, el uso de la misma puede ser en multitud de dispositivos diferentes (diseño \textit{responsive}~\cite{wiki:responsive}).
+Las interfaces se han diseñado teniendo en cuenta la usabilidad de la misma, así como un diseño simple que permitiese que fuese más intuitiva con una curva de aprendizaje leve. Se ha tenido en cuenta también que la interfaz sea adaptable a una gran variedad de pantallas teniendo en cuenta que, al ser una aplicación web, el uso de la misma puede ser en multitud de dispositivos diferentes (diseño \textit{responsive}~\cite{wiki:responsive}).
 
 Los primeros prototipos fueron realizados sobre el caso de uso especificado en la tabla~\ref{tabla:tablaCU22}, tanto para escritorio (imagen~\ref{fig:proto-desk}) como para móvil (imagen~\ref{fig:proto-mob}).
 
