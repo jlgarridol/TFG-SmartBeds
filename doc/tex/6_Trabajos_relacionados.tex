@@ -1,3 +1,27 @@
 \capitulo{6}{Trabajos relacionados}
 
+En la introducción se han presentado diversos trabajos que sobre la detección de crisis epilépticas, a continuación se presentarán con más detalles el estado del arte en este campo.
 
+\section{Artículos científicos}
+\subsection{\textbf{\textit{Epileptic seizure detection}}~\cite{schuyler2007epileptic}}
+Este artículo de 2007 se centra en la detección de epilepsia y sus momentos previos mediante el uso de los datos de encefalograma (EEG) descompuesto con la transformada ondícula con redes \textit{RBF}. Exploran diversos conjuntos de características combinadas con diversas cantidades de neuronas obteniendo resultados de un $89\%$ de precisión media tanto en la detección de situaciones de crisis como de los momentos previos a una crisis.
+
+Los datos usados han sido provenientes de ratas, en concreto dos sanas y cinco epilépticas de las cuales obtuvieron $2356$ segmentos de crisis.
+
+\subsection{\textbf{\textit{Automated Epileptic Seizure Detection Methods: A Review Study}}~\cite{tzallas2012review}}
+Este estudio de revisión del 2012 hace una compartativa de 45 artículos de métodos de detección de crisis epilépticas, siendo un punto muy importante para comenzar una exploración. Incluyen el proceso de extracción de características, todos probados con un conjunto de datos de encefalogramas y las precisiones obtenidas
+
+\subsection{\textbf{\textit{Direction  Sensitive  Fall  Detection  Using  a  Triaxial  Accelerometer  and  aBarometric  Pressure  Sensor}}~\cite{tolkiehn2011fall}}
+Otro artículo explorado es este de 2011 centrado en la detección de caídas debido a que se centra en entradas mediante presiones y acelerómetros. El objetivo de la investigación está tanto en la detección de la caía como en la dirección de la misma. 
+
+El principal reto en este trabajo estaba en discriminar correctamente las situaciones que eran una caida de las que no debido a que no es lo mismo tumbarse en la cama, que caerse de la misma. 
+
+El proceso que sigue es extraer características de los datos del acelerómetro obteniendo la amplitud y el ángulo del mismo, hacer dos procesos sobre estos como un árbol de decisión de tal manera que de concluir posible caída se para a un sensor de presión que determina si es una caída o no lo es.
+
+La precisión de los resultados ronda el $85\%$ al incluir los sensores de presión mejorando en $4$ puntos al solo utilizar el acelerómetro.
+
+\subsection{\textit{\textbf{Seizure detection, seizure prediction, and closed-loop warning systemsin epilepsy}}~\cite{ramgopal2014product_review}}
+
+Este artículo se centra en una revisión de productos comerciales para la detección de crisis epilépticas así como diversos métodos para esta detección.
+
+Presenta un rango de dieciséis años de estudios  con múltiples modelos y datos. La mayoría centrado en datos de encefalogramas y máquinas de vectores soporte. Entre el rango de productos que presenta la variedad del mercado sin tener en cuenta de que exista o no un artículos científicos sobre los mismos. Aunque la mayoría trata de \textit{wereables} como pulseras si que presenta algunos sistemas basados en camas.
