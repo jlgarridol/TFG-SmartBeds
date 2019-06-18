@@ -91,13 +91,23 @@ Otra modificación sobre el diseño ha sido que realmente existe una única cama
 
 También se utiliza actualmente un clasificador aleatorio por intervalos de tal manera que cambie la probabilidad de crisis cada noventa instancias entre los tres estados posibles: crisis, no crisis, despierto; con el fin de poder probar como cambian las interfaces en los distintos estados, sobre todo porque el clasificador obtenido al final no era capaz de predecir situaciones de crisis.
 
-\subsubsection{Ventanas HTML}
+\subsubsection{Ventanas \textit{HTML}}
+
+La interfaz web de la aplicación se hizo mediante plantillas \textit{Jinja}~\cite{tool:jinja} de \textit{HTML}. Se apoyó con el \textit{framework} de \textit{boostrap 4}~\cite{wiki:boostrap} para el \textit{CSS} y \textit{jQuery} para la implementación de funciones \textit{JavaScript}.
+
+Para facilitar este desarrollo se crearon varios componentes separados y una plantilla maestra de la que heredarían todas las páginas. Esto evita el código repetido así como facilita el desarrollo de la aplicación. Los componentes que se crearon fueron la barra de navegación, el pie de página, las funciones generales de para la validación de los formularios y un modal para mostrar los errores.
+
+Otro aspecto importante del desarrollo de la interfaz fue la creación de los gráficos en tiempo real. Se usó la librería \textit{Graph.js} para hacer gráficos en objetos \texttt{canvas} de \textit{HTML}. En un primer momento la librería actualizaba muy lentamente, pero el problema estaba en la programación de los hilos de \textit{Python} con los hilos, esto se solucionó con la llamada \texttt{eventlet.sleep(0)} en el \texttt{Broadcaster} para que los datos fuesen en tiempo real.
+
+Para optimizar el renderizado es estas gráficas se optó por eliminar las animaciones y los valores de \texttt{hover}\footnote{Evento al estar el puntero del ratón sobre el objeto} para que no se ejecutasen nuevas llamadas a eventos del \texttt{DOM} que mostraban los datos de esa instancia temporal.
+
+Otra tecnología que se usó en el desarrollo de la interfaz web fue el uso de llamadas asíncronas al servidor mediante \textit{AJAX} con el fin de evitar cargas completas de la página de manera innecesaria, sobre todo en las situaciones que la operación no requería mostrar nuevos datos en la pantalla como la creación, modificación o borrado de usuarios y camas. 
 
 \subsubsection{Pruebas}
 Las pruebas consistieron en pruebas unitarias y de integración. Para las primeras se usó \texttt{unnittest} de \textit{Python} y para las de integración se hicieron test sobre la interfaz web con \textit{Selenium IDE}. Este por motivos de tiempo no se ha trasladado a código y se puede ejecutar importando el fichero .side al \textit{IDE} y ejecutarlo desde el mismo.
 
 Los test unitarios se basaron en un test parametrizado y un fichero \textit{JSON} con la configuración de todos los test deseados.
-
+\\\\ %Para no dejar viudas
 \begin{lstlisting}[language=JSON]
 {
    "tests": [
