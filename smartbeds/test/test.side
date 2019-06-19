@@ -566,7 +566,7 @@
         ["xpath=//button[@id='save_modal']", "xpath:attributes"],
         ["xpath=//div[@id='bedmodal']/div/div/div[3]/button", "xpath:idRelative"],
         ["xpath=//div[3]/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Save changes')]", "xpath:innerText"]
+        ["xpath=//button[contains(.,'Guardar cambios')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -803,7 +803,7 @@
         ["xpath=//button[@id='save_modal']", "xpath:attributes"],
         ["xpath=//div[@id='bedmodal']/div/div/div[3]/button", "xpath:idRelative"],
         ["xpath=//div[3]/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Save changes')]", "xpath:innerText"]
+        ["xpath=//button[contains(.,'Guardar cambios')]", "xpath:innerText"]
       ],
       "value": ""
     }, {

@@ -361,3 +361,7 @@ El campo \texttt{ExecStart} podría cambiar en el caso de utilizar algún entorn
 Finalmente solo hace falta lanzar el demonio con el comando \texttt{systemctl start smartbeds}.
 
 \section{Pruebas del sistema}
+
+Se han realizado tres conjuntos de pruebas. En primer lugar están las pruebas unitarias de los transformadores de los datos que se encuentran en el directorio \texttt{/research} en el fichero \texttt{/testLauncher.py}. Las pruebas concretas están en el fichero \texttt{/research/tests/transformersTest.py}.
+
+Otras pruebas son las unitarias sobre la API, está se ejecuta con el fichero \texttt{/tests.py} y las pruebas de integración sobre la interfaz que están almacenadas en el fichero \texttt{/smartbeds/test/test.side} que se abren con el IDE de Selenium y se ejecutan en una versión local del servidor.xº
