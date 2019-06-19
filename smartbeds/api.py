@@ -301,10 +301,12 @@ class API:
             user = {'rol': "admin"}
         if user['rol'] != 'admin':
 
-            if user['nickname'] != nick:
+            if oldpass is None:
+                raise IllegalOperationError("La contraseña anterior no se ha enviada")
+            elif user['nickname'] != nick:
                 raise PermissionsError('Orden válida solo para administrador')
             elif user['password'] != API.encrypt(oldpass):
-                raise BadCredentialsError('Contraseña anterior no válida')
+                raise IllegalOperationError('Contraseña anterior no válida')
         if self.__get_user_by_name(nick)['password'] == API.encrypt(password):
             #La contraseña es la misma
             return
