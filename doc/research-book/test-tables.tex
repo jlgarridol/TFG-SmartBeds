@@ -1,0 +1,254 @@
+\begin{table}
+    \begin{center}
+        %RAW
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 103893 & 0 \\
+                Crisis & 535 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Datos Brutos}
+            \label{tab:mat-conf-raw-test-1.7}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 103894 & 0 \\
+                Crisis & 510 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Datos Estadísticos}
+            \label{tab:mat-conf-stats-test-1.7}
+        \end{subtable}
+        %SavGol
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 103893 & 0 \\
+                Crisis & 535 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Filtrado Savitzky–Golay}
+            \label{tab:mat-conf-raw-test-1.8}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 103894 & 0 \\
+                Crisis & 510 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Savitzky–Golay Estadístico}
+            \label{tab:mat-conf-stats-1.7}
+        \end{subtable}
+        %Butter
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 103893 & 0 \\
+                Crisis & 535 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Filtrado ButterWorth}
+            \label{tab:mat-conf-raw-1.7}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 103894 & 0 \\
+                Crisis & 510 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{ButterWorth Estadístico}
+            \label{tab:mat-conf-stats-1.8}
+        \end{subtable}
+        \caption{Matriz de confusión test con 2º crisis (entrenamiento con 1ª)}
+        \label{tab:matriz-test-2a}
+    \end{center}
+\end{table}
+
+\begin{table}
+    \begin{center}
+        %RAW
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86990 & 0 \\
+                Crisis & 2741 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Datos Brutos}
+            \label{tab:mat-conf-raw-1.8}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86975 & 0 \\
+                Crisis & 2732 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Datos Estadísticos}
+            \label{tab:mat-conf-stats-1.9}
+        \end{subtable}
+        %SavGol
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86990 & 0 \\
+                Crisis & 2741 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Filtrado Savitzky–Golay}
+            \label{tab:mat-conf-raw-1.9}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86975 & 0 \\
+                Crisis & 2732 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Savitzky–Golay Estadístico}
+            \label{tab:mat-conf-stats-1.10}
+        \end{subtable}
+        %Butter
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86990 & 0 \\
+                Crisis & 2741 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Filtrado ButterWorth}
+            \label{tab:mat-conf-raw-1.10}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86975 & 0 \\
+                Crisis & 2732 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{ButterWorth Estadístico}
+            \label{tab:mat-conf-stats-1.11}
+        \end{subtable}
+        \caption{Matriz de confusión test 3º crisis (entrenamiento 1º)}
+        \label{tab:matriz-test-3a}
+    \end{center}
+\end{table}
+
+\begin{table}
+    \begin{center}
+        %RAW
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86713 & 277 \\
+                Crisis & 2741 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Datos Brutos}
+            \label{tab:mat-conf-raw-1.11}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86975 & 0 \\
+                Crisis & 2732 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Datos Estadísticos}
+            \label{tab:mat-conf-stats-1.12}
+        \end{subtable}
+        %SavGol
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86898 & 92 \\
+                Crisis & 2741 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Filtrado Savitzky–Golay}
+            \label{tab:mat-conf-raw-1.12}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86975 & 0 \\
+                Crisis & 2732 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Savitzky–Golay Estadístico}
+            \label{tab:mat-conf-stats-1.13}
+        \end{subtable}
+        %Butter
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86967 & 23 \\
+                Crisis & 2741 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Filtrado ButterWorth}
+            \label{tab:mat-conf-raw-1.13}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+                \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86975 & 0 \\
+                Crisis & 2732 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{ButterWorth Estadístico}
+            \label{tab:mat-conf-stats-1.14}
+        \end{subtable}
+        \caption{Matriz de confusión test 3º crisis (entrenamiento con 1º y 2º)}
+        \label{tab:matriz-test-2-3a}
+    \end{center}
+\end{table}

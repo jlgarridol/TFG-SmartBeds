@@ -1,0 +1,142 @@
+\begin{table}
+    \begin{center}
+        %Bagging
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 203274   & 0 \\
+                Crisis & 1 & 55274  \\
+                \hline
+            \end{tabular}
+            \subcaption{Bagging - Train}
+            \label{tab:mat-conf-bagg-train}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86936 & 0 \\
+                Crisis & 2706 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Bagging - Test}
+            \label{tab:mat-conf-bagg-test}
+        \end{subtable}
+        %AdaBoost
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 203274 & 0 \\
+                Crisis & 55275 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{AdaBoostM1 - Train}
+            \label{tab:mat-conf-ada-train}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 86936 & 0 \\
+                Crisis & 2706 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{AdaBoostM1 - Test}
+            \label{tab:mat-conf-ada-test}
+        \end{subtable}
+        %Rotation Forest
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 203274  & 0 \\
+                Crisis & 1 & 55274\\
+                \hline
+            \end{tabular}
+            \subcaption{Rotation Forest - Train}
+            \label{tab:mat-conf-rotfor-train}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis &  86936 & 0 \\
+                Crisis & 2706 & 0\\
+                \hline
+            \end{tabular}
+            \subcaption{Rotation Forest - Test}
+            \label{tab:mat-conf-rotfor-test}
+        \end{subtable}
+    \caption{Matrices de confusión - SMOTE Train-Test}
+    \label{tab:matriz-smote-2-3a}
+    \end{center}
+\end{table}
+\begin{table}
+    \begin{center}
+        %Dos primeras
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 203274  & 0 \\
+                Crisis & 2 & 5023 \\
+                \hline
+            \end{tabular}
+            \subcaption{Fold 1-Dos primeras crisis}
+            \label{tab:mat-conf-rotfor-two-fold1}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 203274  & 0 \\
+                Crisis & 9 & 5016\\
+                \hline
+            \end{tabular}
+            \subcaption{Fold 2-Dos primeras crisis}
+            \label{tab:mat-conf-rotfor-two-fold2}
+        \end{subtable}
+        %Todas
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 290210  & 0 \\
+                Crisis & 1 & 7730\\
+                \hline
+            \end{tabular}
+            \subcaption{Fold 1 - Todas las crisis}
+            \label{tab:mat-conf-rotfor-all-fold1}
+        \end{subtable}
+        \hspace{1em}\vspace{1em}
+        \begin{subtable}[c]{0.4\textwidth}
+            \begin{tabular}{lrc}
+                \hline
+                 & No Crisis & Crisis \\
+                \hline
+                No Crisis & 290209 & 1 \\
+                Crisis & 16 & 7715\\
+                \hline
+            \end{tabular}
+            \subcaption{Fold 2 - Todas las crisis}
+            \label{tab:mat-conf-rotfor-all-fold2}
+        \end{subtable}
+    \caption{Matrices de confusión - SMOTE CrossValidation}
+    \label{tab:matriz-smote-cv}
+    \end{center}
+\end{table}
