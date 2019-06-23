@@ -41,7 +41,7 @@ Por otra parte el cliente abre conexiones con el servidor solicitando datos, est
 El proceso completo de la conexión del cliente se puede ver en la figura~\ref{fig:ws-secuence}. En esta cada llamada es un \textbf{evento} de \textit{socketio} y los argumentos los datos que espera. El proceso de esta conexión es:
 \begin{enumerate}
 	\item El \textbf{cliente} realiza una conexión a \textit{socketIO}.
-	\item Cuando se capture el evento \texttt{\textbf{connect}} se emite un mensaje al servidor del evento \texttt{\textbf{give\_me\_data}} con el \texttt{namespace} de la cama solicitada.
+	\item Cuando se capture el evento \texttt{\textbf{connect}} se emite un mensaje al servidor con el evento \texttt{\textbf{give\_me\_data}} y el \texttt{namespace} de la cama solicitada.
 	\item Por último se debe dejar un \textit{listener} sobre el evento \texttt{\textbf{package}} en el \texttt{namespace}. Este evento es emitido por el servidor y contiene los datos que se pueden ver en la tabla~\ref{tabla:api-specs2} para el caso de uso 2.2 para \textit{WebSocket}.
 \end{enumerate}
 
