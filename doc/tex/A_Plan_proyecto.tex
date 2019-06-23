@@ -303,7 +303,7 @@ El salario de una persona sería:
 	\midrule
 	\endhead
 	\begin{minipage}[t]{0.38\columnwidth}\raggedright\strut
-		Salario mensual bruto\strut
+		Salario mensual neto\strut
 	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
 		1.225,7\euro{}~\cite{salariales}\strut
 	\end{minipage}\tabularnewline
@@ -332,9 +332,9 @@ El salario de una persona sería:
 	\caption{Costes de personal.}
 \end{longtable}
 
-La retribución de la seguridad social se ha realizado siguiendo la guía de GoBees~\cite{gobees}.
+La retribución de la seguridad social se ha calculado siguiendo la guía de GoBees~\cite{gobees}.
 
-El coste de hardware ha sido, considerando una amortización de 5 años:
+Para el desarrollo de este proyecto no se ha adquirido ningún \textit{hardware} nuevo, por lo que únicamente se incluirán los costes del material con el que ya se contaba asumiendo una amortización en 5 años, y calculando solo el coste de amortización correspondiente a la duración del proyecto (7 meses):
 
 \begin{longtable}[]{@{}lrr@{}}
 	\toprule
@@ -352,51 +352,75 @@ El coste de hardware ha sido, considerando una amortización de 5 años:
 	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
 		150\euro{}\strut
 	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		30\euro{}\strut
+		17,5\euro{}\strut
 	\end{minipage}\tabularnewline
 	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
 		Ordenador portátil (x2)\strut
 	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
 		800\euro{}\strut
 	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		160\euro{}\strut
+		93,33\euro{}\strut
 	\end{minipage}\tabularnewline
 	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
 		\textit{MainFrame}\strut
 	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		3000\euro{}\strut
+		3.000\euro{}\strut
 	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		600\euro{}\strut
-	\end{minipage}\tabularnewline
-	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
-		\textit{MainFrame}\strut
-	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		3000\euro{}\strut
-	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		600\euro{}\strut
+		350\euro{}\strut
 	\end{minipage}\tabularnewline
 	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
 		GPU (x3)\strut
 	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		4500\euro{}\strut
+		4.500\euro{}\strut
 	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		900\euro{}\strut
+		525\euro{}\strut
 	\end{minipage}\tabularnewline
 	\midrule
 	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
 		\textbf{Total}\strut
 	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		11450\euro{}\strut
+		8.450\euro{}\strut
 	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		2290\euro{}\strut
+		985,83\euro{}\strut
 	\end{minipage}\tabularnewline
 	\bottomrule
+	\\
 	\caption{Costes de \emph{hardware}.}
 \end{longtable}
 
 No ha habido costes software ya que todas las herramientas utilizadas han sido gratuitos o de código abierto.
 
-En total el coste económico total serían: $40248,84$\euro
+Teniendo en cuenta los costes de personal y de \textit{hardware}, el coste económico total del proyecto asciende a:
+
+\begin{longtable}[]{@{}lr@{}}
+	\toprule
+	\begin{minipage}[b]{0.40\columnwidth}\raggedright\strut
+		\textbf{Concepto}\strut
+	\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\raggedright\strut
+		\textbf{Coste}\strut
+	\end{minipage}\tabularnewline
+	\midrule
+	\endhead
+	\begin{minipage}[t]{0.40\columnwidth}\raggedright\strut
+		Coste de personal\strut
+	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
+		28.798,84\euro{}\strut
+	\end{minipage}\tabularnewline
+	\begin{minipage}[t]{0.40\columnwidth}\raggedright\strut
+		Coste del \textit{hardware}\strut
+	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
+		985,83\euro{}\strut
+	\end{minipage}\tabularnewline
+	\midrule
+	\begin{minipage}[t]{0.40\columnwidth}\raggedright\strut
+		\textbf{Total}\strut
+	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
+		\textbf{29.784,67\euro{}}\strut
+	\end{minipage}\tabularnewline
+	\bottomrule
+	\\
+	\caption{Coste total.}
+\end{longtable}
 
 \subsection{Viabilidad legal}
 
@@ -411,9 +435,9 @@ El software utilizado se puede encontrar en el apartado \textit{`Técnicas y her
 	
 	\item \textbf{GPLv2}: Tiene las mismas características que AGPL, cambia la claúsula de patentes sin prohibirlas, no especifica nada de ellas. Tampoco obliga a distribuir el código vía aplicación web.	
 	
-	\item \textbf{BSD Simplified}: Tiene las mismas características que la licencia MIT.
+	\item \textbf{BSD Simplified}: Tiene características semejantes a MIT en el contexto en el que la usamos.
 	
-	\item \textbf{BSD 3-Clause}: Tiene las mismas características que la licencia MIT.
+	\item \textbf{BSD 3-Clause}: Tiene características semejantes a MIT en el contexto en el que la usamos.
 \end{itemize}
 
 Entre todas estas licencias la más restrictiva es AGPL que será la que se use en esta aplicación.
