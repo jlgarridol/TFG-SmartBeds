@@ -26,8 +26,14 @@ De este diagrama se genera el diagrama relacional (figura~\ref{fig:relational}) 
 
 
 \section{Diseño procedimental}\label{sec:disproc}
+Las clases principales para entender el funcionamiento explicado más adelante son:
+\begin{itemize}
+	\item \texttt{BedListener}: esta clase se encarga de escuchar un grupo \textit{multicast} (par IP del tipo D y puerto) y encolar los paquetes recibidos.
+	\item \texttt{BedProcess}: esta clase se responsabiliza de procesar los datos encolados por el \texttt{BedListener}, preprocesarlos y realizar las predicciones. Con estos resultados genera un paquete y lo encola.
+	\item \texttt{BedBroadcaster}: esta clase tiene la responsabilidad de distribuir los paquetes encolados por el \texttt{BedProcess} a los clientes que lo soliciten.
+\end{itemize}
 
-Existen diversos procesos importantes en la aplicación. El primero es la creación de los componentes que se encargan de monitorizar las camas, como se puede observar en la figura~\ref{fig:proc_sec}. Al principio, el servidor instancia todos los \textit{BedListener} necesarios según las camas que existan, y estos instancian su \textit{BedProcess} correspondiente. Es importante destacar que estas dos clases funcionan como hilos. 
+Existen diversos procesos importantes en la aplicación. El primero es la creación de los componentes que se encargan de monitorizar las camas, como se puede observar en la figura~\ref{fig:proc_sec}. Al principio, el servidor instancia todos los \texttt{BedListener} necesarios según las camas que existan, y estos instancian su \texttt{BedProcess} correspondiente. Es importante destacar que estas dos clases funcionan como hilos. 
 
 \begin{figure}
 	\centering
@@ -36,7 +42,7 @@ Existen diversos procesos importantes en la aplicación. El primero es la creaci
 	\label{fig:proc_sec}
 \end{figure}
 
-Por otra parte el cliente abre conexiones con el servidor solicitando datos, este genera un hilo del \textit{BedBroadcaster} que existe mientras el cliente esté activo (el que comenzó la petición o cualquiera que se incorpore posteriormente). 
+Por otra parte el cliente abre conexiones con el servidor solicitando datos, este genera un hilo del \texttt{BedBroadcaster} que existe mientras el cliente esté activo (el que comenzó la petición o cualquiera que se incorpore posteriormente). 
 
 El proceso completo de la conexión del cliente se puede ver en la figura~\ref{fig:ws-secuence}. En esta cada llamada es un \textbf{evento} de \textit{socketio} y los argumentos los datos que espera. El proceso de esta conexión es:
 \begin{enumerate}

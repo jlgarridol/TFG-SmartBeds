@@ -59,13 +59,19 @@ Para proveer los servicios de esta aplicación a nuevos entornos se incorpora un
 El funcionamiento general de la API serán peticiones \texttt{POST} mediante \texttt{application/x-www-form-urlencoded} ante rutas específicas con los datos requeridos para cada petición. Y según sea el caso el servidor contestará con un fichero \texttt{JSON} con la respuesta adecuada. De manera particular está el sistema en tiempo real que funciona mediante mensajes de \textit{WebSockets}~\cite{wiki:websocket} usando la librería \textit{SocketIO}~\cite{tool:socketio} mediante la serie de eventos que se pueden ver en la figura~\ref{fig:ws-secuence}
 de la sección~\ref{sec:disproc} .
 
-Todas las respuestas del servidor contendrán los siguientes campos
-\begin{lstlisting}[language=JSON]
+Todas las respuestas del servidor contendrán los campos que se puede ver en el código de la figura~\ref{code:api_response}.
+\begin{figure}
+	\centering
+	\begin{lstlisting}[language=JSON]
 {
-  "status": 200|400|401|403|404|418|500,
-  "message": "OK"|"Error description"
+"status": 200|400|401|403|404|418|500,
+"message": "OK"|"Error description"
 }
-\end{lstlisting}
+	\end{lstlisting}
+	\caption{Modelo de respuesta para la \textit{API REST}}
+	\label{code:api_response}
+\end{figure}
+
 
 El valor de \texttt{status} tendrá un valor según los códigos HTTP definidos en el RFC 7231~\cite{RFC7231} y el mensaje será una explicación detallada del error producido.
 
@@ -285,7 +291,7 @@ Para poder ejecutar la aplicación se necesitan los siguientes apartados de soft
 Entorno \textit{Python}, versión 3.7 con las librerías de \textit{requeriments.txt} instaladas (\texttt{pip install -r requeriments.txt}).
 Base de datos \textit{MySQL} o con API compatible como \textit{MariaDB}. Servidor web con soporte de \textit{proxy} reverso y \textit{websokets} como \textit{Nginx} versión 1.16.
 
-\subsection{Instalación en entorno GNU/Linux}
+\subsection{Instalación en entorno GNU/Linux}\label{sec:instalacion}
 
 El primer paso necesario es la configuración de la base de datos en la cual se van a almacenar los datos del sistema. La estructura de esta base de datos se encuentra en el fichero \texttt{/smartbeds/resources/database.sql}. Tras esto es necesario crear el fichero \texttt{/smartbeds/resources/project.json} que tendrá la configuración de la aplicación siguiendo este formato:
 
@@ -364,4 +370,71 @@ Finalmente solo hace falta lanzar el demonio con el comando \texttt{systemctl st
 
 Se han realizado tres conjuntos de pruebas. En primer lugar están las pruebas unitarias de los transformadores de los datos que se encuentran en el directorio \texttt{/research} en el fichero \texttt{/testLauncher.py}. Las pruebas concretas están en el fichero \texttt{/research/tests/transformersTest.py}.
 
-Otras pruebas son las unitarias sobre la API, esta se ejecuta con el fichero \texttt{/tests.py} y las pruebas de integración sobre la interfaz que están almacenadas en el fichero \texttt{/smartbeds/test/test.side} que se abren con el IDE de Selenium y se ejecutan en una versión local del servidor.
+Otras pruebas son las unitarias sobre la API, esta se ejecuta con el fichero \texttt{/tests.py}, cuyo resultado se puede ver en la tabla~\ref{tab:test_api}, y las pruebas de integración sobre la interfaz que están almacenadas en el fichero \texttt{/smartbeds/test/test.side} que se abren con el IDE de Selenium y se ejecutan en una versión local del servidor.
+
+\begin{table}\small
+	\centering
+	\begin{center}
+		\begin{tabular}{|l|c|cc|r|}
+			\toprule
+			\textbf{ID} & \textbf{Transformer} & \textbf{Test} & \textbf{Resultado} & \textbf{Tiempo (ms)}\\
+			\otoprule
+			TB-1 &  				& test\_bad\_data & OK & \\\cline{3-4}\cline{0-0}
+			TB-2 & \texttt{Butter}	& test\_calculate\_dataframe & OK & 0.032\\\cline{3-4}\cline{0-0}
+			TB-3 & 					& test\_calculate\_series & OK & \\\hubu
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\begin{table}\small
+	\centering
+	\begin{center}\rowcolors {2}{gray!35}{}	
+		\begin{tabular}{|lccr|}
+			\toprule 
+			\textbf{ID} & \textbf{Nombre} & \textbf{Resultado} & \textbf{Tiempo (ms)} \\ 
+			\otoprule
+			A-1 & test-auth & OK & 67 \\ 
+			\hubu 
+			A-2 & test-bad-auth & OK & 62 \\ 
+			\hubu 
+			A-3 & test-user-list & OK & 52 \\ 
+			\hubu 
+			A-4 & test-user-list-bad-token & OK & 31 \\ 
+			\hubu 
+			A-5 & test-user-list-no-permition & OK & 57 \\ 
+			\hubu 
+			A-6 & test-user-add & OK & 124 \\ 
+			\hubu 
+			A-7 & test-user-add-already-exists & OK & 88 \\ 
+			\hubu 
+			A-8 & test-user-add-no-admin & OK & 57\\ 
+			\hubu 
+			A-9 & test-user-add-bad-token & OK & 52\\ 
+			\hubu 
+			A-10 & test-user-mod & OK &  66\\ 
+			\hubu 
+			A-11 & test-user-mod-user-not-exist & OK & 78 \\ 
+			\hubu 
+			A-12 & test-user-mod-no-admin & OK & 62 \\ 
+			\hubu 
+			A-13 & test-user-mod-bad-token & OK & 52 \\ 
+			\hubu 
+			A-14 & test-user-mod-own-password-error & OK & 47 \\ 
+			\hubu 
+			A-15 & test-user-mod-own-password & OK & 272 \\ 
+			\hubu 
+			A-16 & test-user-del & OK & 304 \\ 
+			\hubu 
+			A-17 & test-user-del-no-admin & OK & 67 \\ 
+			\hubu 
+			A-18 & test-user-del-bad-token & OK & 52 \\ 
+			\hubu 
+			A-19 & test-user-del-admin-error & OK & 83 \\ 
+			\hubu 
+			A-20 & test-user-mod-own-password & OK & 68 \\ 
+			\bottomrule
+		\end{tabular} 
+	\end{center}
+	\caption{Resultados de los test unitarios sobre la \textit{API}}
+	\label{tab:test_api}
+\end{table}

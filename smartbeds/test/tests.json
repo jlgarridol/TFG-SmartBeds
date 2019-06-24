@@ -100,7 +100,7 @@
       "func": "usermod",
       "input": ["8M8M8LPO2UM2XQQX", "user1", "patata"],
       "output": null,
-      "excepts": "PermissionsError"
+      "excepts": "IllegalOperationError"
     },
     {
       "name": "test-user-mod-bad-token",
@@ -116,7 +116,7 @@
       "func": "usermod",
       "input": ["8M8M8LPO2UM2XQQX", "joselu", "mayonesa", "no_contraseña"],
       "output": null,
-      "excepts": "BadCredentialsError"
+      "excepts": "IllegalOperationError"
     },
     {
       "name": "test-user-mod-own-password",

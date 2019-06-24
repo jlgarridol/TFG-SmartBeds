@@ -39,6 +39,7 @@ class ApiTest(ParametrizedTestCase):
         self._excepts = self.param['excepts']
 
         print("\nTest:", self._name)
+        print("\nTest:", self._desc)
 
         funcion = "api."+self._func+"("
         first = True
@@ -99,4 +100,4 @@ if __name__ == '__main__':
                 print(q)
     suites = generateSuiteOfTests()
     for suite in suites:
-        unittest.TextTestRunner(verbosity=2).run(suite)
+        unittest.TextTestRunner(verbosity=3).run(suite)

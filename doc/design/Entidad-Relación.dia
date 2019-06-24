@@ -699,7 +699,7 @@
         <dia:color val="#ffffff"/>
       </dia:attribute>
       <dia:attribute name="name">
-        <dia:string>#visible#</dia:string>
+        <dia:string>#Ver#</dia:string>
       </dia:attribute>
       <dia:attribute name="left_card">
         <dia:string>#N#</dia:string>
