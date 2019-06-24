@@ -5,19 +5,19 @@ En este capítulo se explicarán los aspectos más importantes tanto de la inves
 
 \section{Investigación}
 
-La fase de investigación a ocupado la mayor cantidad de tiempo de este proyecto ya que ha sido también una introducción al trabajo de investigador. Ha sido desarrollada conjuntamente con Alicia Olivares Gil bajo la dirección de nuestros tutores.
+La fase de investigación ha ocupado la mayor cantidad de tiempo de este proyecto ya que ha sido también una introducción a la carrera investigadora. Ha sido desarrollada conjuntamente con Alicia Olivares Gil bajo la dirección de nuestros tutores el Dr. Álvar Arnáiz González y el Dr. José Francisco Díez Pastor.
 
-El comienzo de esta investigación comenzó con un estudio del arte con el fin de conocer que métodos y soluciones ya existen y se han probado. Sin embargo, la mayoría de artículos que existen actualmente para ese problema se centran en datos de encefalogramas, un tipo de datos que no poseemos. También exploramos problemas semejantes como detecciones de caídas mediante sensores de presión aunque la mayoría de estos sistemas se basaban en otros sensores como cámaras o acelerómetros. Algunos de estos artículos están resumidos en la sección~\ref{cap:trabrel}.
+El comienzo de esta investigación comenzó con un estudio del arte con el fin de conocer métodos y soluciones ya existen y se han probado. Sin embargo, la mayoría de artículos que existen actualmente para ese problema se centran en datos de encefalogramas, un tipo de datos que no poseemos. También exploramos problemas semejantes como detecciones de caídas mediante sensores de presión aunque la mayoría de estos sistemas se basaban en otros sensores como cámaras o acelerómetros. Algunos de estos artículos están resumidos en la sección~\ref{cap:trabrel}.
 
 Tras esta exploración bibliográfica nos centramos en el estudio de los datos. Primero haciendo una limpieza eliminando datos con poca variabilidad, normalizarlos y eliminar datos ruidosos. Tras esto generamos proyecciones de los mismos a dos dimensiones tanto con datos limpiados, estadísticos o filtrados.
 
 Los datos estadísticos que generamos en un comienzo fueron medias y desviaciones móviles de ventana $25$. Los filtros tratados fueron el \textit{butterworth} y el \textit{savgol}, ambos de la librería \textit{SciPy}~\cite{tool:scipy}.
 
-Las primeras conclusiones que obtuvimos era que los datos intermedios de las crisis documentadas tenían ciertas propiedades que las diferenciaba del resto, sin embargo esto se perdía aumentando la ventana del estudio además que este proceso era muy lento y necesitaba una gran cantidad de datos por lo cual realmente podíamos obtener si hubo una crisis y no hacer una detección en directo.
+Las primeras conclusiones que obtuvimos era que los datos intermedios de las crisis documentadas tenían ciertas propiedades que las diferenciaba del resto, sin embargo esto se perdía aumentando la ventana del estudio. Además que este proceso era muy lento y necesitaba una gran cantidad de datos por lo cual realmente podíamos obtener si hubo una crisis y no hacer una detección en directo.
 
 A partir de aquí, para facilitar los procesos de preprocesado se crearon un conjunto de transformadores de datos que incluyen un normalizador por característica como por grupos de las mismas, un filtro de ruido, un eliminador de características de poca varianza, un calculador de estadísticos móviles, un modificador del valor objetivo según una ventana temporal y dos compuestos que concatenan resultados o los convierte en una línea de tuberías de tal forma que se ejecuten secuencialmente.
 
-Antes de pasar a la exploración de métodos para clasificar acotamos las duraciones de las crisis que nos habían reportado, la primera razón es que la misma empresa nos informó de que los datos eran estimados y estos superaban el umbral para \textit{status epilepticus}~\cite{epilepsia}. Esta acotación se hizo analizando manualmente los datos dentro del rango que nos dieron determinando como crisis las situaciones con presiones anómalas. 
+Antes de pasar a la exploración de métodos para clasificar, acotamos las duraciones de las crisis que nos habían reportado, la primera razón es que la misma empresa nos informó de que los datos eran estimados y estos superaban el umbral para \textit{status epilepticus}~\cite{epilepsia}. Esta acotación se hizo analizando manualmente los datos dentro del rango que nos dieron determinando como crisis las situaciones con presiones anómalas. 
 
 \subsection{Detección de anomalías}
 Lo siguiente que se realizó fue un estudio de detección de anomalías en el cual se intentó tanto predecir una crisis a partir de entrenar un clasificador \texttt{OneClassSVM} entrenando con todos los datos de no crisis y también predecir una situación de no crisis entrenando el mismo clasificador con los datos de crisis.
@@ -27,24 +27,24 @@ Lo primero que obtuvimos es que una crisis es un subconjunto de una situación n
 El segundo obtenido fue que las diversas crisis no coexisten en el mismo espacio, ya que al entrenar el clasificador con una crisis determinaba como anomalía a todas las demás crisis al igual que al resto de datos. Además, en el caso de combinar dos situaciones de crisis el entrenamiento ya tiene un gran índice de fallo si los datos no son estadísticos (media y desviación).
 
 \subsection{\textit{Ensembles} para desequilibrados}
-Debido a que la detección de anomalías no dió resultados correctos se pasó a hacer un estudio de clasificadores combinados (\textit{ensemble}) optimizados para la resolución de problemas con datos desequilibrados~\cite{diez2015diversity,galar2012review}.
+Debido a que la detección de anomalías no dio resultados correctos se pasó a hacer un estudio de clasificadores combinados (\textit{ensemble}) optimizados para la resolución de problemas con datos desequilibrados~\cite{diez2015diversity,galar2012review}.
 
 Debido a que el conjunto de datos ya habíamos hecho un submuestreo al limitar el conjunto de datos a los del día de las crisis probamos a hacer un sobremuestreo mediante SMOTE~\cite{galar2012review} con los algoritmos de \textit{Bagging}, \textit{AdaBoostM1} y \textit{Rotation Forest}~\cite{rodriguez2006rotation}.
 
 Los resultados de este experimento fue que los clasificadores sobreajustaban los datos de las crisis y no eran capaces de predecir correctamente otras crisis. Además pudimos comprobar que el algoritmo de \textit{boosting} no predecía correctamente los datos de entrenamiento lo que, junto con el hecho de que la etiquetación sabíamos que había sido manual, da pie a la conclusión de que los datos están mal etiquetados~\cite{ubu:mineria3}.
 
-También se probó a realizar una validación cruzada con todo el conjunto de datos usando el clasificador de \textit{Rotation Forest} obteniendo unos buenos resultados.
+También se probó a realizar una validación cruzada con todo el conjunto de datos usando el clasificador de \textit{Rotation Forest}~\cite{rodriguez2006rotation} obteniendo unos buenos resultados.
 
 \subsection{Búsqueda de mejores características}
-Otro proceso que se hizo fue la búsqueda de mejores características a partir de un análisis estadístico tratando a los datos como una serie temporal. A partir primero de la búsqueda de la mejor ventana temporal (obtenido el valor de noventa) mediante la optimización del valor del AUC~\cite{galar2012review} y de PRC~\cite{Davis2006RPR}. Este proceso fue realizado por mi compañera Alicia Olivares Gil, que realizó un algoritmo genético para encontrar el mejor conjunto de características que optimizaba esos valores.
+Otro proceso que se hizo fue la búsqueda de mejores características a partir de un análisis estadístico tratando a los datos como una serie temporal. A partir primero de la búsqueda de la mejor ventana temporal (obtenido el valor de noventa) mediante la optimización del valor del AUC~\cite{galar2012review} y de PRC~\cite{Davis2006RPR}.
 
-\subsection{\textit{Ensembles} para desequilibrados - estadísticos de series temporales}.
+\subsection{\textit{Ensembles} para desequilibrados - estadísticos de series temporales}
 Para finalizar la investigación se volvieron a probar los \textit{ensembles} para conjuntos desequilibrados de Galar et. al.~\cite{galar2012review} y Díez et. al.~\cite{diez2015random, diez2015diversity} usando sobremuestreo con \textit{SMOTE}, submuestreo con \textit{RUS} y muestreo aleatorio con \textit{Random Balance}. Se usaron los clasificadores de comité aleatorio, \textit{bagging} y \textit{rotation forest}.
 
 Los resultados fueron semejantes a la primera ocasión ya que el testeo con la otra crisis siempre obtenía un ratio de aciertos con las crisis de 0.
 
 \section{Desarrollo de la aplicación}
-La fase de desarrollo ha ocupado alrededor de un cuarto del tiempo del proyecto. A su vez se ha dividido en cuatro partes, una primera de búsqueda de herramientas para la difusión en tiempo real de datos, una segunda de diseño, una tercera de implementación y finalmente el despliegue.
+La fase de desarrollo ha ocupado alrededor de un cuarto del tiempo del proyecto. A su vez se ha dividido en cuatro partes: una primera de búsqueda de herramientas para la difusión en tiempo real de datos, una segunda de diseño, una tercera de implementación y finalmente el despliegue.
 
 La primera parte fue la más corta, consistió en explorar herramientas que fueran compatibles con websocket~\cite{wiki:websocket} ya que este protocolo es el más eficaz para distribución en tiempo real de datos mediante HTTP, que es la tecnología más sencilla para la creación de una \textit{API}. La herramienta seleccionada fue \textit{socketIO}~\cite{tool:socketio} que daba una interfaz sencilla y multilenguaje.
 
@@ -55,12 +55,12 @@ El primer paso fue determinar los casos de uso, que debido a la limitación temp
 
 Otro punto importante fueron los datos. Los usuarios son formados por un identificador único, un nombre de usuario único, una contraseña y un token dinámico y único. Este último es el que permite identificar al usuario para realizar operaciones \textit{CRUD}. Este cambia por cada inicio de sesión del usuario de tal forma que solo puede existir una sesión abierta a la vez.
 
-Las camas por otro lado están formadas por un par de identificadores de los sensores de presión (\textit{MAC}) y de los sensores biométricos (\textit{UUID}) que son usados también como el nombre del espacio donde se difundirán los datos de esa cama. También identifican a la cama un número secuencial y un nombre de la misma. Cada cama tiene a su vez una combinación de ip-puerto del rango de \textit{multicast} que especifica a la aplicación a donde tiene que escuchar. 
+Las camas, por otro, lado están formadas por un par de identificadores de los sensores de presión (\textit{MAC}) y de los sensores biométricos (\textit{UUID}) que son usados también como el nombre del espacio donde se difundirán los datos de esa cama. También identifican a la cama un número secuencial y un nombre de la misma. Cada cama tiene a su vez una combinación de IP-puerto del rango de \textit{multicast} que especifica a la aplicación a donde tiene que escuchar. 
 
 Como parte final del diseño se determinó cuales serían los pasos para el \textit{handshake} del proceso de obtención de datos en tiempo real. Se decidió que este sería una petición a la API para solicitar el espacio de nombres, luego una apertura de conexión a \textit{socketIO}, si la conexión era correcta lanzar una petición de solicitud de datos (\texttt{give\_me\_data}) para finalmente escuchar paquetes (\texttt{package}) al espacio de nombres solicitado.
 
 \subsection{Implementación}
-El último proceso fue la implementación que se dividió en cuatro partes, primero la creación de la \textit{API REST} para la gestión de camas y de usuarios, la segunda fue la implementación de la difusión de datos en tiempo real, la tercera la creación de ventanas para la interacción vía web y por último la creación de test unitarios y de integración (interfaz).
+El último proceso fue la implementación, que se dividió en cuatro partes: primero la creación de la \textit{API REST} para la gestión de camas y de usuarios, la segunda fue la implementación de la difusión de datos en tiempo real, la tercera la creación de ventanas para la interacción vía web y por último la creación de test unitarios y de integración (interfaz).
 
 \subsubsection{Implementación de la \textit{API}}
 Esta \textit{API} se implementó utilizando dos partes, una primera como una clase \textit{singleton} que sirve de conexión a la base de datos y realiza las operaciones especificadas controlando los permisos y una segunda parte que hace de adaptador para traducir peticiones \textit{HTTP} a la signatura de las funciones de la clase.
@@ -76,16 +76,16 @@ El funcionamiento global de una petición es:
 	\item La función de adaptación recoge el resultado y crea un objeto de respuesta \textit{JSON} con un código \textit{HTTP} y un mensaje.
 \end{enumerate}
 
-En el caso de que alguno de los procesos fallasen se generaría un código de error según el tipo de error. Si fuese 400 implicaría que la petición realizada no tiene los parámetros esperados, 401 si el valor del \textit{token} no está correctamente asociado, 403 si no se tuviesen permisos para realizar la operación, 404 si no existiese la operación deseada, 405 si se hace con un método erróneo, 418 si la operación no estuviese disponible por causa de la versión y 500 en el caso de que existiese un error en el servidor. Si todo fuese correcto el número del código sería 200. Todos estos valores provienen del estándar RFC~7231~\cite{RFC7231}.
+En el caso de que alguno de los procesos fallasen, se generaría un código de error según el tipo de error. Si fuese 400 implicaría que la petición realizada no tiene los parámetros esperados, 401 si el valor del \textit{token} no está correctamente asociado, 403 si no se tuviesen permisos para realizar la operación, 404 si no existiese la operación deseada, 405 si se hace con un método erróneo, 418 si la operación no estuviese disponible por causa de la versión y 500 en el caso de que existiese un error en el servidor. Si todo fuese correcto el número del código sería 200. Todos estos valores provienen del estándar RFC~7231~\cite{RFC7231}.
 
 \subsubsection{Difusión en tiempo real}
 Para poder hacer la difusión en tiempo real se necesita de la librería de \texttt{flask-socketio}~\cite{tool:flask-socketio} y de \texttt{gevent}~\cite{tool:gevent}. 
 
 El primer paso es crear los hilos del \textit{pipeline} del procesamiento de los datos (uno de escucha y otro de procesado). Esto se hace usando la interfaz \texttt{Thread} pero compatibilizado con \texttt{gevent} mediante un \textit{mokey patching}~(explicado en la sección~\ref{cap:mokey}).
 
-Tras esto es necesario crear las capturas de eventos de \textit{socketIO} para poder detectar cuando se solicitan datos y enviarlos. Este envío se hace mediante otro hilo, el de difusión que emite por \textit{broadcast} a todos los clientes de cada cama. Estos hilos funcionan solo dentro del entorno de petición (\textit{request context}) por lo que morían al cerrar el usuario la conexión, por tanto, para evitar que los datos se acumulasen en el servidor se usaron colas en los hilos de procesamiento con un tamaño máximo a la ventana temporal (90) de tal forma que se borrasen los más viejos si entraban nuevos datos.
+Tras esto es necesario crear las capturas de eventos de \textit{socketIO} para poder detectar cuando se solicitan datos y enviarlos. Este envío se hace mediante otro hilo, el de difusión que emite por \textit{broadcast} a todos los clientes de cada cama. Estos hilos funcionan solo dentro del entorno de petición (\textit{request context}) por lo que morían al cerrar el usuario la conexión, por tanto, para evitar que los datos se acumulasen en el servidor se usaron colas en los hilos de procesamiento con un tamaño máximo a la ventana temporal~(90) de tal forma que se borrasen los más viejos si entraban nuevos datos.
 
-Un detalle importante es que como los datos no podemos tenerlos en tiempo real ya que pertenecen a la empresa que nos los da hemos simulado un \textit{streaming} de datos local usando UDP emitiendo una nueva linea del CSV cada $0.4$ segundos, que es una estimación del intervalo por el cual nos dan los datos.
+Un detalle importante es que como los datos no podemos tenerlos en tiempo real, ya que pertenecen a la empresa que nos los suministra. Por ello hemos simulado un \textit{streaming} de datos local usando UDP emitiendo una nueva linea del CSV cada $0.4$ segundos, que es una estimación del intervalo por el cual nos llegan los datos.
 
 Otra modificación sobre el diseño ha sido que realmente existe una única cama y las distintas camas que existen realmente usan los mismos hilos ya que los \textit{Broadcaster} realmente emiten a todos los \textit{namespaces} que existen. Se ha hecho esto debido a las limitaciones técnicas del equipo de despliegue ya que cada cama implicaba una serie de tres hilos que ralentizan mucho el sistema.
 
@@ -101,10 +101,10 @@ Otro aspecto importante del desarrollo de la interfaz fue la creación de los gr
 
 Para optimizar el renderizado es estas gráficas se optó por eliminar las animaciones y los valores de \texttt{hover}\footnote{Evento al estar el puntero del ratón sobre el objeto} para que no se ejecutasen nuevas llamadas a eventos del \texttt{DOM} que mostraban los datos de esa instancia temporal.
 
-Otra tecnología que se usó en el desarrollo de la interfaz web fue el uso de llamadas asíncronas al servidor mediante \textit{AJAX} con el fin de evitar cargas completas de la página de manera innecesaria, sobre todo en las situaciones que la operación no requería mostrar nuevos datos en la pantalla como la creación, modificación o borrado de usuarios y camas. 
+Otra tecnología que se usó en el desarrollo de la interfaz web fue el uso de llamadas asíncronas al servidor mediante \textit{AJAX}. De esta manera se pueden evitar cargas completas de la página de manera innecesaria. Especialmente en las situaciones que la operación no requería mostrar nuevos datos en la pantalla como la creación, modificación o borrado de usuarios y camas. 
 
 \subsubsection{Pruebas}
-Las pruebas consistieron en pruebas unitarias y de integración. Para las primeras se usó \texttt{unnittest} de \textit{Python} y para las de integración se hicieron test sobre la interfaz web con \textit{Selenium IDE}. Este por motivos de tiempo no se ha trasladado a código y se puede ejecutar importando el fichero .side al \textit{IDE} y ejecutarlo desde el mismo.
+Las pruebas consistieron en pruebas unitarias y de integración. Para las primeras se usó \texttt{unnittest} de \textit{Python} y para las de integración se hicieron test sobre la interfaz web con \textit{Selenium IDE}. Este por motivos de tiempo no se ha trasladado a código y se puede ejecutar importando el fichero .side al \textit{IDE} y ejecutarlo desde el mismo. En el Anexo \textit{Manual del Programador} este punto está más explicado.
 
 Los test unitarios se basaron en un test parametrizado y un fichero \textit{JSON} con la configuración de todos los test deseados.
 \\\\ %Para no dejar viudas

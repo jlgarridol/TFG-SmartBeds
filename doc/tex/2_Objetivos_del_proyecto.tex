@@ -1,22 +1,25 @@
 \capitulo{2}{Objetivos del proyecto}
 
+Los objetivos del proyecto se han dividido en tres apartados siendo estos los objetivos generales, los técnicos y los personales.
+
 \section{Objetivos generales}
 
 \begin{itemize}
-	\item Estudio del estado del arte en detección de crisis epilépticas, tanto en materia de \textit{hardware}, datos utilizados, técnicas y modelos existentes desarrollados por otros científicos. Con esto se busca explorar técnicas no antes utilizadas como también optimizar esfuerzos por los métodos que ya han probado su utilidad.
-	\item Exploración e interpretación de los datos, las formas por las cuales se pueden representar y como se distribuyen los distintos ejemplos que representan crisis respecto a las situaciones normales. Aplicación de filtros, análisis estadísticos, proyecciones de n-variedad (\textit{manifold learning}) etc.
+	\item Estudio del estado del arte en detección de crisis epilépticas, tanto en materia de \textit{hardware}, datos utilizados como en técnicas y modelos existentes desarrollados por otros científicos. Con esto se busca explorar técnicas no antes utilizadas como también optimizar esfuerzos por los métodos que ya han probado su utilidad.
+	\item Exploración e interpretación de los datos, las formas por las cuales se pueden representar y como se distribuyen los distintos ejemplos que representan crisis respecto a las situaciones normales. Aplicación de filtros, análisis estadísticos, proyecciones de n-variedad (\textit{manifold learning}), etc.
 	\item Exploración de técnicas de balanceo de datos existentes y aprendizaje automático para conjuntos de datos desequilibrados. Buscar la mejor combinación de técnicas de balanceo y modelos de aprendizaje automático para optimizar la detección de situaciones de crisis.
 	\item Búsqueda de un modelo que haga una clasificación lo más correcta posible centrando que la predicción sea acertada en situaciones de crisis mediante la optimización del valor del ratio de verdaderos positivos.
-	\item Creación de una \textit{API REST} con la que poder distribuir en tiempo real los datos de cama y sus predicciones.
+	\item Creación de una \textit{API REST} con la que poder distribuir de los datos de las camas y sus predicciones.
+	\item Implementar una interfaz web por la cual se puedan ver datos en tiempo real de las camas y sus predicciones.
 \end{itemize}
 
 \section{Objetivos técnicos}
 
 \begin{itemize}
-	\item Hacer uso de las herramientas de minería de datos de \textit{sci-kit learn} y \textit{Weka}.
+	\item Hacer uso de las herramientas de minería de datos de \textit{scikit-learn} y \textit{Weka}.
 	\item Crear una serie de transformadores de datos de \textit{scikit-learn} para facilitar el preprocesado.
 	\item Desarrollar una \textit{API REST} sencilla y fácil de utilizar.
-	\item Crear una interfaz web que permita ver los datos en tiempo real de los pacientes con los menores márgenes temporales posibles.
+	\item Crear una interfaz web que permita ver los datos en tiempo real de los pacientes con una baja latencia.
 \end{itemize}
 
 \section{Objetivos personales}
@@ -25,5 +28,5 @@
 	\item Contribuir a la mejora de la calidad de vida de pacientes que sufren de epilepsia.
 	\item Profundizar en el trabajo de investigador, sus metodologías y las fases de por las que pasa un proyecto de investigación.
 	\item Comprender más técnicas de minería de datos, nuevos modelos y nuevas formas de abordar el análisis de datos.
-	\item Completar mi formación académica con el desarrollo de una aplicación que englobe la mayor cantidad del conocimiento adquirido en el estudio del grado.
+	\item Completar mi formación académica con el desarrollo de una aplicación que englobe la mayor cantidad del conocimiento adquirido en el estudio del Grado.
 \end{itemize}

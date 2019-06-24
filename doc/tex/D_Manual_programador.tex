@@ -6,9 +6,9 @@ En este apéndice se explicarán todos los detalles necesarios para poder entend
 
 \section{Estructura de directorios}
 
-En la carpeta \texttt{doc} se encuentra toda la documentación de este proyecto. En \texttt{research} están los ficheros de la investigación, dentro de esta están \texttt{data}\footnote{Esta carpeta no se encuentra en el repositorio \textit{GitHub} porque contienen datos privados} que contiene los datos proporcionados para realizar el estudio, \texttt{model} con los modelos binarios, \texttt{src} con los ficheros fuentes y los \textit{Jupyter Notebooks} con la investigación y en \texttt{tests} con los tests sobre algunas fuentes.
+En la carpeta \texttt{doc} se encuentra toda la documentación de este proyecto. En \texttt{research} están los ficheros de la investigación, dentro de esta están en el directorio \texttt{data}\footnote{Esta carpeta no se encuentra en el repositorio \textit{GitHub} porque contienen datos privados} que contiene los datos proporcionados para realizar el estudio, \texttt{model} con los modelos binarios, \texttt{src} con los ficheros fuentes y los \textit{Jupyter Notebooks} con la investigación y en \texttt{tests} con los tests sobre algunas fuentes.
 
-La carpeta \texttt{smartebs} están las fuentes de la aplicación web siendo el modulo raíz. Dentro de esta están los módulo \texttt{process} con los algoritmos de procesamiento de los datos, \texttt{resources} con la configuración y los \texttt{assets} de la página web (plantillas, códigos \textit{JavaScript} etc), \texttt{routes} que engloba las rutas \textit{URI} para dirigir las peticiones. Por último, está la carpeta \texttt{test} con las pruebas unitarias.
+La carpeta \texttt{smartbes} están las fuentes de la aplicación web siendo el modulo raíz. Dentro de esta están los módulo \texttt{process} con los algoritmos de procesamiento de los datos, \texttt{resources} con la configuración y los \texttt{assets} de la página web (plantillas, códigos \textit{JavaScript} etc), \texttt{routes} que engloba las rutas \textit{URI} para dirigir las peticiones. Por último, está la carpeta \texttt{test} con las pruebas unitarias.
 
 De manera especial se encuentra la carpeta \texttt{bed} dentro de \texttt{smartbeds} que contiene un \textit{script} para la simulación de camas.
 
@@ -263,7 +263,7 @@ username=text]
 
 \section{Compilación, instalación y ejecución del proyecto}
 
-Este proyecto contiene un servidor web, del cual se explicará su proceso de despliegue en este apartado. Sin embargo, no disponemos de camas reales que puedan aportar datos en tiempo real como hemos visto en la figura~\ref{fig:despl} debido a que este \textit{hardware} es privado.
+Este proyecto contiene un servidor web, del cual se explicará su proceso de despliegue en este apartado. Sin embargo, no disponemos de camas reales que puedan aportar datos en tiempo real como hemos visto en la figura~\ref{fig:despl}, debido a que este \textit{hardware} es privado.
 
 En su lugar se ha creado un \textit{script} de \textit{Python} que emite cada 0,4 segundos de manera indefinida datos que se han obtenido previamente. Este \textit{script} se encuentra en la carpeta \texttt{smartbeds/bed}.
 
@@ -274,8 +274,8 @@ Para el funcionamiento correcto de la aplicación se requiere de \textit{hardwar
 
 \begin{itemize}
 	\item \textbf{Procesador}: arquitectura de 64 bits con soporte multihilo. Se recomienda un mínimo de 1,5 GHz, 16MiB de memoria caché y dos núcleos.
-	\item \textbf{Memoria}: 768MiB, incorporando 256MiB aprox. por cada nueva cama incorporada. 
-	\item \textbf{Almacenamiento}: 16MiB aprox.
+	\item \textbf{Memoria}: 768MiB, incorporando 256MiB aproximadamente por cada nueva cama incorporada. 
+	\item \textbf{Almacenamiento}: 16MiB aproximadamente.
 \end{itemize}
 
 \subsection{Requisitos software}
@@ -364,4 +364,4 @@ Finalmente solo hace falta lanzar el demonio con el comando \texttt{systemctl st
 
 Se han realizado tres conjuntos de pruebas. En primer lugar están las pruebas unitarias de los transformadores de los datos que se encuentran en el directorio \texttt{/research} en el fichero \texttt{/testLauncher.py}. Las pruebas concretas están en el fichero \texttt{/research/tests/transformersTest.py}.
 
-Otras pruebas son las unitarias sobre la API, está se ejecuta con el fichero \texttt{/tests.py} y las pruebas de integración sobre la interfaz que están almacenadas en el fichero \texttt{/smartbeds/test/test.side} que se abren con el IDE de Selenium y se ejecutan en una versión local del servidor.
+Otras pruebas son las unitarias sobre la API, esta se ejecuta con el fichero \texttt{/tests.py} y las pruebas de integración sobre la interfaz que están almacenadas en el fichero \texttt{/smartbeds/test/test.side} que se abren con el IDE de Selenium y se ejecutan en una versión local del servidor.

@@ -316,7 +316,7 @@ Este penúltimo \textit{sprint} se centró en terminar todos los puntos de la do
 	\item 
 	\href{https://github.com/jlgarridol/TFG-SmartBeds/issues/103}{Escribir trabajos relacionados}
 	\item 
-	\href{https://github.com/jlgarridol/TFG-SmartBeds/issues/104}{Escribir conclusiones y lineas futuras}
+	\href{https://github.com/jlgarridol/TFG-SmartBeds/issues/104}{Escribir conclusiones y líneas futuras}
 	\item 
 	\href{https://github.com/jlgarridol/TFG-SmartBeds/issues/105}{Escribir aspectos relevantes}
 \end{enumerate}
@@ -330,7 +330,7 @@ En este último \textit{sprint} se realizaron las últimas partes del proyecto c
 	\item 
 	\href{https://github.com/jlgarridol/TFG-SmartBeds/issues/107}{Arreglar últimos detalles de la memoria y anexos}
 	\item 
-	\href{https://github.com/jlgarridol/TFG-SmartBeds/issues/108}{Reparar bug concurrencia}
+	\href{https://github.com/jlgarridol/TFG-SmartBeds/issues/108}{Reparar \textit{bug} concurrencia}
 	\item 
 	\href{https://github.com/jlgarridol/TFG-SmartBeds/issues/109}{Añadir el cuaderno de investigación}
 \end{enumerate}
@@ -345,136 +345,58 @@ Debido a que este TFG se ha realizado en un proyecto de investigación de varias
 
 Los costes de personal se desglosarán en las siguientes categorías: costes de personal para el salario de dos personas, el coste hardware de las herramientas utilizadas, coste software del software utilizada. También se incluirán gastos aproximados del material que se ha dispuesto que ya se poseía.
 
-El salario de una persona sería:
-
-\begin{longtable}[]{@{}lr@{}}
-	\toprule
-	\begin{minipage}[b]{0.38\columnwidth}\raggedright\strut
-		\textbf{Concepto}\strut
-	\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\raggedright\strut
-		\textbf{Coste}\strut
-	\end{minipage}\tabularnewline
-	\midrule
-	\endhead
-	\begin{minipage}[t]{0.38\columnwidth}\raggedright\strut
-		Salario mensual neto\strut
-	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
-		1.225,7\euro{}~\cite{salariales}\strut
-	\end{minipage}\tabularnewline
-	\begin{minipage}[t]{0.38\columnwidth}\raggedright\strut
-		Retención IRPF (15\%)\strut
-	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
-		216,3\euro{}\strut
-	\end{minipage}\tabularnewline
-	\begin{minipage}[t]{0.38\columnwidth}\raggedright\strut
-		Seguridad Social (29,9\%)\strut
-	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
-		615,06\euro{}\strut
-	\end{minipage}\tabularnewline
-	\begin{minipage}[t]{0.38\columnwidth}\raggedright\strut
-		Salario mensual bruto\strut
-	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
-		2.057,06\euro{}\strut
-	\end{minipage}\tabularnewline
-	\midrule
-	\begin{minipage}[t]{0.38\columnwidth}\raggedright\strut
-		\textbf{Total 7 meses y dos empleados}\strut
-	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
-		28.798,84\euro{}\strut
-	\end{minipage}\tabularnewline
-	\bottomrule
+El coste de personal se puede ver en la tabla~\ref{tab:costes_personal}
+ 
+\begin{table}\centering
+	\begin{tabular}[]{@{}l r@{}}
+		\toprule
+		\textbf{Concepto} & \textbf{Coste(\euro{})} \\
+		\midrule
+		Salario mensual neto & 1.225,7~\cite{salariales} \\
+		Retención IRPF (15\%) & 216,3 \\
+		Seguridad Social (29,9\%) & 615,06 \\
+		Salario mensual bruto & 2.057,06 \\\hubu
+		\textbf{Total 7 meses y dos empleados} &  28.798,84 \\
+		\bottomrule
+	\end{tabular}
 	\caption{Costes de personal.}
-\end{longtable}
+	\label{tab:costes_personal}
+\end{table}
 
-La retribución de la seguridad social se ha calculado siguiendo la guía de GoBees~\cite{gobees}.
+Para el desarrollo de este proyecto no se ha adquirido ningún \textit{hardware} nuevo, por lo que únicamente se incluirán los costes del material con el que ya se contaba asumiendo una amortización en 5 años, y calculando solo el coste de amortización correspondiente a la duración del proyecto (7 meses). Se puede ver en la tabla~\ref{tab:costes_hardware}
 
-Para el desarrollo de este proyecto no se ha adquirido ningún \textit{hardware} nuevo, por lo que únicamente se incluirán los costes del material con el que ya se contaba asumiendo una amortización en 5 años, y calculando solo el coste de amortización correspondiente a la duración del proyecto (7 meses):
+\begin{table}
+	\centering
+	\begin{tabular}[]{@{}l c r@{}}
+		\toprule
+		\textbf{Concepto} & \textbf{Coste(\euro{})} & \textbf{Coste amortizado(\euro{})} \\
+		Dispositivo móvil & 150 & 17,5 \\
+		Ordenador portátil (x2) & 800 & 93,33 \\
+		\textit{MainFrame} & 3.000 & 350 \\ 
+		GPU (x3) & 4.500 & 525 \\\hubu
+		\textbf{Total} & 8.450 & 985,83
+	\end{tabular}
+	\caption{Costes de \textit{hardware}.}
+	\label{tab:costes_hardware}.
+\end{table}
 
-\begin{longtable}[]{@{}lrr@{}}
-	\toprule
-	\begin{minipage}[b]{0.29\columnwidth}\raggedright\strut
-		\textbf{Concepto}\strut
-	\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\raggedright\strut
-		\textbf{Coste}\strut
-	\end{minipage} & \begin{minipage}[b]{0.32\columnwidth}\raggedright\strut
-		\textbf{Coste amortizado}\strut
-	\end{minipage}\tabularnewline
-	\midrule
-	\endhead
-	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
-		Dispositivo móvil\strut
-	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		150\euro{}\strut
-	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		17,5\euro{}\strut
-	\end{minipage}\tabularnewline
-	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
-		Ordenador portátil (x2)\strut
-	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		800\euro{}\strut
-	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		93,33\euro{}\strut
-	\end{minipage}\tabularnewline
-	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
-		\textit{MainFrame}\strut
-	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		3.000\euro{}\strut
-	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		350\euro{}\strut
-	\end{minipage}\tabularnewline
-	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
-		GPU (x3)\strut
-	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		4.500\euro{}\strut
-	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		525\euro{}\strut
-	\end{minipage}\tabularnewline
-	\midrule
-	\begin{minipage}[t]{0.29\columnwidth}\raggedright\strut
-		\textbf{Total}\strut
-	\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright\strut
-		8.450\euro{}\strut
-	\end{minipage} & \begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
-		985,83\euro{}\strut
-	\end{minipage}\tabularnewline
-	\bottomrule
-	\\
-	\caption{Costes de \emph{hardware}.}
-\end{longtable}
+No ha habido costes software ya que todas las herramientas utilizadas han sido gratuitas o de código abierto.
 
-No ha habido costes software ya que todas las herramientas utilizadas han sido gratuitos o de código abierto.
+Teniendo en cuenta los costes de personal y de \textit{hardware}, el coste económico total se puede ver en la tabla~\ref{tab:coste_total}
 
-Teniendo en cuenta los costes de personal y de \textit{hardware}, el coste económico total del proyecto asciende a:
-
-\begin{longtable}[]{@{}lr@{}}
-	\toprule
-	\begin{minipage}[b]{0.40\columnwidth}\raggedright\strut
-		\textbf{Concepto}\strut
-	\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\raggedright\strut
-		\textbf{Coste}\strut
-	\end{minipage}\tabularnewline
-	\midrule
-	\endhead
-	\begin{minipage}[t]{0.40\columnwidth}\raggedright\strut
-		Coste de personal\strut
-	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
-		28.798,84\euro{}\strut
-	\end{minipage}\tabularnewline
-	\begin{minipage}[t]{0.40\columnwidth}\raggedright\strut
-		Coste del \textit{hardware}\strut
-	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
-		985,83\euro{}\strut
-	\end{minipage}\tabularnewline
-	\midrule
-	\begin{minipage}[t]{0.40\columnwidth}\raggedright\strut
-		\textbf{Total}\strut
-	\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\raggedright\strut
-		\textbf{29.784,67\euro{}}\strut
-	\end{minipage}\tabularnewline
-	\bottomrule
-	\\
+\begin{table}
+	\centering
+	\begin{tabular}[]{@{}l r@{}}
+		\toprule
+		\textbf{Concepto} & \textbf{Coste(\euro{})} \\
+		Coste de personal & 28.798,84 \\ 
+		Coste del \textit{hardware} & 985,83 \\\hubu
+		\textbf{Total} & \textbf{29.784,67} \\		
+	\end{tabular}
 	\caption{Coste total.}
-\end{longtable}
+	\label{tab:coste_total}
+\end{table}
+
 
 \subsection{Viabilidad legal}
 
@@ -483,7 +405,7 @@ En este proyecto se ha realizado con la ayuda de software de terceros con licenc
 El software utilizado se puede encontrar en el apartado \textit{`Técnicas y herramientas'} de la memoria. Las licencias que utilizan son:
 
 \begin{itemize}
-	\item \textbf{MIT}: Esta licencia permite el uso comercial del producto, la modificación del mismo, la libre distribución y el uso privado. No tiene garantías ni responsabilidad. La única condición es hacer referencia a ella. Como no obliga a mantener la licencia ni afecta a la distribución del software que use la licencia final del producto puede ser cualquiera.
+	\item \textbf{MIT}: Esta licencia permite el uso comercial del producto, la modificación del mismo, la libre distribución y el uso privado. No tiene garantías ni responsabilidad. La única condición es hacer referencia a ella. Como no obliga a mantener la licencia ni afecta a la distribución del software que use la licencia final del producto, esta puede ser cualquiera.
 	
 	\item \textbf{AGPL}: Esta licencia permite el uso comercial, la libre distribución y modificación. Así también permite el uso de patentes y el uso privado. Entre sus condiciones están que el software debe distribuirse con su código, hacer referencia a la licencia, se deben documentar los cambios en el código y utilizar la misma licencia o una compatible (como GPLv3). Tiene en sus limitaciones la garantía y la responsabilidad.
 	
