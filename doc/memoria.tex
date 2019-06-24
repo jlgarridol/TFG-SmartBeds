@@ -9,6 +9,7 @@
 \usepackage{microtype}
 \usepackage{placeins}
 \usepackage{listings}
+\usepackage{subcaption}
 
 \RequirePackage{booktabs}
 \RequirePackage[table]{xcolor}
@@ -17,6 +18,12 @@
 
 \widowpenalty10000
 \clubpenalty10000
+\newcommand{\myinput}[1]{%
+	\begingroup%
+	\renewcommand\normalsize{\tiny}% Specify your font modification
+	\input{#1}%
+	\endgroup%
+}
 
 % Códigos
 \colorlet{punct}{red!60!black}

@@ -24,7 +24,7 @@
 	allcolors = {red}
 } %Enlaces
 
-%Parrafos
+%Parrafos\dfrac{núm}{den}
 \nonzeroparskip
 
 %Capítulos
@@ -221,7 +221,7 @@ Para comprobar si los datos de las presiones eran separables de manera fácil ut
 El preprocesamiento utilizado ha sido el filtro de ruido a 5, la normalización de los datos entre 0 y 100 y la eliminación de tubos con una varianza menor a 0.5. Además escogemos los datos que tengan un valor de SS mayor que 4000.
 
 \section{Entrenamiento y testeo}
-El análisis con la primera crisis Fig:~\ref{fig:pca_crisis1} tuvo de resultado que la crisis (rojo) no era separable de las situaciones normales (azul), además tampoco compartía espacio con las otras crisis (amarillo):
+El análisis con la primera crisis Fig.~\ref{fig:pca_crisis1} tuvo de resultado que la crisis (rojo) no era separable de las situaciones normales (azul), además tampoco compartía espacio con las otras crisis (amarillo):
 
 \begin{figure}
     \centering
@@ -243,9 +243,9 @@ El análisis con la primera crisis Fig:~\ref{fig:pca_crisis1} tuvo de resultado 
     \caption{PCA ajustada a cada crisis}
 \end{figure}
 
-De manera semejante ocurre ajustando con la segunda crisis y la tercera Fig:~\ref{fig:pca_crisis2}, \ref{fig:pca_crisis3}
+De manera semejante ocurre ajustando con la segunda crisis y la tercera Fig.~\ref{fig:pca_crisis2}, \ref{fig:pca_crisis3}
 
-Si hacemos un ajuste con los datos de las tres crisis podemos ver que no son separables las situaciones de crisis y los datos normales Fig:~\ref{fig:pca_crisis_full}
+Si hacemos un ajuste con los datos de las tres crisis podemos ver que no son separables las situaciones de crisis y los datos normales Fig.~\ref{fig:pca_crisis_full}
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{images/PCA-crisisFull.png}
@@ -266,7 +266,7 @@ Antes de aplicar las distintas técnicas se han realizado las siguientes operaci
 \end{itemize}
 
 \section{Isomap}
-Aplicamos Isomap~\cite{tenenbaum2000global} con \texttt{n\_neighbors=10} y \texttt{n\_components=2} a los datos en bruto (ver Fig:~\ref{fig:isomapDB}) y a los datos estadísticos (ver Fig:~\ref{fig:isomapDE}). 
+Aplicamos Isomap~\cite{tenenbaum2000global} con \texttt{n\_neighbors=10} y \texttt{n\_components=2} a los datos en bruto (ver Fig.~\ref{fig:isomapDB}) y a los datos estadísticos (ver Fig.~\ref{fig:isomapDE}). 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\textwidth]{images/isomapDB.png}
@@ -281,7 +281,7 @@ Aplicamos Isomap~\cite{tenenbaum2000global} con \texttt{n\_neighbors=10} y \text
 \end{figure}
 
 \section{Locally Linear Embedding (LLE)}
-Aplicamos LLE~\cite{roweis2000nonlinear} con \texttt{n\_neighbors=10} y \texttt{n\_components=2} a los datos en bruto (ver Fig:~\ref{fig:lleDB}) y a los datos estadísticos (ver Fig:~\ref{fig:lleDE}).
+Aplicamos LLE~\cite{roweis2000nonlinear} con \texttt{n\_neighbors=10} y \texttt{n\_components=2} a los datos en bruto (ver Fig.~\ref{fig:lleDB}) y a los datos estadísticos (ver Fig.~\ref{fig:lleDE}).
 \begin{figure}
     \centering
     \includegraphics[width=0.75\textwidth]{images/lleDB.png}
@@ -295,7 +295,7 @@ Aplicamos LLE~\cite{roweis2000nonlinear} con \texttt{n\_neighbors=10} y \texttt{
     \label{fig:lleDE}
 \end{figure}
 \section{Multi-dimensional Scaling (MDS)}
-Aplicamos MDS~\cite{kruskal1964nonmetric,borg2003modern} con \texttt{n\_components=2} y \texttt{max\_iter=100} a los datos en bruto (ver Fig:~\ref{fig:mdsDB}) y a los datos estadísticos (ver Fig:~\ref{fig:mdsDE}).
+Aplicamos MDS~\cite{kruskal1964nonmetric,borg2003modern} con \texttt{n\_components=2} y \texttt{max\_iter=100} a los datos en bruto (ver Fig.~\ref{fig:mdsDB}) y a los datos estadísticos (ver Fig.~\ref{fig:mdsDE}).
 \begin{figure}
     \centering
     \includegraphics[width=0.75\textwidth]{images/mdsDB.png}
@@ -413,7 +413,7 @@ En las figuras~\ref{fig:heatmap1}, \ref{fig:heatmap2} y \ref{fig:heatmap3} el ej
 
 \section{Segunda exploración, métrica=ROC}
 
-A continuación, centramos la exploración en ventanas cercanas a las que han ofrecido mejores resultados en la exploración anterior, teniendo en cuenta que, como se aprecia en la figura Fig:~\ref{fig:heatmap1}, el resultado parece ser más dependiente de la ventana de la desviación que la de la media: 
+A continuación, centramos la exploración en ventanas cercanas a las que han ofrecido mejores resultados en la exploración anterior, teniendo en cuenta que, como se aprecia en la figura Fig.~\ref{fig:heatmap1}, el resultado parece ser más dependiente de la ventana de la desviación que la de la media: 
 \begin{itemize}
     \item Ventanas para la media = [5, 30, 55, 80, 105, 130, 155, 180]
     \item Ventanas para la desviación = [70, 75, 80, 85, 90, 95, 100, 105, 110]

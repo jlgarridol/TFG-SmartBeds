@@ -26,6 +26,11 @@ Lo primero que obtuvimos es que una crisis es un subconjunto de una situación n
 
 El segundo obtenido fue que las diversas crisis no coexisten en el mismo espacio, ya que al entrenar el clasificador con una crisis determinaba como anomalía a todas las demás crisis al igual que al resto de datos. Además, en el caso de combinar dos situaciones de crisis el entrenamiento ya tiene un gran índice de fallo si los datos no son estadísticos (media y desviación).
 
+Los resultados del entrenamiento se pueden ver en las tablas~\ref{tab:matriz-conf-1a} y~\ref{tab:matriz-conf-1a-2d} y lo de test en las tablas~\ref{tab:matriz-test-2a} y~\ref{tab:matriz-test-3a}, en estás últimas se puede ver que la predicción siempre es errónea para un conjunto nuevo de datos.
+
+\myinput{./research-book/train-tables.tex}
+\myinput{./research-book/test-tables.tex}
+
 \subsection{\textit{Ensembles} para desequilibrados}
 Debido a que la detección de anomalías no dio resultados correctos se pasó a hacer un estudio de clasificadores combinados (\textit{ensemble}) optimizados para la resolución de problemas con datos desequilibrados~\cite{diez2015diversity,galar2012review}.
 
@@ -36,12 +41,58 @@ Los resultados de este experimento fue que los clasificadores sobreajustaban los
 También se probó a realizar una validación cruzada con todo el conjunto de datos usando el clasificador de \textit{Rotation Forest}~\cite{rodriguez2006rotation} obteniendo unos buenos resultados.
 
 \subsection{Búsqueda de mejores características}
-Otro proceso que se hizo fue la búsqueda de mejores características a partir de un análisis estadístico tratando a los datos como una serie temporal. A partir primero de la búsqueda de la mejor ventana temporal (obtenido el valor de noventa) mediante la optimización del valor del AUC~\cite{galar2012review} y de PRC~\cite{Davis2006RPR}.
+Otro proceso que se hizo fue la búsqueda de mejores características a partir de un análisis estadístico tratando a los datos como una serie temporal. A partir primero de la búsqueda de la mejor ventana temporal (obtenido el valor de noventa) mediante la optimización del valor del AUC~\cite{galar2012review} y de PRC~\cite{Davis2006RPR}. El desarrollo completo de esta búsqueda está mejor explicado en el Apéndice \textit{Cuaderno de Investigación} en el capítulo \textit{Extracción de características con tsfresh y clasificador Random Forest}.
 
 \subsection{\textit{Ensembles} para desequilibrados - estadísticos de series temporales}
 Para finalizar la investigación se volvieron a probar los \textit{ensembles} para conjuntos desequilibrados de Galar et. al.~\cite{galar2012review} y Díez et. al.~\cite{diez2015random, diez2015diversity} usando sobremuestreo con \textit{SMOTE}, submuestreo con \textit{RUS} y muestreo aleatorio con \textit{Random Balance}. Se usaron los clasificadores de comité aleatorio, \textit{bagging} y \textit{rotation forest}.
 
 Los resultados fueron semejantes a la primera ocasión ya que el testeo con la otra crisis siempre obtenía un ratio de aciertos con las crisis de 0.
+
+Los resultados se pueden ver en las tablas~\ref{tab:crisis1} y~\ref{tab:crisis2}
+
+\begin{table}\scriptsize
+	\begin{center}
+		\begin{tabular}{llllllll}
+			\toprule
+			{} & TPR &          FPR &       TNR & FNR &       PRC &       AUC &       ACC \\
+			\midrule
+			RB - Bag                &   0 &            0 &         1 &   1 &  0.984425 &  0.552363 &   0.98178 \\
+			RB - RC       &   0 &            0 &         1 &   1 &  0.981267 &  0.485675 &   0.98178 \\
+			RB - RotF        &   0 &  1.65036e-06 &  0.999998 &   1 &  0.980551 &  0.485354 &  0.981778 \\
+			RUS - Bag          &   0 &  0.000899444 &  0.999101 &   1 &  0.980613 &  0.447139 &  0.980897 \\
+			RUS - RC &   0 &            0 &         1 &   1 &  0.981076 &    0.4806 &   0.98178 \\
+			RUS - RotF  &   0 &  0.000394435 &  0.999606 &   1 &  0.982287 &  0.486412 &  0.981393 \\
+			SM - Bag                         &   0 &  0.000173287 &  0.999827 &   1 &  0.984367 &  0.565807 &   0.98161 \\
+			SM - RC                &   0 &            0 &         1 &   1 &  0.981278 &  0.486071 &   0.98178 \\
+			SM - RotF                 &   0 &  1.56784e-05 &  0.999984 &   1 &  0.982673 &  0.512364 &  0.981764 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Métodos para desbalanceados - Entrenamiento con la primera crisis, testeo con la segunda crisis.}
+		\label{tab:crisis1}
+	\end{center}
+\end{table}
+
+\begin{table}\scriptsize
+	\begin{center}
+		\begin{tabular}{llllllll}
+			\toprule
+			{} & TPR &         FPR &       TNR & FNR &       PCR &       AUC &       ACC \\
+			\midrule
+			RB - Bag                &   0 &   0.0109634 &  0.989037 &   1 &  0.995225 &  0.491511 &  0.983616 \\
+			RB - RC       &   0 &  0.00571683 &  0.994283 &   1 &  0.993912 &  0.446135 &  0.988834 \\
+			RB - RotF        &   0 &  0.00488364 &  0.995116 &   1 &   0.99517 &  0.525534 &  0.989663 \\
+			RUS - Bag          &   0 &   0.0461306 &  0.953869 &   1 &  0.994863 &  0.514533 &  0.948642 \\
+			RUS - RC &   0 &   0.0112769 &  0.988723 &   1 &  0.994602 &  0.506568 &  0.983304 \\
+			RUS - RotF  &   0 &   0.0128567 &  0.987143 &   1 &  0.994482 &  0.468075 &  0.981733 \\
+			SM - Bag                         &   0 &    0.017596 &  0.982404 &   1 &  0.995505 &  0.539099 &   0.97702 \\
+			SM - RC                &   0 &   0.0048424 &  0.995158 &   1 &  0.994052 &  0.458383 &  0.989704 \\
+			SM - RotF                 &   0 &  0.00344412 &  0.996556 &   1 &  0.994742 &  0.502318 &  0.991094 \\
+			\bottomrule
+		\end{tabular}
+		\caption{Métodos para desbalanceados - Entrenamiento con la segunda crisis, testeo con la primera crisis.}
+		\label{tab:crisis2}
+	\end{center}
+\end{table}
 
 \section{Desarrollo de la aplicación}
 La fase de desarrollo ha ocupado alrededor de un cuarto del tiempo del proyecto. A su vez se ha dividido en cuatro partes: una primera de búsqueda de herramientas para la difusión en tiempo real de datos, una segunda de diseño, una tercera de implementación y finalmente el despliegue.
@@ -83,6 +134,15 @@ Para poder hacer la difusión en tiempo real se necesita de la librería de \tex
 
 El primer paso es crear los hilos del \textit{pipeline} del procesamiento de los datos (uno de escucha y otro de procesado). Esto se hace usando la interfaz \texttt{Thread} pero compatibilizado con \texttt{gevent} mediante un \textit{mokey patching}~(explicado en la sección~\ref{cap:mokey}).
 
+El proceso completo de creación de hilos se puede ver en el Anexo \textit{Manual del programador}, la estructura de su colaboración se puede ver en el diagrama de clases de la figura~\ref{fig:classes}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{classes}
+	\caption{Diagrama de clases.}
+	\label{fig:classes}
+\end{figure}
+
 Tras esto es necesario crear las capturas de eventos de \textit{socketIO} para poder detectar cuando se solicitan datos y enviarlos. Este envío se hace mediante otro hilo, el de difusión que emite por \textit{broadcast} a todos los clientes de cada cama. Estos hilos funcionan solo dentro del entorno de petición (\textit{request context}) por lo que morían al cerrar el usuario la conexión, por tanto, para evitar que los datos se acumulasen en el servidor se usaron colas en los hilos de procesamiento con un tamaño máximo a la ventana temporal~(90) de tal forma que se borrasen los más viejos si entraban nuevos datos.
 
 Un detalle importante es que como los datos no podemos tenerlos en tiempo real, ya que pertenecen a la empresa que nos los suministra. Por ello hemos simulado un \textit{streaming} de datos local usando UDP emitiendo una nueva linea del CSV cada $0.4$ segundos, que es una estimación del intervalo por el cual nos llegan los datos.
@@ -90,6 +150,16 @@ Un detalle importante es que como los datos no podemos tenerlos en tiempo real, 
 Otra modificación sobre el diseño ha sido que realmente existe una única cama y las distintas camas que existen realmente usan los mismos hilos ya que los \textit{Broadcaster} realmente emiten a todos los \textit{namespaces} que existen. Se ha hecho esto debido a las limitaciones técnicas del equipo de despliegue ya que cada cama implicaba una serie de tres hilos que ralentizan mucho el sistema.
 
 También se utiliza actualmente un clasificador aleatorio por intervalos de tal manera que cambie la probabilidad de crisis cada noventa instancias entre los tres estados posibles: crisis, no crisis, despierto; con el fin de poder probar como cambian las interfaces en los distintos estados, sobre todo porque el clasificador obtenido al final no era capaz de predecir situaciones de crisis.
+
+El resultado final en la aplicación web se puede ver en la figura~\ref{fig:man_bed}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{manual/man_cama1}
+	\caption{Página con la información en tiempo real de una cama.}
+	\label{fig:man_bed}
+\end{figure}
+
 
 \subsubsection{Ventanas \textit{HTML}}
 
