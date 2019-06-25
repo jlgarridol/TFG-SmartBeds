@@ -160,6 +160,45 @@ Nada más comenzar\footnote{Se aplica independientemente de que otras técnicas 
 
 \subsection{Eliminación manual de ruido}
 Observamos que en algunas ocasiones había datos aislados y valores muy pequeños o incluso negativos. Por ende, decidimos considerar todo valor menor de 5 como ruido y lo convertimos a 0. Con esta medida eliminamos también los valores negativos.
+
+Según este criterio, podemos ver que algunos tubos como son el de la cabeza, las rodillas y los pies (figuras~\ref{fig:p1_ruido},~\ref{fig:p5_ruido} y~\ref{fig:p6_ruido}) son especialmente ruidosos debido a la baja sensibilidad de los tubos. En el resto de tubos (figuras~\ref{fig:p2_ruido},~\ref{fig:p3_ruido} y~\ref{fig:p4_ruido}) podemos ver que las proporciones son semejantes, que suceden en su mayoría en los momentos en los que la cama está vacía\footnote{Este ha sido el criterio para determinar al valor 5 como el mínimo para un valor real de presión}.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{images/ruido/p1-ruido}
+		\caption{Proporción de ruido en tubo de presión 1}
+		\label{fig:p1_ruido}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{images/ruido/p2-ruido}
+		\caption{Proporción de ruido en tubo de presión 2}
+		\label{fig:p2_ruido}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{images/ruido/p3-ruido}
+		\caption{Proporción de ruido en tubo de presión 3}
+		\label{fig:p3_ruido}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{images/ruido/p4-ruido}
+		\caption{Proporción de ruido en tubo de presión 4}
+		\label{fig:p4_ruido}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{images/ruido/p5-ruido}
+		\caption{Proporción de ruido en tubo de presión 5}
+		\label{fig:p5_ruido}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{images/ruido/p6-ruido}
+		\caption{Proporción de ruido en tubo de presión 6}
+		\label{fig:p6_ruido}
+	\end{subfigure}
+	\caption{Proporcion de datos ruidos por tubo de presión}
+	\label{fig:ruidos_tubos}
+\end{figure}
+
 \subsection{Normalización}
 Para trabajar siempre de la misma forma se normalizaron todos los datos, de 0 a 100, respecto a la presión
 \subsection{Filtrados}
@@ -205,8 +244,8 @@ Para el filtrado se han creado dos transformadores para dos filtros, \textit{But
 \end{itemize}
 \section{Compuestos}
 Para agrupar distintos transformadores se han creado dos según la operación que se desea realizar, ya sea una concatenación (\texttt{ConcatenateTransformer}) y la aplicación en serie de transformadores (\texttt{PipelineTransformer}). Ambos reciben en sus constructores un conjunto indefinido de transformadores a aplicar en el orden deseado para aplicarlos.
-\section{De instancias}
-Los transformadores de instancias son aquellos que modifican completamente las instancias, incluyendo las fechas y las etiquetas. En particular el que existe en \texttt{MoveTargetsTransformer} que cambia los \textit{targets} de posición según una ventana para adaptar correctamente las ventanas según los valores de los estadísticos móviles.
+\section{De etiquetas}
+Los transformadores de etiquetas son aquellos que modifican completamente las instancias, incluyendo las fechas y las etiquetas. En particular el que existe en \texttt{MoveTargetsTransformer} que cambia los \textit{targets} de posición según una ventana para adaptar correctamente las ventanas según los valores de los estadísticos móviles.
 
 
 Tiene cuatro modos, \texttt{only} que únicamente marca como crisis si el estadístico ha sido realizado solamente con datos de crisis, \texttt{half} donde se marca como crisis si al menos la mitad de los datos con los que se han realizado la estadística son crisis, \texttt{start} que marca como crisis si el primer elemento de los datos es una crisis y \texttt{end} que realiza lo contrario, si el último elemento es crisis\footnote{Los datos cuando son procesador con un estadístico cualquiera ya son de esta manera}
@@ -252,7 +291,9 @@ Si hacemos un ajuste con los datos de las tres crisis podemos ver que no son sep
 \end{figure}
 \chapter{Proyecciones a 2 dimensiones}
 \section{Introducción}
-También hemos aplicado las implementaciones de \texttt{sklearn.manifold} con los valores de presión correspondiente a la crisis que tuvo lugar el día 2018-11-10. El objetivo es comprobar si las crisis son fácilmente separables del resto de datos al realizar su proyección en un espacio de 2 dimensiones con alguna de las técnicas incluidas en la librería. A diferencia de PCA, estas implementaciones no permiten proyectar nuevos datos a partir de un modelo ya entrenado, por lo que la representación de las proyecciones solo incluirá los datos con los que se ha entrenado el modelo. Además, el volumen de datos que admiten estos métodos es limitado para los recursos que tenemos, lo que no nos permite entrenar los modelos con más de una crisis. Los parámetros de los métodos se han escogido teniendo en cuenta esta limitación. 
+También hemos aplicado las implementaciones de \texttt{sklearn.manifold} con los valores de presión correspondiente a la crisis que tuvo lugar el día 2018-11-10. El objetivo es comprobar si las crisis son fácilmente separables del resto de datos al realizar su proyección en un espacio de 2 dimensiones con alguna de las técnicas incluidas en la librería. A diferencia de PCA, estas implementaciones no permiten proyectar nuevos datos a partir de un modelo ya entrenado, por lo que la representación de las proyecciones solo incluirá los datos con los que se ha entrenado el modelo. Esto impide que estas proyecciones puedan ser usadas para extraer características o realizar predicciones sobre nuevos datos.
+
+Es importante destacar que el volumen de datos que admiten estos métodos es limitado para los recursos que tenemos, lo que no nos permite entrenar los modelos con más de una crisis. Los parámetros de los métodos se han escogido teniendo en cuenta esta limitación. 
 \section{Preprocesamiento}
 Antes de aplicar las distintas técnicas se han realizado las siguientes operaciones: 
 \begin{itemize}
@@ -314,7 +355,7 @@ Se han empleado otros métodos cuyas proyecciones no merecen ser consideradas al
 \end{itemize}
 \chapter{One-Class simple}
 \section{Introducción}
-Debido a que el problema que intentamos resolver es desequilibrado~\cite{galar2012review} una línea que hemos explorado ha sido la detección de anomalías, por tanto se ha probado a entrenar un clasificador de \textit{One-Class} de máquina de vectores soporte (SVM) con sklearn.
+Debido a que el problema que intentamos resolver es desequilibrado~\cite{galar2012review} una línea que hemos explorado ha sido la detección de anomalías, por tanto se ha probado a entrenar un clasificador de \textit{One-Class} de máquina de vectores soporte (SVM) con sklearn. Para realizar este aprendizaje ignoramos una de las clases por lo que el problema a resolver contiene el máximo desequilibrio ya que existen solo datos de una clase.
 \section{Configuración}
 La configuración del clasificador ha sido la por defecto teniendo en cuenta un \textit{kernel} de tipo \textit{Radial Basis Function}~\cite{wiki:rbf}, \texttt{gamma} de \(0.01\) y \texttt{nu} de \(0.1\) 
 \section{Preprocesado}
@@ -329,7 +370,7 @@ También probamos a entrenar con la primera y la segunda crisis. Esta que fue el
 La tercera crisis, fue el 6 de febrero y esta fue etiquetada correctamente.\footnote{Aunque en precisión de minutos y no de segundos.}
 
 \section{Resultados}
-Los resultados entrenando con el conjunto de no crisis fueron en una matriz de confusión no diagonalmente dominante, por tanto solamente nos centraremos en la predicción con el entrenamiento de no crisis
+Los resultados entrenando con el conjunto de \textit{no-crisis} fueron en una matriz de confusión no diagonalmente dominante, por tanto solamente nos centraremos en la predicción con el entrenamiento de \textit{no-crisis}
 \subsection{Datos de entrenamiento}
 El entrenamiento se realizó de dos maneras distintas, una utilizando solamente datos de la primera crisis y otra utilizando los datos de las dos primeras crisis. Los resultados se pueden ver en las tablas agrupadas en la Tabla~\ref{tab:matriz-conf-1a} para el entrenamiento con una crisis y Tabla~\ref{tab:matriz-conf-1a-2d} con las dos primeras crisis
 \input{train-tables.tex}
@@ -365,9 +406,9 @@ En este apartado hemos tratado de encontrar la mejor configuración posible de v
 Al trabajar con datos calculados a partir de una ventana, hay que tener en cuenta que existen varias formas de considerar como ``crisis'' una instancia de dato calculada de esta forma. Nosotros definimos 3 formas distintas: 
 
 \begin{itemize}
-    \item Labeled if all are crisis: Etiquetamos como ``crisis'' la instancia si todos los datos de presión que se han usado para calcularla estaban etiquetados como ``crisis''. 
-    \item Labeled if half are crisis: Etiquetamos como ``crisis'' la instancia si al menos la última mitad de los datos de presión que se han usado para calcularla estaban etiquetados como ``crisis''. 
-    \item Labeled if one is crisis: Etiquetamos como ``crisis'' la instancia si el último dato de presión usado para calcularla estaba etiquetado como ``crisis''. 
+    \item \textit{`Labeled if all are crisis'}: Etiquetamos como ``crisis'' la instancia si todos los datos de presión que se han usado para calcularla estaban etiquetados como ``crisis''. 
+    \item \textit{`Labeled if half are crisis'}: Etiquetamos como ``crisis'' la instancia si al menos la última mitad de los datos de presión que se han usado para calcularla estaban etiquetados como ``crisis''. 
+    \item \textit{`Labeled if one is crisis'}: Etiquetamos como ``crisis'' la instancia si el último dato de presión usado para calcularla estaba etiquetado como ``crisis''. 
 \end{itemize}
 
 \section{Validación cruzada entre dos días}\label{rf1}
@@ -397,7 +438,7 @@ Tras realizar todas las ejecuciones, la mejor área bajo la curva (ROC = 0.72) s
 \begin{itemize}
     \item Ventana para la media = 105
     \item Ventana para la desviación = 80
-    \item Modificación del target = 'Labeled if all are crisis'
+    \item Modificación del target = `Labeled if all are crisis'
 \end{itemize}
 
 En las figuras~\ref{fig:heatmap1}, \ref{fig:heatmap2} y \ref{fig:heatmap3} el eje vertical representa la ventana para la desviación y el eje horizontal la ventana para la media. 
@@ -415,14 +456,14 @@ A continuación, centramos la exploración en ventanas cercanas a las que han of
 \begin{itemize}
     \item Ventanas para la media = [5, 30, 55, 80, 105, 130, 155, 180]
     \item Ventanas para la desviación = [70, 75, 80, 85, 90, 95, 100, 105, 110]
-    \item Modificación del target = ['Labeled if all are crisis', 'Labeled if half are crisis', 'Labeled if one is crisis']
+    \item Modificación del target = [`Labeled if all are crisis', `Labeled if half are crisis', `Labeled if one is crisis']
 \end{itemize}
 
 Realizando las mismas operaciones, la mejor área bajo la curva (roc = 0.76) se ha encontrado con la siguiente combinación: 
 \begin{itemize}
     \item Ventana para la media = 105
     \item Ventana para la desviación = 75
-    \item Modificación del target = 'Labeled if all are crisis'
+    \item Modificación del target = `Labeled if all are crisis'
 \end{itemize}
 
 \begin{figure}
@@ -437,14 +478,14 @@ Finalmente, centramos la exploración un poco más:
 \begin{itemize}
     \item Ventanas para la media = [40, 65, 90, 115, 140, 165, 190]
     \item Ventanas para la desviación = [80, 82, 84, 86, 88, 90, 92, 94]
-    \item Modificación del target = ['Labeled if all are crisis', 'Labeled if half are crisis', 'Labeled if one is crisis']
+    \item Modificación del target = [`Labeled if all are crisis', `Labeled if half are crisis', `Labeled if one is crisis']
 \end{itemize}
 
 La mejor área bajo la curva (roc=0.76) se ha encontrado con la siguiente combinación: 
 \begin{itemize}
     \item Ventana para la media = 90
     \item Ventana para la desviación = 90
-    \item Modificación del target = 'Labeled if all are crisis'
+    \item Modificación del target = `Labeled if all are crisis'
 \end{itemize}
 
 \begin{figure}
@@ -460,14 +501,14 @@ Al igual que con la otra métrica, hemos realizado una primera exploración comb
 \begin{itemize}
     \item Ventanas para la media = [5, 30, 55, 80, 105, 130, 155, 180]
     \item Ventanas para la desviación = [5, 30, 55, 80, 105, 130, 155, 180]
-    \item Modificación del target = ['Labeled if all are crisis', 'Labeled if half are crisis', 'Labeled if one is crisis']
+    \item Modificación del target = [`Labeled if all are crisis', `Labeled if half are crisis', `Labeled if one is crisis']
 \end{itemize}
 
 Tras la validación de todas las ejecuciones, la mejor precisión media (average\_precision\_score = 0.026) se ha encontrado con la siguiente combinación: 
 \begin{itemize}
     \item Ventana para la media = 55
     \item Ventana para la desviación = 105
-    \item Modificación del target = 'Labeled if one are crisis'
+    \item Modificación del target = `Labeled if one are crisis'
 \end{itemize}
 
 \begin{figure}
@@ -484,14 +525,14 @@ A continuación, centramos la exploración en ventanas cercanas a las que han of
 \begin{itemize}
     \item Ventanas para la media = [40, 65, 90, 115, 140, 165, 190]
     \item Ventanas para la desviación = [70, 75, 80, 85, 90, 95, 100]
-    \item Modificación del target = ['Labeled if all are crisis', 'Labeled if half are crisis', 'Labeled if one is crisis']
+    \item Modificación del target = [`Labeled if all are crisis', `Labeled if half are crisis', `Labeled if one is crisis']
 \end{itemize}
 
-Realizando las mismas operaciones, la mejor precisión media(average\_precision\_score = 0.035) se ha encontrado con la siguiente combinación: 
+Realizando las mismas operaciones, la mejor precisión media (average\_precision\_score = 0.035) se ha encontrado con la siguiente combinación: 
 \begin{itemize}
     \item Ventana para la media = 65
     \item Ventana para la desviación = 85
-    \item Modificación del target = 'Labeled if one are crisis'
+    \item Modificación del target = `Labeled if one are crisis'
 \end{itemize}
 
 \begin{figure}
@@ -506,14 +547,14 @@ Finalmente, centramos la exploración un poco más:
 \begin{itemize}
     \item Ventanas para la media = [40, 65, 90, 115, 140, 165, 190]
     \item Ventanas para la desviación = [80, 82, 84, 86, 88, 90, 92, 94]
-    \item Modificación del target = ['Labeled if all are crisis', 'Labeled if half are crisis', 'Labeled if one is crisis']
+    \item Modificación del target = [`Labeled if all are crisis', `Labeled if half are crisis', `Labeled if one is crisis']
 \end{itemize}
 
 La mejor precisión media (average\_precision\_score=0.034) se ha encontrado con la siguiente combinación: 
 \begin{itemize}
     \item Ventana para la media = 90
     \item Ventana para la desviación = 90
-    \item Modificación del target = 'Labeled if one are crisis'
+    \item Modificación del target = `Labeled if one are crisis'
 \end{itemize}
 
 \begin{figure}
@@ -551,6 +592,8 @@ Ambas mediciones del rendimiento resultan muy lejos de lo deseable. Con distinta
 \section{Filtrado mediante la función \texttt{select\_features} de tsfresh}
 Dados los malos resultados obtenidos mediante el filtrado del apartado anterior, de forma alternativa hemos probado a usar la función
 \texttt{tsfresh.feature\_selection.selection.select\_features} para la selección de atributos. Esta selección también es supervisada ya que recibe los targets junto con las características a filtrar. Tras aplicar esta función seguimos teniendo 1731 características, por lo que planteamos una estrategia adicional para eliminar las menos relevantes. Si asumimos que una característica será relevante si resulta relevante para todos los datos sobre los que se ha calculado, nos quedaremos solo con aquellas características que tras el filtrado, permanezcan para los 6 tubos de presión iniciales. De esta forma nos quedamos únicamente con 744 características (124 por cada tubo de presión). 
+
+Aunque el conjunto de características se ha reducido mucho, aún es demasiado grande para aplicarlo a un modelo de clasificación de datos en tiempo real. Esto se debe a que la extracción de características a partir de los datos en bruto es algo lenta, y por esta razón es necesario realizar una selección más acotada.
 
 \section{Selección del mejor conjunto de características}
 

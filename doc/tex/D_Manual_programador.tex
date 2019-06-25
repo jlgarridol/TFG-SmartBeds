@@ -293,9 +293,11 @@ Base de datos \textit{MySQL} o con API compatible como \textit{MariaDB}. Servido
 
 \subsection{Instalación en entorno GNU/Linux}\label{sec:instalacion}
 
-El primer paso necesario es la configuración de la base de datos en la cual se van a almacenar los datos del sistema. La estructura de esta base de datos se encuentra en el fichero \texttt{/smartbeds/resources/database.sql}. Tras esto es necesario crear el fichero \texttt{/smartbeds/resources/project.json} que tendrá la configuración de la aplicación siguiendo este formato:
+El primer paso necesario es la configuración de la base de datos en la cual se van a almacenar los datos del sistema. La estructura de esta base de datos se encuentra en el fichero \texttt{/smartbeds/resources/database.sql}. Tras esto es necesario crear el fichero \texttt{/smartbeds/resources/project.json} que tendrá la configuración de la aplicación siguiendo el formato de la figura~\ref{code:projectjson}
 
-\begin{lstlisting}[language=JSON]
+\begin{figure}
+	\centering
+	\begin{lstlisting}[language=JSON]
 {
 	"secret-key": "clave secreta",
 	"url":  "http://127.0.0.1",
@@ -308,13 +310,18 @@ El primer paso necesario es la configuración de la base de datos en la cual se 
 		"password": "database-password"
 	}
 }
-\end{lstlisting}
+	\end{lstlisting}
+	\caption{Formato del fichero de configuración \texttt{project.json}}
+	\label{code:projectjson}
+\end{figure}
 
 En cada campo habría que incorporar los cambios oportunos y se recomienda no modificar el campo \texttt{url}. De manera especial el campo \texttt{mode} puede ser \texttt{ssl} o \texttt{no-ssl} si los \textit{websockets} se ejecutan sobre \textit{SSL} o no. Tras esto ya el programa es ejecutable y puede funcionar al ejecutar el fichero \texttt{/index.py}.
 
-El siguiente paso es crear la configuración del servidor \textit{HTTP} para redirigir las peticiones externas a la aplicación local. Como ejemplo, para un servidor \textit{Nginx} la configuración sería la siguiente:
+El siguiente paso es crear la configuración del servidor \textit{HTTP} para redirigir las peticiones externas a la aplicación local. Como ejemplo, para un servidor \textit{Nginx} la configuración se puede ver en la figura~\ref{code:nginx}
 
-\begin{lstlisting}[language=JSON]
+\begin{figure}
+	\centering
+	\begin{lstlisting}[language=JSON]
 server {
 	listen 443 ssl http2;
 	server_name $server_name$;
@@ -334,12 +341,18 @@ server {
 		proxy_pass http://127.0.0.1:3031/socket.io;
 	}
 }
-\end{lstlisting}
+	\end{lstlisting}
+	\caption{Ejemplo de configuración de servicio en \textit{Nginx}}
+	\label{code:nginx}
+\end{figure}
+
 
 Siendo necesario modificar el nombre del servidor por el dominio o IP de acceso y la raíz como la ruta donde se encuentra el fichero \texttt{index.py}, aunque esto último no es necesario para el funcionamiento, solo como referencia interna.
 
-Por último es necesario crear un demonio de \texttt{systemd} que ejecute la aplicación en segundo plano. El fichero de configuración de este demonio se alojaría en \texttt{/usr/lib/systemd/system/smartbeds.service}. Siendo el fichero en cuestión semejante a:
-\begin{lstlisting}[language={Ini}]
+Por último es necesario crear un demonio de \texttt{systemd} que ejecute la aplicación en segundo plano. El fichero de configuración de este demonio se alojaría en \texttt{/usr/lib/systemd/system/smartbeds.service}. Siendo el fichero en cuestión semejante al de la figura~\ref{code:systemd}:
+\begin{figure}
+	\centering
+	\begin{lstlisting}[language={Ini}]
 [Unit]
 Description=Smartbed Service
 After=network.target
@@ -355,7 +368,11 @@ ExecStart=python index.py
 
 [Install]
 WantedBy=multi-user.target
-\end{lstlisting}
+	\end{lstlisting}
+	\caption{Fichero de \texttt{systemd} para ejecutar el proyecto como un servicio}
+	\label{code:systemd}
+\end{figure}
+
 
 El campo \texttt{ExecStart} podría cambiar en el caso de utilizar algún entornos \textit{Python} como son los que provee conda. En el caso de ser así se recomienda cambiar el campo por \texttt{bash index.sh} siendo el fichero semejante al que se puede ver en la figura~\ref{fig:code-bash}.
 \begin{figure}
@@ -376,7 +393,7 @@ Se han realizado tres conjuntos de pruebas. En primer lugar están las pruebas u
 
 Otras pruebas son las unitarias sobre la API, esta se ejecuta con el fichero \texttt{/tests.py}, cuyo resultado se puede ver en la tabla~\ref{tab:test_api}, y las pruebas de integración sobre la interfaz que están almacenadas en el fichero \texttt{/smartbeds/test/test.side} que se abren con el IDE de Selenium y se ejecutan en una versión local del servidor. Los resultados de estos test se puede ver en la tabla~\ref{tab:test_selenium}.
 
-\begin{table}\small
+\begin{table}\tiny
 	\centering
 	\begin{center}
 		\begin{tabular}{lllcr}
