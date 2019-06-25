@@ -138,7 +138,7 @@ En la Figura:~\ref{fig:senalP5} representamos un ejemplo de señal de presión e
 \begin{figure}
     \centering
     \includegraphics[width=1\textwidth]{images/SenalP5.png}
-    \caption{Señales de los datos brutos y estadísticos asociados al tubo de presión P5. Crisis epiléptica en rojo.}
+    \caption{Señales de los datos brutos y estadísticos asociados al tubo de presión P5. Estimación de la crisis epiléptica en rojo.}
     \label{fig:senalP5}
 \end{figure}
 
@@ -156,7 +156,7 @@ En cuanto al trabajo hecho hasta el momento, vamos a hablar del preprocesado de 
 \item Cálculo de estadísticas móviles 
 \end{itemize}
 \subsection{Eliminación por baja señal}
-Nada más comenzar\footnote{Se aplica independientemente de que otras técnicas de procesamiento se empleen, la salida de esto se considera \textbf{bruta}}, y para todos los casos, hemos eliminado los datos que tienen por señal 0, (baja calidad) y todos los valores que no sean presiones también son eliminados debido a que en la mayor parte de las ocasiones dan valores no nulos de manera intermitente.
+Nada más comenzar\footnote{Se aplica independientemente de que otras técnicas de procesamiento se empleen, la salida de esto se considera \textbf{bruta}}, y para todos los casos, hemos eliminado los datos que tienen por señal 0, (baja calidad) y todos los valores que no sean presiones también son eliminados debido a que en la mayor parte de las ocasiones dan valores nulos de manera intermitente.
 
 \subsection{Eliminación manual de ruido}
 Observamos que en algunas ocasiones había datos aislados y valores muy pequeños o incluso negativos. Por ende, decidimos considerar todo valor menor de 5 como ruido y lo convertimos a 0. Con esta medida eliminamos también los valores negativos.
@@ -196,9 +196,7 @@ Los transformadores de preprocesado son aquellos pensados para las operaciones b
 \item \texttt{VarianceThresholdPD(threshold=0.05)} elimina los datos con una varianza menor de \(0.05\) compatible con \texttt{pandas} al mantener los mismos nombres
 \end{itemize}
 \section{Estadísticos}
-Para facilitar el procesado de estadísticos (media, desviación, rango, máximo y mínimo) hemos desarrollado un transformador genérico cuyos modos pueden ser \texttt{mean}, \texttt{std}, \texttt{range}, \texttt{max}, \texttt{min} y calcula una operación móvil sobre los datos. 
-
-\texttt{StatisticsTransformer(mode='mean', window=25)}
+Para facilitar el procesado de estadísticos (media, desviación, rango, máximo y mínimo) hemos desarrollado un transformador genérico cuyos modos pueden ser \texttt{mean}, \texttt{std}, \texttt{range}, \texttt{max}, \texttt{min} y calcula una operación móvil sobre los datos. La signatura del método sería: \texttt{StatisticsTransformer(mode='mean', window=25)}.
 \section{Filtrado}
 Para el filtrado se han creado dos transformadores para dos filtros, \textit{ButterWorth} y \textit{Savitzky–Golay} aunque se pueden crear más extendiendo de \texttt{FilterTransformer()}. La signatura de los metodos sería:
 \begin{itemize}
