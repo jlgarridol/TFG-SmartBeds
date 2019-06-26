@@ -212,7 +212,57 @@ Este servidor está configurado de tal forma que se requiera un certificado \tex
 
 \section{Test de usabilidad}
 
-TODO: Pendiente de realizar
+Para comprobar si la aplicación web realizada era usable e intuitiva se realizó un test de usabilidad junto a la aplicación móvil realizada por Alicia Olivares Gil. Para comprobar eso se propusieron cinco tareas a los usuarios:
+
+\begin{enumerate}\small
+	\item Iniciar sesión con el usuario y contraseña que te hemos proporcionado. 
+	\item Cambiar tu contraseña (ten en cuenta que una vez cambies tu contraseña deberás usar la nueva en cualquiera de las dos aplicaciones). 
+	\item Consultar el estado de los pacientes. 
+	\item Consultar las gráficas explicativas sobre el estado de los pacientes. 
+	\item Cerrar sesión	
+\end{enumerate}
+
+Y para recoger las valoraciones se pidió la cumplimentación de un formulario con cuatro afirmaciones a valorar entre 1 y 5 siendo 1 \textit{completamente en desacuerdo} y 5 \textit{completamente de acuerdo}. Las afirmaciones eran:
+\begin{itemize}\small
+	\item \textit{Me ha resultado fácil realizar las tareas propuestas}.
+	\item \textit{Me ha resultado fácil interpretar los elementos gráficos (iconos, botones, gráficas...)}.
+	\item \textit{La selección de elementos gráficos usados en la aplicación (colores, tipografías...) me ha parecido acertada}.
+	\item \textit{La aplicación me ha parecido muy buena}.
+\end{itemize}
+
+A estas afirmaciones, para facilitar la interpretación de los resultados, se les ha asignado una valoración equivalente cuyos nombres han sido: \textit{Facilidad de uso}, \textit{Interpretabilidad}, \textit{Uso de gráficos} y \textit{Global} respectivamente.
+
+También se hizo una distinción entre el perfil profesional del encuestado entre \textit{tecnológico}, \textit{educación} y \textit{asistencia sanitaria}. El objetivo de esta distinción es poder comprobar si la aplicación es fácil de usar por el tipo de usuario al que va destinado (educadores y asistentes sanitarios). Se ha tomado como referencia las valoraciones de los usuarios de perfil técnico. 
+
+\subsection{Resultados del test}
+Ha habito un total de doce votos, cinco de perfil tecnológico y tres de educación y cuatro de asistencia sanitaria (Fig.~\ref{fig:usab_prop})
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{usability/web_proportion.pdf}
+	\caption{Proporción de encuestados según su perfil laboral}
+	\label{fig:usab_prop}
+\end{figure}
+
+Podemos ver en la figura~\ref{fig:usab_global} las valoraciones generales de todos los encuestados. Podemos ver que la valoración general es muy positiva. La interpretabilidad de los datos es lo que peor calificación tiene, podemos observar que existen algunas valoraciones muy bajas sobre este punto, aún así la media es de $3.5$ que sigue por encima de la neutralidad de la valoración, podemos concluir que la aplicación es usable e intuitiva.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{usability/web_general.pdf}
+	\caption{Valoraciones de todos los encuestados}
+	\label{fig:usab_global}
+\end{figure}
+
+Respecto a la comparativa entre el perfil \textbf{tecnológico} y el \textbf{no tecnológico} (Fig.~\ref{fig:usab_comp} podemos observar que, aunque la valoración global y la interpretabilidad por los usuarios \textbf{no tecnológico}s están más dispersas siguen teniendo valores medios muy altos. Además, sus valoraciones tanto sobre el uso de gráficos como de la facilidad de uso es menos dispersa que la del grupo \textbf{tecnológico}.
+
+Por todo esto podemos concluir que la aplicación es usable e intuitiva para el perfil al que está destinado y no ha habido ninguna tendencia en el desarrollo de hacer una aplicación excesivamente técnica que hubiese perjudicado la usabilidad de la misma.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{usability/web_comparation.pdf}
+	\caption{Comparación de valoraciones entre perfil tecnológico y no tecnológico}
+	\label{fig:usab_comp}
+\end{figure}
 
 \section{\textit{Mokey Patching}}\label{cap:mokey}
 
