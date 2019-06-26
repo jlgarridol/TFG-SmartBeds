@@ -221,3 +221,14 @@ También conocido como el parches de mono en español, es la técnica por la cua
 Bajo esta definición las librerías \textit{Gevent}~\cite{tool:gevent} y \textit{Eventlet}~\cite{tool:eventlet} aportar una función de parcheo para cambiar las funciones de las librerías nativas de \textit{Python}: \texttt{sockets}, \texttt{dns}, \texttt{time}, \texttt{select}, \texttt{thread}, \texttt{os}, \texttt{ssl}, \texttt{httplib}, \texttt{subprocess}, \texttt{sys}, \texttt{aggresive}, \texttt{Event}, \texttt{builtins}, \texttt{signal} y \texttt{queue}.
 
 Gracias a esto todas esas funciones y clases que no son compatibles con el sistema de eventos de \textit{socketIO} se pueden utilizar sin necesidad de aprender todas las funciones y clases alternativas de \textit{gevent} o \textit{eventlet}.
+
+\section{Uso de \textit{CodeClimate}}
+Para hacer un estudio de la calidad del código y hacer las modificaciones necesarias para que el código sea más mantenible, se ha utilizado \textit{CodeClimate} una herramienta que analiza gratuitamente proyectos de \textit{GitHub} de código abierto.
+
+En el primer análisis se obtuvo una calificación de \textbf{\textit{F}}, siendo la peor nota posible. Sin embargo, esto fue debido a que se analizó partes del proyecto que no es propio como son las librerías de \textit{JavaScript} y los estilos \textit{CSS} que se han utilizado. Por ello se creó un fichero \texttt{.codeclimate.yml} para ignorar todo el código ajeno y se volvió a realizar un análisis.
+
+El segundo análisis tuvo de calificación \textit{\textbf{C}}, que aunque no es la peor calificación, si que requiere una mejora del código para hacerlo más mantenible. Para ello se eliminó código repetido, que en su mayoría trataba de comprobaciones de la validez de las llamadas a las funciones (comprobación de tipos y de la sesión web). Para solucionar esto se incluyeron funciones que agrupasen las comprobaciones idénticas eliminando así el código repetido.
+
+Una situación especial fue la creación de un \textit{decorador} para las funciones de las rutas de la web para que se ejecutase en todas las que se requiriese la inclusión del \texttt{token} del usuario en la sesión actual para poder redirigir correctamente estas peticiones. 
+
+La última ejecución se obtuvo una calificación de \textit{\textbf{B}}. A partir de este punto es difícil de mejorar debido a que algunos errores detectados no son refactorizables. Estos son la gran cantidad de parámetros de algunas funciones, que no pueden ser modificadas al ser heredadas de otras librerías; la cantidad de métodos de la clase \texttt{API} que, al englobar toda la lógica de negocio, no tiene sentido partir en diferentes clases. 
