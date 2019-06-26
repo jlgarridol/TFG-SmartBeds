@@ -5,9 +5,7 @@ from flask import session
 from flask import redirect
 from flask import url_for
 from smartbeds.routes import webapi as api
-import smartbeds.api as _api
-from smartbeds import utils
-from smartbeds.routes import (garanteed_logged, get_info, mod_request, b64encode)
+from smartbeds.routes import (garanteed_logged, get_info, mod_request, b64encode, modify_request)
 from smartbeds.routes import logout as rlogout
 
 
@@ -62,36 +60,32 @@ def cama(bedname):
 
 
 @v.app.route('/bed/mod', methods=['PUT'])
+@modify_request
 def modifica_cama():
-    mod_request()  # Introducimos el token
     return api.bedmod()
 
 
 @v.app.route('/bed/add', methods=['PUT'])
+@modify_request
 def nueva_cama():
-    mod_request()  # Introducimos el token
     return api.bedadd()
 
 
 @v.app.route('/bed/del', methods=['DELETE'])
+@modify_request
 def borrar_cama():
-    mod_request()  # Introducimos el token
     return api.beddel()
 
 
 @v.app.route('/bed/perm', methods=['PUT'])
+@modify_request
 def permisos_cama():
-    mod_request()
-    response, code = api.bedperm()
-    if code != 200:
-        return error(code, response.get_json()['message'])
-    else:
-        return response, code
+    return check_login(api.bedperm)
 
 
 @v.app.route('/users', methods=['GET'])
+@modify_request
 def usuarios():
-    mod_request()
     context = {"page": {"page": 'admin_users'}, "info": get_info(), "title": "Administrar usuarios"}
     response, code = api.users()
     if code != 200:
@@ -126,27 +120,27 @@ def usuario_info():
 
 
 @v.app.route('/user/add', methods=['PUT'])
+@modify_request
 def user_add():
-    mod_request()
     return check_login(api.useradd)
 
 
 @v.app.route('/user/del', methods=['DELETE'])
+@modify_request
 def user_del():
-    mod_request()
     return check_login(api.userdel)
 
 
 @v.app.route('/user/mod', methods=['PUT'])
+@modify_request
 def user_mod():
-    mod_request()
     return check_login(api.usermod)
 
 
 @v.app.route('/beds', methods=['GET'])
+@modify_request(params={"mode": "info"})
 def camas():
     context = {"page": {"page": 'admin_beds'}, "info": get_info(), "title": "Administrar camas"}
-    mod_request({"mode": "info"})
     response, code = api.beds()
     if code != 200:
         return error(code, response.get_json()['message'])

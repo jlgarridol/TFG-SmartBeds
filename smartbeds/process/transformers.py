@@ -2,8 +2,6 @@ from sklearn.base import TransformerMixin
 from sklearn.feature_selection import VarianceThreshold
 from scipy import signal as sg
 from pandas import DataFrame
-import numpy as np
-import pandas as pd
 
 
 class FilterTransformer(TransformerMixin):
@@ -91,8 +89,7 @@ class ButterTransformer(FilterTransformer):
         """
         Create Numerator (b) and denominator (a) polynomials of the IIR filter
         """
-        assert type(X) == pd.DataFrame or type(X) == pd.Series,\
-            "This transformer only works with pandas DataFrame or Series"
+        check_type(X)
         self._b, self._a = sg.butter(self._N, self._Wn, btype=self._btype, analog=self._analog, output=self._output)
         return self
 
@@ -130,8 +127,7 @@ class SavgolTransformer(FilterTransformer):
         self._cval = cval
 
     def fit(self, X, y=None):
-        assert type(X) == pd.DataFrame or type(X) == pd.Series,\
-            "This transformer only works with pandas DataFrame or Series"
+        check_type(X)
         return self
 
     def _filData(self, X):
@@ -180,13 +176,10 @@ class ConcatenateTransformer(TransformerMixin):
                 List of transformers to concatenate
         """
         self._transformers = transformers
-        for t in self._transformers:
-            dt = t.__dir__()
-            assert 'fit' in dt and 'transform' in dt and 'fit_transform' in dt, str(t)+' is invalid transformer'
+        is_valid_transformer(self._transformers)
 
     def fit(self, X, y=None):
-        assert type(X) == pd.DataFrame or type(X) == pd.Series, \
-            "This transformer only works with pandas DataFrame or Series"
+        check_type(X)
         return self
 
     def transform(self, X):
@@ -210,13 +203,10 @@ class PipelineTransformer(TransformerMixin):
                 List of transformers to connect in a pipeline
         """
         self._transformers = transformers
-        for t in self._transformers:
-            dt = t.__dir__()
-            assert 'fit' in dt and 'transform' in dt and 'fit_transform' in dt, str(t)+' is invalid transformer'
+        is_valid_transformer(self._transformers)
 
     def fit(self, X, y=None):
-        assert type(X) == pd.DataFrame or type(X) == pd.Series,\
-            "This transformer only works with pandas DataFrame or Series"
+        check_type(X)
         return self
 
     def transform(self, X):
@@ -261,7 +251,7 @@ class EachNormalizer(TransformerMixin):
     __author__ = "José Luis Garrido Labrador"
 
     def fit(self, X, y=None):
-        assert type(X) == pd.DataFrame or type(X) == pd.Series, "This transformer only works with pandas DataFrame or Series"
+        check_type(X)
         return self
     
     def transform(self, data):
@@ -423,6 +413,17 @@ class StatisticsTransformer(TransformerMixin):
         for c in data.columns: 
             statistics[c+' '+self._mode+" "+str(self._window)] = func(data[c])
         return statistics
+
+
+def check_type(X):
+    assert type(X) == pd.DataFrame or type(X) == pd.Series, \
+        "This transformer only works with pandas DataFrame or Series"
+
+
+def is_valid_transformer(transformers):
+    for t in transformers:
+        dt = t.__dir__()
+        assert 'fit' in dt and 'transform' in dt and 'fit_transform' in dt, str(t) + ' is invalid transformer'
 
 
 if __name__ == '__main__':
