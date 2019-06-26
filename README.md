@@ -13,8 +13,6 @@ Trabajo de fin de grado, del grado de **Ingeniería Informática** en la **Unive
 
 Tutores: **Álvar Arnaiz González** y **José Francisco Diez Pastor**
 
-Para acceder al despliegue acceda a https://ubu.joselucross.com
-
 ---
 
 ### Resumen
@@ -22,7 +20,8 @@ La epilepsia es una enfermedad que provoca crisis repentinas con convulsiones vi
 
 En este trabajo se investiga, a partir de datos reales provenientes de sensores en un colchón, métodos que puedan detectar situaciones de crisis en tiempo real de tal manera que se puedan suministrar las atenciones necesarias con la mayor celeridad posible. 
 
-Además de esto se ha creado una API REST y una página web que permite la gestión de camas (adición, borrado, edición), así como mostrar el estado actual de los sensores y las probabilidades de que el paciente esté sufriendo una crisis.
+Además de esto se ha creado una API REST y una [página web](
+https://ubu.joselucross.com) que permite la gestión de camas (adición, borrado, edición), así como mostrar el estado actual de los sensores y las probabilidades de que el paciente esté sufriendo una crisis.
 
 ### Abstract
 Epilepsy is a disease whose symptoms are violent seizures and fainting. In that's situations is necessary to apply first aid, but, overnight is difficult to detect and treat in time these crisis. That can cause serious damage to the patients. 
