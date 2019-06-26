@@ -1,0 +1,4 @@
+exclude_patterns:
+- "doc/"
+- "research/"
+- "smartbeds/resources/assets/"
