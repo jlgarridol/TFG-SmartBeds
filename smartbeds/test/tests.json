@@ -14,7 +14,7 @@
       "func": "auth",
       "input": ["alicia", "mayonesa"],
       "output": [null, "alicia", "user"],
-      "excepts": "BadCredentialsError"
+      "excepts": "PermissionsError"
     },
     {
       "name": "test-user-list",

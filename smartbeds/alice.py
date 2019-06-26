@@ -1,5 +1,10 @@
+"""
+Este código ha sido realizado por Alicia Olivares Gil.
+"""
 import pandas as pd
 import tsfresh as tf
+
+__author__ = "Alicia Olivares Gil"
 
 
 def rolling_extract_features(dataFrame, window, fc_parameters):

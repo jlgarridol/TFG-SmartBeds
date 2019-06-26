@@ -56,7 +56,7 @@ class API:
         
         Raises
         ------
-        BadCredentialsError
+        PermissionsError
             si la relación nick-password no existe
         """
         print("Intento de autenticación del usuario:", nick)
@@ -693,7 +693,7 @@ class API:
         cursor.execute(*command)
         user = cursor.fetchone()
         if user is None:
-            raise BadCredentialsError('Token no válido para ningún usuario')
+            raise BadCredentialsError('Identificación no válida para el usuario, vuelva a iniciar sesión.')
         cursor.close()
         return user
 
@@ -759,7 +759,7 @@ class API:
 
         :param nick: nombre de usuario
         :param password: contraseña
-        :raise BadCredentialsError: si la combinación no es correcta
+        :raise PermissionsError: si la combinación no es correcta
         """
         conn = self._db_context()
         password = API.encrypt(password)
@@ -773,7 +773,7 @@ class API:
 
         if cursor.fetchone() is None:
             conn.rollback()
-            raise BadCredentialsError("La combinación de nombre de usuario y contraseña no coinciden")
+            raise PermissionsError("La combinación de nombre de usuario y contraseña no coinciden")
         cursor.close()
 
     def __update_token(self, nick):

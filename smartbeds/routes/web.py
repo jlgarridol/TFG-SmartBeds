@@ -18,7 +18,7 @@ def home():
         mod_request()
         response, code = api.beds()
         if code != 200:
-            return logout()
+            return error(code, response.get_json()['message'])
         context['beds'] = response.get_json()["beds"]
         for b in context['beds']:
             mod_request({"bedname": b["bed_name"]})
@@ -82,7 +82,11 @@ def borrar_cama():
 @v.app.route('/bed/perm', methods=['PUT'])
 def permisos_cama():
     mod_request()
-    return api.bedperm()
+    response, code = api.bedperm()
+    if code != 200:
+        return error(code, response.get_json()['message'])
+    else:
+        return response, code
 
 
 @v.app.route('/users', methods=['GET'])
@@ -124,19 +128,19 @@ def usuario_info():
 @v.app.route('/user/add', methods=['PUT'])
 def user_add():
     mod_request()
-    return api.useradd()
+    return check_login(api.useradd)
 
 
 @v.app.route('/user/del', methods=['DELETE'])
 def user_del():
     mod_request()
-    return api.userdel()
+    return check_login(api.userdel)
 
 
 @v.app.route('/user/mod', methods=['PUT'])
 def user_mod():
     mod_request()
-    return api.usermod()
+    return check_login(api.usermod)
 
 
 @v.app.route('/beds', methods=['GET'])
@@ -164,6 +168,7 @@ def sobre():
     return render_template('sobre.html', **context)
 
 
+"""#Código para la generación de usuarios
 @v.app.route('/generate_user', methods=['GET'])
 def user_gen():
     context = {"page": {"page": "generator"}, "info": get_info(), "title": "Generador de usuarios"}
@@ -179,6 +184,7 @@ def user_gen():
     context["user"] = user
     context["password"] = password
     return render_template("genuser.html", **context)
+"""
 
 
 def error(code, message):
@@ -188,6 +194,14 @@ def error(code, message):
                            message=message,
                            info=get_info(),
                            title="Error " + str(code))
+
+
+def check_login(func):
+    response, code = func()
+    if code != 200:
+        return error(code, response.get_json()['message'])
+    else:
+        return response, code
 
 
 v.app.add_template_filter(b64encode)
