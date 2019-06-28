@@ -6,11 +6,11 @@ Para finalizar la exposición de esta memoria se comentará en este capítulo la
 De este proyecto se pueden obtener las siguientes conclusiones.
 \begin{itemize}
 	\item No se ha podido crear un modelo útil para la monitorización de pacientes con epilepsia por diversos motivos. El primero es la escasez de datos para el estudio ya que de todas las crisis documentadas solo se tenían datos documentados de tres. Segundo, la etiquetación deficiente de las mismas ya que solo se poseía un rango temporal. En tercer lugar no se poseían datos de las constantes vitales o estos eran de mala calidad lo que impedía contrastar la información con datos médicos fiables.
-	\item Los algoritmos de clasificación desarrollados en la universidad de Burgos, el \textit{Rotation Forest} y el \textit{Random Balance} han sido los que mejores resultados han dado para este problema, teniendo en cuenta que no ha existido ninguno probado que haya sido capaz de predecir bien una crisis nueva.
+	\item Los algoritmos de clasificación desarrollados por investigadores la universidad de Burgos, el \textit{Rotation Forest} y el \textit{Random Balance} han sido los que mejores resultados han dado para este problema, teniendo en cuenta que no ha existido ningún clasificador entre los probados que haya sido capaz de predecir bien una crisis nueva.
 	\item Los conjuntos de datos muy desbalanceados y muy ruidosos son difíciles de analizar. Más aún es encontrar modelos capaces de interpretarlos correctamente. Esto nos ha derivado en clasificadores que sobreajustan demasiado o que no son capaces de ajustar.
 	\item Desarrollar la API usando el \textit{framework} \textit{Flask} para \textit{Python} ha facilitado el desarrollo gracias a su simplicidad, en especial gracias a que no se requieren unos grandes conocimientos de programación de servicios \textit{HTTP}.
 	\item \textit{SocketIO} es una herramienta que ha resultado muy útil para hacer uso \textit{websockets} y hacer la difusión en tiempo real de los datos. La principal complicación que tuvo fue la integración con \textit{Flask} al usar hilos, pero la programación de las funciones que usan de esta librería ha sido un proceso sencillo. 
-	\item TODO: conclusiones de la usabilidad de la página
+	\item Se ha realizado una aplicación fácil de usar e intuitiva para el público objetivo de la aplicación web.
 \end{itemize}
 
 \section{Líneas futuras}
@@ -21,4 +21,5 @@ En el caso de continuar este proyecto se podrían realizar:
 	\item En el caso de obtener nuevos datos mejor etiquetados y constantes vitales correctas se podría realizar los experimentos documentados.
 	\item Internacionalizar la aplicación.
 	\item Crear un sistema de localizaciones (hospitales, centros de discapacidad) para mejorar la gestión de las camas y los usuarios.
+	\item Realizar una refactorización del código que permita subir la calificación de \textit{CodeClimate} a la nota \textit{\textbf{A}}.
 \end{itemize}

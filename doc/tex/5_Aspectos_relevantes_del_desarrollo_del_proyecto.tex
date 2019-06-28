@@ -1,21 +1,21 @@
 \capitulo{5}{Aspectos relevantes del desarrollo del proyecto}
 \section{Introducción}\label{cap:asp-rel}
 
-En este capítulo se explicarán los aspectos más importantes tanto de la investigación como del desarrollo. Los detalles más específicos y los resultados obtenidos se encuentran en el \textit{Cuaderno de investigación} y los \textit{Anexos}. 
+En este capítulo se explicarán los aspectos más importantes tanto de la investigación, como del desarrollo. Los detalles más específicos y los resultados obtenidos se encuentran en los \textit{Anexos}. Además, se incluye un apéndice adicional con las fases y resultados de la investigación realizada, este se llama: \textit{Cuaderno de Investigación}.
 
 \section{Investigación}
 
 La fase de investigación ha ocupado la mayor cantidad de tiempo de este proyecto ya que ha sido también una introducción a la carrera investigadora. Ha sido desarrollada conjuntamente con Alicia Olivares Gil bajo la dirección de nuestros tutores el Dr. Álvar Arnáiz González y el Dr. José Francisco Díez Pastor.
 
-El comienzo de esta investigación comenzó con un estudio del arte con el fin de conocer métodos y soluciones ya existen y se han probado. Sin embargo, la mayoría de artículos que existen actualmente para ese problema se centran en datos de encefalogramas, un tipo de datos que no poseemos. También exploramos problemas semejantes como detecciones de caídas mediante sensores de presión aunque la mayoría de estos sistemas se basaban en otros sensores como cámaras o acelerómetros. Algunos de estos artículos están resumidos en la sección~\ref{cap:trabrel}.
+El comienzo de esta investigación comenzó con un estudio del arte con el fin de conocer métodos y soluciones ya existentes y que hayan sido documentadas en la literatura científica. Sin embargo, la mayoría de artículos que existen actualmente para ese problema se centran en datos de encefalogramas, un tipo de datos que no poseemos. También exploramos problemas semejantes como detecciones de caídas mediante sensores de presión aunque la mayoría de estos sistemas se basaban en otros sensores como cámaras o acelerómetros. Algunos de estos artículos están resumidos en la sección~\ref{cap:trabrel}.
 
 Tras esta exploración bibliográfica nos centramos en el estudio de los datos. Primero haciendo una limpieza eliminando datos con poca variabilidad, normalizarlos y eliminar datos ruidosos. Tras esto generamos proyecciones de los mismos a dos dimensiones tanto con datos limpiados, estadísticos o filtrados.
 
-Los datos estadísticos que generamos en un comienzo fueron medias y desviaciones móviles de ventana $25$. Los filtros tratados fueron el \textit{butterworth} y el \textit{savgol}, ambos de la librería \textit{SciPy}~\cite{tool:scipy}.
+Los datos estadísticos que generamos en un comienzo fueron medias y desviaciones móviles de ventana $25$. Los filtros utilizados fueron el \textit{butterworth} y el \textit{savgol}, ambos de la librería \textit{SciPy}~\cite{tool:scipy}.
 
-Las primeras conclusiones que obtuvimos era que los datos intermedios de las crisis documentadas tenían ciertas propiedades que las diferenciaba del resto, sin embargo esto se perdía aumentando la ventana del estudio. Además que este proceso era muy lento y necesitaba una gran cantidad de datos por lo cual realmente podíamos obtener si hubo una crisis y no hacer una detección en directo.
+Las primeras conclusiones que obtuvimos era que los datos intermedios de las crisis documentadas tenían ciertas propiedades que las diferenciaba del resto, sin embargo esto se perdía a medida que se aumentaba la ventana del estudio. Además que este proceso era muy lento y necesitaba una gran cantidad de datos, por lo cual realmente podíamos obtener si hubo una crisis y no hacer una detección en directo.
 
-A partir de aquí, para facilitar los procesos de preprocesado se crearon un conjunto de transformadores de datos que incluyen un normalizador por característica como por grupos de las mismas, un filtro de ruido, un eliminador de características de poca varianza, un calculador de estadísticos móviles, un modificador del valor objetivo según una ventana temporal y dos compuestos que concatenan resultados o los convierte en una línea de tuberías de tal forma que se ejecuten secuencialmente.
+A partir de aquí, para facilitar los procesos de preprocesado se crearon un conjunto de transformadores de datos que incluyen: un normalizador por característica como por grupos de las mismas, un filtro de ruido, un eliminador de características de poca varianza, un calculador de estadísticos móviles, un modificador del valor objetivo según una ventana temporal y dos compuestos que concatenan resultados o los convierte en una línea de tuberías de tal forma que se ejecuten secuencialmente.
 
 Antes de pasar a la exploración de métodos para clasificar, acotamos las duraciones de las crisis que nos habían reportado, la primera razón es que la misma empresa nos informó de que los datos eran estimados y estos superaban el umbral para \textit{status epilepticus}~\cite{epilepsia}. Esta acotación se hizo analizando manualmente los datos dentro del rango que nos dieron determinando como crisis las situaciones con presiones anómalas. 
 
@@ -26,22 +26,22 @@ Lo primero que obtuvimos es que una crisis es un subconjunto de una situación n
 
 El segundo obtenido fue que las diversas crisis no coexisten en el mismo espacio, ya que al entrenar el clasificador con una crisis determinaba como anomalía a todas las demás crisis al igual que al resto de datos. Además, en el caso de combinar dos situaciones de crisis el entrenamiento ya tiene un gran índice de fallo si los datos no son estadísticos (media y desviación).
 
-Los resultados del entrenamiento se pueden ver en las tablas~\ref{tab:matriz-conf-1a} y~\ref{tab:matriz-conf-1a-2d} y lo de test en las tablas~\ref{tab:matriz-test-2a} y~\ref{tab:matriz-test-3a}, en estás últimas se puede ver que la predicción siempre es errónea para un conjunto nuevo de datos.
+Los resultados del entrenamiento se pueden ver en las tablas~\ref{tab:matriz-conf-1a} y~\ref{tab:matriz-conf-1a-2d} y los de test en las tablas~\ref{tab:matriz-test-2a} y~\ref{tab:matriz-test-3a}, en estás últimas se puede ver que la predicción siempre es errónea para un conjunto nuevo de datos.
 
 \myinput{./research-book/train-tables.tex}
 \myinput{./research-book/test-tables.tex}
 
 \subsection{\textit{Ensembles} para desequilibrados}
-Debido a que la detección de anomalías no dio resultados correctos se pasó a hacer un estudio de clasificadores combinados (\textit{ensemble}) optimizados para la resolución de problemas con datos desequilibrados~\cite{diez2015diversity,galar2012review}.
+Debido a que la detección de anomalías no dio resultados correctos, se pasó a hacer un estudio de clasificadores combinados (\textit{ensemble}) optimizados para la resolución de problemas con datos desequilibrados~\cite{diez2015diversity,galar2012review}.
 
-Debido a que el conjunto de datos ya habíamos hecho un submuestreo al limitar el conjunto de datos a los del día de las crisis probamos a hacer un sobremuestreo mediante SMOTE~\cite{galar2012review} con los algoritmos de \textit{Bagging}, \textit{AdaBoostM1} y \textit{Rotation Forest}~\cite{rodriguez2006rotation}.
+Debido a que en el conjunto de datos ya habíamos hecho un submuestreo al limitar el conjunto de datos a los del día de las crisis probamos a hacer un sobremuestreo mediante SMOTE~\cite{galar2012review} con los algoritmos de \textit{Bagging}, \textit{AdaBoostM1} y \textit{Rotation Forest}~\cite{rodriguez2006rotation}.
 
 Los resultados de este experimento fue que los clasificadores sobreajustaban los datos de las crisis y no eran capaces de predecir correctamente otras crisis. Además pudimos comprobar que el algoritmo de \textit{boosting} no predecía correctamente los datos de entrenamiento lo que, junto con el hecho de que la etiquetación sabíamos que había sido manual, da pie a la conclusión de que los datos están mal etiquetados~\cite{ubu:mineria3}.
 
 También se probó a realizar una validación cruzada con todo el conjunto de datos usando el clasificador de \textit{Rotation Forest}~\cite{rodriguez2006rotation} obteniendo unos buenos resultados.
 
 \subsection{Búsqueda de mejores características}
-Otro proceso que se hizo fue la búsqueda de mejores características a partir de un análisis estadístico tratando a los datos como una serie temporal. A partir primero de la búsqueda de la mejor ventana temporal (obtenido el valor de noventa) mediante la optimización del valor del AUC~\cite{galar2012review} y de PRC~\cite{Davis2006RPR}. El desarrollo completo de esta búsqueda está mejor explicado en el Apéndice \textit{Cuaderno de Investigación} en el capítulo \textit{Extracción de características con tsfresh y clasificador Random Forest}.
+Otro proceso que se hizo fue la búsqueda de mejores características a partir de un análisis estadístico tratando a los datos como una serie temporal. A partir primero de la búsqueda de la mejor ventana temporal (obtenido el valor de noventa) mediante la optimización del valor del AUC~\cite{galar2012review} y de PRC~\cite{Davis2006RPR}. El desarrollo completo de esta búsqueda está explicado con mayor lujo de detalles en el Apéndice \textit{Cuaderno de Investigación} en el capítulo \textit{Extracción de características con tsfresh y clasificador Random Forest}.
 
 \subsection{\textit{Ensembles} para desequilibrados - estadísticos de series temporales}
 Para finalizar la investigación se volvieron a probar los \textit{ensembles} para conjuntos desequilibrados de Galar et. al.~\cite{galar2012review} y Díez et. al.~\cite{diez2015random, diez2015diversity} usando sobremuestreo con \textit{SMOTE}, submuestreo con \textit{RUS} y muestreo aleatorio con \textit{Random Balance}. Se usaron los clasificadores de comité aleatorio, \textit{bagging} y \textit{rotation forest}.
@@ -54,7 +54,7 @@ Los resultados se pueden ver en las tablas~\ref{tab:crisis1} y~\ref{tab:crisis2}
 	\begin{center}
 		\begin{tabular}{llllllll}
 			\toprule
-			{} & TPR &          FPR &       TNR & FNR &       PRC &       AUC &       ACC \\
+			Algoritmo & TPR &          FPR &       TNR & FNR &       PRC &       AUC &       ACC \\
 			\midrule
 			RB - Bag                &   0 &            0 &         1 &   1 &  0.984425 &  0.552363 &   0.98178 \\
 			RB - RC       &   0 &            0 &         1 &   1 &  0.981267 &  0.485675 &   0.98178 \\
@@ -76,7 +76,7 @@ Los resultados se pueden ver en las tablas~\ref{tab:crisis1} y~\ref{tab:crisis2}
 	\begin{center}
 		\begin{tabular}{llllllll}
 			\toprule
-			{} & TPR &         FPR &       TNR & FNR &       PCR &       AUC &       ACC \\
+			Algoritmo & TPR &         FPR &       TNR & FNR &       PCR &       AUC &       ACC \\
 			\midrule
 			RB - Bag                &   0 &   0.0109634 &  0.989037 &   1 &  0.995225 &  0.491511 &  0.983616 \\
 			RB - RC       &   0 &  0.00571683 &  0.994283 &   1 &  0.993912 &  0.446135 &  0.988834 \\
@@ -100,13 +100,13 @@ La fase de desarrollo ha ocupado alrededor de un cuarto del tiempo del proyecto.
 La primera parte fue la más corta, consistió en explorar herramientas que fueran compatibles con websocket~\cite{wiki:websocket} ya que este protocolo es el más eficaz para distribución en tiempo real de datos mediante HTTP, que es la tecnología más sencilla para la creación de una \textit{API}. La herramienta seleccionada fue \textit{socketIO}~\cite{tool:socketio} que daba una interfaz sencilla y multilenguaje.
 
 \subsection{Diseño}
-La fase de diseño fue la que más tiempo llevó de este apartado ya que hubo que discutir muchos detalles con mi compañera Alicia Olivares, ya que se debía crear una interfaz sencilla y funcional para que pudiese desarrollar una aplicación Android lo más rápidamente posible.
+La fase de diseño fue la que más tiempo llevó de este apartado debido a que hubo que discutir muchos detalles con mi compañera Alicia Olivares Gil. El objetivo de esto era crear una interfaz sencilla y funcional para que pudiese desarrollar una aplicación Android lo más rápidamente posible.
 
 El primer paso fue determinar los casos de uso, que debido a la limitación temporal, se resumieron lo más posible. Decidimos hacer una gestión de usuarios y camas con un sistema de permisos simplificado de forma tal que los usuarios pueden estar asociados a camas. También se creó un usuario maestro administrador que tuviese permisos sobre todo.
 
 Otro punto importante fueron los datos. Los usuarios son formados por un identificador único, un nombre de usuario único, una contraseña y un token dinámico y único. Este último es el que permite identificar al usuario para realizar operaciones \textit{CRUD}. Este cambia por cada inicio de sesión del usuario de tal forma que solo puede existir una sesión abierta a la vez.
 
-Las camas, por otro, lado están formadas por un par de identificadores de los sensores de presión (\textit{MAC}) y de los sensores biométricos (\textit{UUID}) que son usados también como el nombre del espacio donde se difundirán los datos de esa cama. También identifican a la cama un número secuencial y un nombre de la misma. Cada cama tiene a su vez una combinación de IP-puerto del rango de \textit{multicast} que especifica a la aplicación a donde tiene que escuchar. 
+Las camas, por otro lado, están formadas por un par de identificadores de los sensores de presión (\textit{MAC}) y de los sensores biométricos (\textit{UUID}) que son usados también como el nombre del espacio donde se difundirán los datos de esa cama. También identifican a la cama un número secuencial y un nombre de la misma. Cada cama tiene a su vez una combinación de IP-puerto del rango de \textit{multicast} que especifica a la aplicación a donde tiene que escuchar. 
 
 Como parte final del diseño se determinó cuales serían los pasos para el \textit{handshake} del proceso de obtención de datos en tiempo real. Se decidió que este sería una petición a la API para solicitar el espacio de nombres, luego una apertura de conexión a \textit{socketIO}, si la conexión era correcta lanzar una petición de solicitud de datos (\texttt{give\_me\_data}) para finalmente escuchar paquetes (\texttt{package}) al espacio de nombres solicitado.
 
@@ -132,7 +132,7 @@ En el caso de que alguno de los procesos fallasen, se generaría un código de e
 \subsubsection{Difusión en tiempo real}
 Para poder hacer la difusión en tiempo real se necesita de la librería de \texttt{flask-socketio}~\cite{tool:flask-socketio} y de \texttt{gevent}~\cite{tool:gevent}. 
 
-El primer paso es crear los hilos del \textit{pipeline} del procesamiento de los datos (uno de escucha y otro de procesado). Esto se hace usando la interfaz \texttt{Thread} pero compatibilizado con \texttt{gevent} mediante un \textit{mokey patching}~(explicado en la sección~\ref{cap:mokey}).
+El primer paso es crear los hilos del \textit{pipeline} del procesamiento de los datos (uno de escucha y otro de procesado). Esto se hace usando la interfaz \texttt{Thread} pero compatibilizado con \texttt{gevent} mediante un \textit{monkey patching}~(explicado en la sección~\ref{cap:mokey}).
 
 El proceso completo de creación de hilos se puede ver en el Anexo \textit{Manual del programador}, la estructura de su colaboración se puede ver en el diagrama de clases de la figura~\ref{fig:classes}.
 
@@ -145,13 +145,13 @@ El proceso completo de creación de hilos se puede ver en el Anexo \textit{Manua
 
 Tras esto es necesario crear las capturas de eventos de \textit{socketIO} para poder detectar cuando se solicitan datos y enviarlos. Este envío se hace mediante otro hilo, el de difusión que emite por \textit{broadcast} a todos los clientes de cada cama. Estos hilos funcionan solo dentro del entorno de petición (\textit{request context}) por lo que morían al cerrar el usuario la conexión, por tanto, para evitar que los datos se acumulasen en el servidor se usaron colas en los hilos de procesamiento con un tamaño máximo a la ventana temporal~(90) de tal forma que se borrasen los más viejos si entraban nuevos datos.
 
-Un detalle importante es que como los datos no podemos tenerlos en tiempo real, ya que pertenecen a la empresa que nos los suministra. Por ello hemos simulado un \textit{streaming} de datos local usando UDP emitiendo una nueva linea del CSV cada $0.4$ segundos, que es una estimación del intervalo por el cual nos llegan los datos.
+Un detalle importante es que, como los datos no podemos tenerlos en tiempo real, ya que pertenecen a la empresa que nos los suministra. Por ello hemos simulado un \textit{streaming} de datos local usando UDP emitiendo una nueva línea del CSV cada $0.4$ segundos, que es una estimación del intervalo por el cual nos llegan los datos.
 
 Otra modificación sobre el diseño ha sido que realmente existe una única cama y las distintas camas que existen realmente usan los mismos hilos ya que los \textit{Broadcaster} realmente emiten a todos los \textit{namespaces} que existen. Se ha hecho esto debido a las limitaciones técnicas del equipo de despliegue ya que cada cama implicaba una serie de tres hilos que ralentizan mucho el sistema.
 
 También se utiliza actualmente un clasificador aleatorio por intervalos de tal manera que cambie la probabilidad de crisis cada noventa instancias entre los tres estados posibles: crisis, no crisis, despierto; con el fin de poder probar como cambian las interfaces en los distintos estados, sobre todo porque el clasificador obtenido al final no era capaz de predecir situaciones de crisis.
 
-El resultado final en la aplicación web se puede ver en la figura~\ref{fig:man_bed}
+El resultado final en la aplicación web se puede ver en la figura~\ref{fig:man_bed}.
 
 \begin{figure}
 	\centering
@@ -165,11 +165,11 @@ El resultado final en la aplicación web se puede ver en la figura~\ref{fig:man_
 
 La interfaz web de la aplicación se hizo mediante plantillas \textit{Jinja}~\cite{tool:jinja} de \textit{HTML}. Se apoyó con el \textit{framework} de \textit{boostrap 4}~\cite{wiki:boostrap} para el \textit{CSS} y \textit{jQuery} para la implementación de funciones \textit{JavaScript}.
 
-Para facilitar este desarrollo se crearon varios componentes separados y una plantilla maestra de la que heredarían todas las páginas. Esto evita el código repetido así como facilita el desarrollo de la aplicación. Los componentes que se crearon fueron la barra de navegación, el pie de página, las funciones generales de para la validación de los formularios y un modal para mostrar los errores.
+Para facilitar este desarrollo se crearon varios componentes separados y una plantilla maestra de la que heredarán todas las páginas. Esto evita el código repetido así como facilita el desarrollo de la aplicación. Los componentes que se crearon fueron la barra de navegación, el pie de página, las funciones generales de para la validación de los formularios y un modal para mostrar los errores.
 
 Otro aspecto importante del desarrollo de la interfaz fue la creación de los gráficos en tiempo real. Se usó la librería \textit{Graph.js} para hacer gráficos en objetos \texttt{canvas} de \textit{HTML}. En un primer momento la librería actualizaba muy lentamente, pero el problema estaba en la programación de los hilos de \textit{Python} con los hilos, esto se solucionó con la llamada \texttt{eventlet.sleep(0)} en el \texttt{Broadcaster} para que los datos fuesen en tiempo real.
 
-Para optimizar el renderizado es estas gráficas se optó por eliminar las animaciones y los valores de \texttt{hover}\footnote{Evento al estar el puntero del ratón sobre el objeto} para que no se ejecutasen nuevas llamadas a eventos del \texttt{DOM} que mostraban los datos de esa instancia temporal.
+Para optimizar el renderizado es estas gráficas se optó por eliminar las animaciones y los valores de \texttt{hover}\footnote{Evento al deslizar el puntero del ratón sobre el objeto.} para que no se ejecutasen nuevas llamadas a eventos del \texttt{DOM} que mostraban los datos de esa instancia temporal.
 
 Otra tecnología que se usó en el desarrollo de la interfaz web fue el uso de llamadas asíncronas al servidor mediante \textit{AJAX}. De esta manera se pueden evitar cargas completas de la página de manera innecesaria. Especialmente en las situaciones que la operación no requería mostrar nuevos datos en la pantalla como la creación, modificación o borrado de usuarios y camas. 
 
@@ -206,13 +206,13 @@ Antes de ejecutar los tests se instala una base de datos de pruebas que borra la
 \subsection{Despliegue}
 El despliegue de la aplicación fue una de las partes más complicadas del proceso de desarrollo. En primer lugar se intentó desplegar sobre un dispositivo embebido, en particular la \textit{Raspberry Pi 2B}. Sin embargo, este \textit{hardware} no fue capaz de soportar el rendimiento necesario para enviar los datos en un tiempo real.
 
-Por eso se traspasó el sistema a otro servidor personal\footnote{Este servidor forma parte del grupo \textit{JKA Network}} con varias máquinas virtuales llamado \textit{Al-Juarismi}. Se incorporó la base de datos a una de ellas de nombre \textit{V-Lovelace} y la lógica de la aplicación se almacenó en la máquina \textit{V-Babbage}. En esta última también se añadió la simulación de la cama como un demonio semejante al que se puede ver en el anexo del \textit{Manual del programador}. %TODO: incorporar características de las máquinas virtuales.
+Por eso se traspasó el sistema a otro servidor personal\footnote{Este servidor forma parte del grupo \textit{JKA Network}} con varias máquinas virtuales llamado \textit{Al-Juarismi}. Se incorporó la base de datos a una de ellas de nombre \textit{V-Lovelace} y la lógica de la aplicación se almacenó en la máquina \textit{V-Babbage}. En esta última también se añadió la simulación de la cama como un demonio semejante al que se puede ver en el anexo del \textit{Manual del programador}.
 
 Este servidor está configurado de tal forma que se requiera un certificado \textit{SSL} sobre todas las páginas que albergue. Por tanto se usó un certificado de \textit{LetsEncrypt} para el mismo.
 
 \section{Test de usabilidad}
 
-Para comprobar si la aplicación web realizada era usable e intuitiva se realizó un test de usabilidad junto a la aplicación móvil realizada por Alicia Olivares Gil. Para comprobar eso se propusieron cinco tareas a los usuarios:
+Para comprobar si la aplicación web realizada era usable e intuitiva se realizó un test de usabilidad\footnote{Se puede acceder en el enlace \url{https://forms.gle/oo9m3nmGA46UqMKv9}} junto a la aplicación móvil realizada por Alicia Olivares Gil. Para comprobarlo se propusieron cinco tareas a los usuarios:
 
 \begin{enumerate}\small
 	\item Iniciar sesión con el usuario y contraseña que le proporcionamos. 
@@ -244,12 +244,12 @@ Se han recogido un total de doce votos, cinco de perfil tecnológico y tres de e
 	\label{fig:usab_prop}
 \end{figure}
 
-Podemos ver en la figura~\ref{fig:usab_global} las valoraciones generales de todos los encuestados. Se observa que la valoración general es muy positiva siendo la interpretabilidad de los datos el aspecto que peor valoración tiene. Sin embargo, la media es de $3.5$ que sigue por encima de la neutralidad de la valoración (un valor de $3$), podemos concluir que la aplicación es usable e intuitiva independientemente del perfil laboral del encuestado.
+Podemos ver en la figura~\ref{fig:usab_global} las valoraciones generales de todos los encuestados. Se observa que la valoración general es muy positiva siendo la interpretabilidad de los datos el aspecto que peor valoración tiene. Sin embargo, la media es de $(3.5)$ que sigue por encima de la neutralidad de la valoración (un valor de $3$), podemos concluir que la aplicación es usable e intuitiva independientemente del perfil laboral del encuestado.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{usability/web_general.pdf}
-	\caption{Valoraciones de todos los encuestados}
+	\caption[Valoraciones de todos los encuestados.]{Valoraciones de todos los encuestados. El extremo izquierdo representa el valor más bajo y el extremo derecho el valor más alto. La caja representa la distribución de los valores del primer cuartil (izquierda), la mediana (linea roja) y tercer cuartil (derecha). La media es la mitad de la caja.}
 	\label{fig:usab_global}
 \end{figure}
 
@@ -260,11 +260,11 @@ Por todo esto podemos concluir que la aplicación es usable e intuitiva para el 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{usability/web_comparation.pdf}
-	\caption{Comparación de valoraciones entre perfil tecnológico y no tecnológico}
+	\caption[Comparación de valoraciones entre perfil tecnológico y no tecnológico.]{Comparación de valoraciones entre perfil tecnológico y no tecnológico. El extremo izquierdo representa el valor más bajo y el extremo derecho el valor más alto. La caja representa la distribución de los valores del primer cuartil (izquierda), la mediana (linea roja) y tercer cuartil (derecha). La media es la mitad de la caja.}
 	\label{fig:usab_comp}
 \end{figure}
 
-\section{\textit{Mokey Patching}}\label{cap:mokey}
+\section{\textit{Monkey Patching}}\label{cap:mokey}
 
 También conocido como el parches de mono en español, es la técnica por la cual se extiende o modifica la funcionalidad del sistema de manera local y en ejecución. Solo se permite en lenguajes dinámicos como \textit{Python} o \textit{Ruby}~\cite{wiki:monkey_patch}.
 

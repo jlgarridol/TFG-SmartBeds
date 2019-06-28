@@ -7,16 +7,14 @@ Es por este motivo que podemos ver en la literatura científica de los últimos 
 \begin{table}
 	\centering
 	\resizebox{\textwidth}{!}
-	{\begin{tabular}{|lccr|}
-			\hline 
+	{\begin{tabular}{llll}
+			\toprule
 			\textbf{Hardware} & \textbf{Coste} & \textbf{Fiabilidad} & \textbf{Observación} \\ 
-			\hline 
+			\otoprule 
 			Detector de EEG & Elevado & Elevada & Incómodo para dormir \\ 
-			\hline 
 			Pulseras inteligentes & Bajo & Elevada & Los pacientes son propensos a quitársela \\ 
-			\hline 
 			Cama inteligente & Elevado & Pendiente de estudio & Es cómodo y no invasivo \\ 
-			\hline 
+			\bottomrule
 	\end{tabular}}
 	\caption{Distintos métodos para la detección de crisis epilépticas y sus situaciones según \textit{PRONISA}.}
 	\label{tab:modelos}
@@ -25,11 +23,11 @@ Es por este motivo que podemos ver en la literatura científica de los últimos 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{cama_publicidad}
-	\caption{Publicidad de la cama de la cual obtenemos los datos.}
+	\caption{Publicidad de la cama de la cual se han obtenido los datos.}
 	\label{fig:cama_publi}
 \end{figure}
 
-Aunque el análisis y detección de crisis epilépticas de manera automática ha sido ampliamente explorada por la comunidad científica, esta se ha centrado o en el uso de pulseras inteligentes~\cite{ramgopal2014product_review} o el uso de encefalogramas~(\textit{EEG})~\cite{jeppesen2017modified,kumar2014epilepticeeg,tzallas2012review} para la predicción de estos eventos. Por tanto, ante pacientes con diversos problemas de salud que impiden el uso de pulseras ya que son fácilmente removibles y de dispositivos de control de actividad cerebral al entorpecer el sueño del paciente (Tabla~\ref{tab:modelos}), se realiza este proyecto que enfoca la detección de las crisis epilépticas en el uso de sensores de presión y biométricos en la cama (Fig.~\ref{fig:cama_publi} donde duerme el paciente. 
+Aunque el análisis y detección de crisis epilépticas de manera automática ha sido ampliamente explorada por la comunidad científica, esta se ha centrado o en el uso de pulseras inteligentes~\cite{ramgopal2014product_review} o el uso de encefalogramas~(\textit{EEG})~\cite{jeppesen2017modified,kumar2014epilepticeeg,tzallas2012review} para la predicción de estos eventos. Por tanto, ante pacientes con diversos problemas de salud que impiden el uso de pulseras ya que son fácilmente removibles y de dispositivos de control de actividad cerebral al entorpecer el sueño del paciente (Tabla~\ref{tab:modelos}), se realiza este proyecto que enfoca la detección de las crisis epilépticas en el uso de sensores de presión y biométricos en la cama (Fig.~\ref{fig:cama_publi}) donde duerme el paciente. 
 
 
 
