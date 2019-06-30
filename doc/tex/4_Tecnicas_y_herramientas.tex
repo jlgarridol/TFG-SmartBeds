@@ -4,7 +4,7 @@ En este capítulo se encuentran las técnicas y herramientas utilizadas en el pr
 
 \section{Investigación}
 
-El proyecto ha sido desarrollado aplicando diversas técnicas de minería de datos siguiendo el proceso KDD~\cite{ubu:mineria1} (Fig.~\ref{fig:kdd}). Aunque en esta memoria se explicará superficialmente, el desarrollo completo de la investigación se encuentra en el cuaderno de investigación adjuntado.
+El proyecto ha sido desarrollado aplicando diversas técnicas de minería de datos siguiendo el proceso KDD~\cite{ubu:mineria1} (Fig.~\ref{fig:kdd}). En esta memoria se explicará de forma sucinta, el desarrollo completo de la investigación se encuentra en el cuaderno de investigación adjuntado.
 
 \begin{figure}
 	\centering
@@ -23,7 +23,7 @@ Para el proceso del clasificador final el flujo KDD ha sido el siguiente:
 	\item \textbf{Transformación}
 		Se han generado datos estadísticos para series temporales que optimizaban el valor del área bajo la curva PCR~\cite{saito2015precision} desde los datos preprocesados.
 	\item \textbf{Minería de datos}
-		Se ha aplicado un sistema de clasificación doble, en primer lugar se utiliza un árbol de clasificación muy simple que divide entre las situaciones de despierto (bajas presiones en la cama) y acostado, en esta situación se aplica un clasificador \textit{Random Forest}~\cite{breiman2001random} para determinar si hay crisis o no.
+		Se ha aplicado un sistema de clasificación doble, en primer lugar se utiliza un árbol de clasificación muy simple que divide entre las situaciones de ``despierto''' (bajas presiones en la cama) y ``acostado'', en esta situación se aplica un clasificador \textit{Random Forest}~\cite{breiman2001random} para determinar si hay crisis o no.
 	\item \textbf{Interpretación}
 		Se ha desplegado una aplicación web con datos en tiempo real para evaluar de manera constante la situación actual del paciente.
 \end{enumerate}
@@ -45,7 +45,7 @@ Las herramientas utilizadas para programar el servidor han sido las siguientes:
 \paragraph{Flask~\cite{tool:flask}}\textit{Microframwork} de código abierto (BSD) que ofrece una capa de abstracción muy alta de un servicio web, se utiliza para la creación de la lógica de negocio mediante la gestión de las rutas.
 \paragraph{Jinja~\cite{tool:jinja}}Gestor de plantillas de código abierto (BSD) para Python, se utiliza para la creación de la interfaz web mediante la creación de páginas dinámicas en HTML.
 \paragraph{Flask-SocketIO~\cite{tool:flask-socketio}}Integración del servicio de \textit{sockets}, \textit{Socket.IO}~\cite{tool:socketio}, compatible con los \textit{WebSockets}, se utiliza para la difusión de los datos en pacientes.
-\paragraph{Gevent y Eventlet~\cite{tool:eventlet, tool:gevent}}Bibliotecas para el uso de tiempo real, asíncrono de hilos para el uso de \textit{Socket.IO}, el uso de estas bibliotecas es facilitar el procesado y difusión en tiempo real de los datos de los pacientes. 
+\paragraph{Gevent y Eventlet~\cite{tool:eventlet, tool:gevent}}Bibliotecas para el uso de tiempo real, asíncrono de hilos para el uso de \textit{Socket.IO}, el uso dado a estas bibliotecas es facilitar el procesado y difusión en tiempo real de los datos de los pacientes. 
 
 Para la programación del sistema de hilos que distribuyen datos en tiempo real se siguieron los paradigmas de la programación orientada a objetos y de programación funcional. El sistema de rutas siguió las guías del \textit{microframework Flask}. 
 
@@ -64,7 +64,7 @@ Para el desarrollo general del proyecto se han utilizado las siguientes herramie
 
 \subsubsection{Servidor}
 \paragraph{\textit{Nginx}}servidor web y de proxy reverso ligero de alto rendimiento~\cite{wiki:nginx} de código abierto (BSD simplificada).
-\paragraph{\textit{MariaDB}}sistema de gestión de bases de datos derivado de \textit{MySQL}~\cite{wiki:mariadb} de código abierto (GPLv2). Este motor es extremadamente compatible con \textit{MySQL} porque es creado como una bifuración de esto para garantizar la existencia de este motor bajo GPL.
+\paragraph{\textit{MariaDB}}sistema de gestión de bases de datos derivado de \textit{MySQL}~\cite{wiki:mariadb} de código abierto (GPLv2). Este motor es extremadamente compatible con \textit{MySQL} porque es creado como una bifurcación de esto para garantizar la existencia de este motor bajo GPL.
 \paragraph{\textit{Proxmox}}es un entorno de virtualización de servidores~\cite{wiki:proxmox} de código abierto (AGPL). Su función principal es el despliegue y gestión de máquinas virtuales y contenedores.
 \paragraph{\textit{Anarchy Arch}}sistema GNU/Linux derivado de \textit{ArchLinux}~\cite{wiki:arch} sobre el cual se ejecuta todo el servidor, está alojado en una máquina virtual del entorno \textit{Proxmox}.
 

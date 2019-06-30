@@ -13,18 +13,18 @@ Tras esta exploración bibliográfica nos centramos en el estudio de los datos. 
 
 Los datos estadísticos que generamos en un comienzo fueron medias y desviaciones móviles de ventana $25$. Los filtros utilizados fueron el \textit{butterworth} y el \textit{savgol}, ambos de la librería \textit{SciPy}~\cite{tool:scipy}.
 
-Las primeras conclusiones que obtuvimos era que los datos intermedios de las crisis documentadas tenían ciertas propiedades que las diferenciaba del resto, sin embargo esto se perdía a medida que se aumentaba la ventana del estudio. Además que este proceso era muy lento y necesitaba una gran cantidad de datos, por lo cual realmente podíamos obtener si hubo una crisis y no hacer una detección en directo.
+Las primeras conclusiones que obtuvimos era que los datos intermedios de las crisis documentadas tenían ciertas propiedades que las diferenciaba del resto, sin embargo, esto se perdía a medida que se aumentaba la ventana del estudio. Además que este proceso era muy lento y necesitaba una gran cantidad de datos, por lo cual podíamos obtener si hubo una crisis pero no hacer una detección en directo.
 
-A partir de aquí, para facilitar los procesos de preprocesado se crearon un conjunto de transformadores de datos que incluyen: un normalizador por característica como por grupos de las mismas, un filtro de ruido, un eliminador de características de poca varianza, un calculador de estadísticos móviles, un modificador del valor objetivo según una ventana temporal y dos compuestos que concatenan resultados o los convierte en una línea de tuberías de tal forma que se ejecuten secuencialmente.
+A partir de aquí, para facilitar los procesos de preprocesado, se crearon un conjunto de transformadores de datos que incluyen: un normalizador por característica como por grupos de las mismas, un filtro de ruido, un eliminador de características de poca varianza, un calculador de estadísticos móviles, un modificador del valor objetivo según una ventana temporal y dos compuestos que concatenan resultados o los convierte en una línea de tuberías de tal forma que se ejecuten secuencialmente.
 
 Antes de pasar a la exploración de métodos para clasificar, acotamos las duraciones de las crisis que nos habían reportado, la primera razón es que la misma empresa nos informó de que los datos eran estimados y estos superaban el umbral para \textit{status epilepticus}~\cite{epilepsia}. Esta acotación se hizo analizando manualmente los datos dentro del rango que nos dieron determinando como crisis las situaciones con presiones anómalas. 
 
 \subsection{Detección de anomalías}
-Lo siguiente que se realizó fue un estudio de detección de anomalías en el cual se intentó tanto predecir una crisis a partir de entrenar un clasificador \texttt{OneClassSVM} entrenando con todos los datos de no crisis y también predecir una situación de no crisis entrenando el mismo clasificador con los datos de crisis.
+Lo siguiente que se realizó fue un estudio de detección de anomalías en el cual se intentó predecir una crisis a partir de entrenar un clasificador \texttt{OneClassSVM} entrenando con todos los datos de no crisis y también predecir una situación de no crisis entrenando el mismo clasificador con los datos de crisis.
 
-Lo primero que obtuvimos es que una crisis es un subconjunto de una situación no crisis ya que el clasificador no lo detecta como anomalía al ser entrenado con las situaciones de no crisis.
+La primera conclusión obtenida es que una crisis es un subconjunto de una situación no crisis ya que el clasificador no lo detecta como anomalía al ser entrenado con las situaciones de no crisis.
 
-El segundo obtenido fue que las diversas crisis no coexisten en el mismo espacio, ya que al entrenar el clasificador con una crisis determinaba como anomalía a todas las demás crisis al igual que al resto de datos. Además, en el caso de combinar dos situaciones de crisis el entrenamiento ya tiene un gran índice de fallo si los datos no son estadísticos (media y desviación).
+La segunda fue que las diversas crisis no coexisten en el mismo espacio, ya que al entrenar el clasificador con una crisis determinaba como anomalía a todas las demás crisis al igual que al resto de datos. Además, en el caso de combinar dos situaciones de crisis el entrenamiento ya tiene un gran índice de fallo si los datos no son estadísticos (media y desviación).
 
 Los resultados del entrenamiento se pueden ver en las tablas~\ref{tab:matriz-conf-1a} y~\ref{tab:matriz-conf-1a-2d} y los de test en las tablas~\ref{tab:matriz-test-2a} y~\ref{tab:matriz-test-3a}, en estás últimas se puede ver que la predicción siempre es errónea para un conjunto nuevo de datos.
 
@@ -145,9 +145,9 @@ El proceso completo de creación de hilos se puede ver en el Anexo \textit{Manua
 
 Tras esto es necesario crear las capturas de eventos de \textit{socketIO} para poder detectar cuando se solicitan datos y enviarlos. Este envío se hace mediante otro hilo, el de difusión que emite por \textit{broadcast} a todos los clientes de cada cama. Estos hilos funcionan solo dentro del entorno de petición (\textit{request context}) por lo que morían al cerrar el usuario la conexión, por tanto, para evitar que los datos se acumulasen en el servidor se usaron colas en los hilos de procesamiento con un tamaño máximo a la ventana temporal~(90) de tal forma que se borrasen los más viejos si entraban nuevos datos.
 
-Un detalle importante es que, como los datos no podemos tenerlos en tiempo real, ya que pertenecen a la empresa que nos los suministra. Por ello hemos simulado un \textit{streaming} de datos local usando UDP emitiendo una nueva línea del CSV cada $0.4$ segundos, que es una estimación del intervalo por el cual nos llegan los datos.
+Un detalle importante es que, como no podemos disponer de los datos en tiempo real, ya que pertenecen a la empresa que nos los suministra, hemos simulado un \textit{streaming} de datos local usando UDP emitiendo una instancia, previamente almacenada, cada $0.4$ segundos\footnote{Es una estimación del intervalo por el cual nos llegan los datos.}
 
-Otra modificación sobre el diseño ha sido que realmente existe una única cama y las distintas camas que existen realmente usan los mismos hilos ya que los \textit{Broadcaster} realmente emiten a todos los \textit{namespaces} que existen. Se ha hecho esto debido a las limitaciones técnicas del equipo de despliegue ya que cada cama implicaba una serie de tres hilos que ralentizan mucho el sistema.
+Otra modificación sobre el diseño ha sido simular a una única cama y las distintas camas que se pueden observar en la aplicación utilizan los mismos datos ya que el \textit{Broadcaster} emite a todos los \textit{namespaces} que existen simultáneamente. Se ha hecho esto debido a las limitaciones técnicas del equipo de despliegue ya que cada cama implicaba una serie de tres hilos que ralentizan mucho el sistema.
 
 También se utiliza actualmente un clasificador aleatorio por intervalos de tal manera que cambie la probabilidad de crisis cada noventa instancias entre los tres estados posibles: crisis, no crisis, despierto; con el fin de poder probar como cambian las interfaces en los distintos estados, sobre todo porque el clasificador obtenido al final no era capaz de predecir situaciones de crisis.
 
@@ -163,13 +163,13 @@ El resultado final en la aplicación web se puede ver en la figura~\ref{fig:man_
 
 \subsubsection{Ventanas \textit{HTML}}
 
-La interfaz web de la aplicación se hizo mediante plantillas \textit{Jinja}~\cite{tool:jinja} de \textit{HTML}. Se apoyó con el \textit{framework} de \textit{boostrap 4}~\cite{wiki:boostrap} para el \textit{CSS} y \textit{jQuery} para la implementación de funciones \textit{JavaScript}.
+La interfaz web de la aplicación se hizo mediante plantillas \textit{Jinja}~\cite{tool:jinja} de \textit{HTML}. Se apoyó con el \textit{framework} de \textit{Boostrap 4}~\cite{wiki:boostrap} para el \textit{CSS} y \textit{jQuery} para la implementación de funciones \textit{JavaScript}.
 
-Para facilitar este desarrollo se crearon varios componentes separados y una plantilla maestra de la que heredarán todas las páginas. Esto evita el código repetido así como facilita el desarrollo de la aplicación. Los componentes que se crearon fueron la barra de navegación, el pie de página, las funciones generales de para la validación de los formularios y un modal para mostrar los errores.
+Para facilitar este desarrollo se crearon varios componentes separados y una plantilla maestra de la que heredarán todas las páginas. Esto evita el código repetido así como facilita el desarrollo de la aplicación. Los componentes que se crearon fueron la barra de navegación, el pie de página, las funciones generales para la validación de los formularios y un modal para mostrar los errores.
 
-Otro aspecto importante del desarrollo de la interfaz fue la creación de los gráficos en tiempo real. Se usó la librería \textit{Graph.js} para hacer gráficos en objetos \texttt{canvas} de \textit{HTML}. En un primer momento la librería actualizaba muy lentamente, pero el problema estaba en la programación de los hilos de \textit{Python} con los hilos, esto se solucionó con la llamada \texttt{eventlet.sleep(0)} en el \texttt{Broadcaster} para que los datos fuesen en tiempo real.
+Otro aspecto importante del desarrollo de la interfaz fue la creación de los gráficos en tiempo real. Se usó la librería \textit{Graph.js} para hacer gráficos en objetos \texttt{canvas} de \textit{HTML}. En un primer momento la librería actualizaba muy lentamente, sin embargo, el problema estaba en la programación de los hilos de \textit{Python}, esto se solucionó con la llamada \texttt{eventlet.sleep(0)} en el \texttt{Broadcaster} para que los datos fuesen en tiempo real.
 
-Para optimizar el renderizado es estas gráficas se optó por eliminar las animaciones y los valores de \texttt{hover}\footnote{Evento al deslizar el puntero del ratón sobre el objeto.} para que no se ejecutasen nuevas llamadas a eventos del \texttt{DOM} que mostraban los datos de esa instancia temporal.
+Para optimizar el renderizado en estas gráficas se optó por eliminar las animaciones y los valores de \texttt{hover}\footnote{Evento al deslizar el puntero del ratón sobre el objeto.} para que no se ejecutasen nuevas llamadas a eventos del \texttt{DOM} que mostraban los datos de esa instancia temporal.
 
 Otra tecnología que se usó en el desarrollo de la interfaz web fue el uso de llamadas asíncronas al servidor mediante \textit{AJAX}. De esta manera se pueden evitar cargas completas de la página de manera innecesaria. Especialmente en las situaciones que la operación no requería mostrar nuevos datos en la pantalla como la creación, modificación o borrado de usuarios y camas. 
 
@@ -270,7 +270,7 @@ También conocido como el parches de mono en español, es la técnica por la cua
 
 Bajo esta definición las librerías \textit{Gevent}~\cite{tool:gevent} y \textit{Eventlet}~\cite{tool:eventlet} aportar una función de parcheo para cambiar las funciones de las librerías nativas de \textit{Python}: \texttt{sockets}, \texttt{dns}, \texttt{time}, \texttt{select}, \texttt{thread}, \texttt{os}, \texttt{ssl}, \texttt{httplib}, \texttt{subprocess}, \texttt{sys}, \texttt{aggresive}, \texttt{Event}, \texttt{builtins}, \texttt{signal} y \texttt{queue}.
 
-Gracias a esto todas esas funciones y clases que no son compatibles con el sistema de eventos de \textit{socketIO} se pueden utilizar sin necesidad de aprender todas las funciones y clases alternativas de \textit{gevent} o \textit{eventlet}.
+Gracias a esto, todas esas funciones y clases que no son compatibles con el sistema de eventos de \textit{socketIO} se pueden utilizar sin necesidad de aprender todas las funciones y clases alternativas de \textit{gevent} o \textit{eventlet}.
 
 \section{Uso de \textit{CodeClimate}}
 Para hacer un estudio de la calidad del código y hacer las modificaciones necesarias para que el código sea más mantenible, se ha utilizado \textit{CodeClimate} una herramienta que analiza gratuitamente proyectos de \textit{GitHub} de código abierto.
